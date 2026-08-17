@@ -34,6 +34,7 @@ Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable
 - [x] At least one valid Gemini API call in the deployed application evidenced.
 - [x] Redacted runtime execution logs and in-app receipt captured.
 - [x] Official Vertex AI Model Garden Monitoring capture shows the `gemini-2.5-flash` row and last-hour request/token-count graphs.
+- [x] Devpost runtime evidence saved as five reviewed images: billing lag warning, Vertex metrics, live approved state, live receipts, and Cloud Run config; the older Cloud Run log capture was removed from the upload.
 - [x] Public demo URL and Cloud Run revision attached; this is not production-readiness evidence.
 
 No item in this section may be checked from code/configuration alone.
@@ -64,7 +65,7 @@ No item in this section may be checked from code/configuration alone.
 - [x] Public repository available at `https://github.com/chquandogong/deployalign`.
 - [x] Working unauthenticated application available free at `https://deployalign-1007800160926.asia-northeast3.run.app`.
 - [x] Public 170-second video verified at `https://youtu.be/QOPgHHAWOBA`; live player shows 2:50 and publication date Aug 17, 2026.
-- [x] English narrative checked against 500–1,000 word guidance on the overview page.
+- [x] Saved 796-word English story is within the 500–1,000 word guidance and discloses no current jobs/opportunities beyond the founder.
 - [ ] All claims map to the evidence checklist.
 
 ## Documentation
@@ -81,7 +82,8 @@ No item in this section may be checked from code/configuration alone.
 - [x] Public synthetic-demo deployment approved and completed.
 - [x] Public repository publication approved and completed.
 - [x] Public video upload approved and completed.
-- [x] Authorized overview draft save completed; future material updates remain gated.
+- [x] Project Details, Additional Info, revenue/P&L PDFs, and five runtime-evidence files saved; finalization is 4/5 Draft.
+- [x] Terms acceptance and Submit have not been executed.
 - [ ] Approve the final submission after a last rules/evidence review.
 
 ## Rollback and monitoring
@@ -94,4 +96,4 @@ No item in this section may be checked from code/configuration alone.
 
 ## Final judgment
 
-**NO-GO for customer production and final submission.** Technical evidence, public video, all entrant-supplied factual fields, Moderate learning level, and the two financial PDFs are verified/prepared. Final submission remains blocked by prepared evidence/runtime/P&L uploads, completed-form review, lag-aware cost confirmation, the zero-revenue rules decision, and action-time approval. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.
+**NO-GO for customer production and final submission.** Technical evidence, public video, all entrant-supplied factual fields, Moderate learning level, saved 796-word story, both financial PDFs, and five runtime-evidence images are complete in the 4/5 Draft. Final submission remains blocked by final link/rules/billing review, the zero-revenue decision, and action-time approval before terms/Submit. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.

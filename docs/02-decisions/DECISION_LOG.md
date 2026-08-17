@@ -55,8 +55,8 @@
 - Rationale: The current project lacks required business evidence and any publication may expose data or make unsupported claims.
 - Rejected: Automatically publishing or finalizing because the deadline is close.
 - Residual risk: Missing the competition deadline.
-- Approval: Public repository, synthetic-demo deployment, overview draft, and public video were approved and completed. Final Devpost submission remains a separate action-time gate.
-- Revisit when: Prepared evidence uploads, zero-revenue rule review, and final submission approval are resolved. Learning level is Moderate and the public video is `https://youtu.be/QOPgHHAWOBA`.
+- Approval: Public repository, synthetic-demo deployment, public video, Project Details, Additional Info, and evidence uploads were approved and saved. Finalization is 4/5 Draft; terms and Submit remain a separate action-time gate.
+- Revisit when: Zero-revenue/billing review and final submission approval are resolved. Learning level is Moderate and the public video is `https://youtu.be/QOPgHHAWOBA`.
 
 ## D-006 — Limit Google Cloud claims to verified evidence
 

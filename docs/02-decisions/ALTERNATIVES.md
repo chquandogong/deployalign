@@ -61,7 +61,7 @@ The entrant selected **Professional Services Access**. Keep the category story b
 | --- | --- | --- | --- |
 | Invent customers, outcomes, or nonzero revenue | Appears complete | False, unverifiable, disqualifying, unethical | Reject |
 | Finalize the current deployed demo as if the business evidence were complete | Meets deadline mechanically | Conflicts with explicit business/user/revenue/expense requirements | Reject |
-| Save a truthful draft only | Preserves work without making unsupported claims | Still requires account and external-write approval | Consider with human approval |
+| Save a truthful draft only | Preserves work without making unsupported claims | Final action still requires a separate approval | Current state: 4/5 Draft saved with Project Details, Additional Info, and evidence uploads |
 | Pause until authentic evidence exists | Preserves integrity | Likely misses this submission window | Recommended if requirements remain unmet |
 
 Public repository, bounded demo deployment, overview-draft save, and public video gates are complete. Future material draft/deployment/video changes and final submission remain separate human approval gates.

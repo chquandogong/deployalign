@@ -43,4 +43,4 @@ Do not infer or state any of the following without evidence:
 - The Raman numbers describe a validated real-world system.
 - Google Cloud or Gemini has been used successfully in a real customer production workflow. The public synthetic Cloud Run/Vertex demo is separately verified.
 - Any user count, revenue amount, or expense amount beyond the exact entrant-confirmed values above; any conversion, time saving, risk reduction, or category impact.
-- A Devpost project is finally submitted. Eligibility is entrant-confirmed and the overview draft is saved, but no final receipt exists.
+- A Devpost project is finally submitted. Eligibility, Project Details, Additional Info, financial PDFs, and runtime evidence are saved at 4/5 Draft, but terms/Submit remain untouched and no final receipt exists.

@@ -85,7 +85,7 @@ Official Vertex AI Model Garden Monitoring evidence shows a `gemini-2.5-flash` r
 - Real usage, revenue, expenses, and customer evidence meet the official challenge rules.
 - All external publication and submission steps receive human approval.
 
-The deployed Gemini-call criterion and public-video criterion are met for the synthetic demo. Entrant/user/financial fields and Moderate learning level are confirmed, but one user, no paying users, and $0 revenue do not establish business viability or measured category impact; evidence uploads and final entrant review remain unresolved.
+The deployed Gemini-call and public-video criteria are met for the synthetic demo. Project Details, Additional Info, both financial PDFs, and five reviewed runtime-evidence files are saved; finalization is 4/5 Draft. One user, no paying users, and $0 revenue do not establish business viability or measured category impact. Final rules/billing review and action-time approval before terms/Submit remain unresolved.
 
 ## Non-goals for this prototype
 

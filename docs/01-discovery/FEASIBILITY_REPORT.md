@@ -37,7 +37,7 @@ Key limitations:
 - A deployed `gemini-vertex` compile using `gemini-2.5-flash` returned exactly three validated exact-quote `AI_DRAFT` candidates and a successful receipt; provenance persisted through the HMAC-signed review token. Redacted logs recorded `compile_completed` for version 1 and `patch_approved` for version 2.
 - Cloud Run is intentionally constrained to max instances 1 because rate limiting and operational state are process-local. The public URL demonstrates deployment, not production readiness.
 - Official Vertex AI Model Garden Monitoring shows `gemini-2.5-flash` request and token-count graphs in the last-hour window.
-- A private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, with an explicit warning that costs can take hours or more than 24 hours to appear. The entrant confirms the current challenge P&L as $0 revenue, $0 expenses, and $0 net; one-page zero-revenue/P&L PDFs are prepared and visually verified, while form uploads and one final lag-aware cloud-cost recheck remain.
+- A private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, with an explicit warning that costs can take hours or more than 24 hours to appear. The entrant confirms the current challenge P&L as $0 revenue, $0 expenses, and $0 net; one-page zero-revenue/P&L PDFs are saved in Devpost, while one final lag-aware cloud-cost recheck remains.
 
 ## Viability
 
@@ -57,7 +57,7 @@ The official challenge requires a real business with real users and revenue, an 
 - User validation: **run immediately**.
 - Live Google integration: **verified for the public synthetic demo**, including request/token monitoring evidence; production-grade alerts, identity, persistence, durable audit, and final cost controls remain open.
 - Production deployment: **hold** until QA, authentication, privacy, and operational controls exist.
-- Devpost final submission: **hold** until the prepared evidence uploads, completed-form/link review, lag-aware cost recheck, and action-time approval are complete; the public 2:50 video and Moderate learning level are ready, and the zero-revenue rule risk still requires explicit review.
+- Devpost final submission: **hold** at 4/5 Draft until final form/link review, lag-aware cost recheck, zero-revenue rule review, and action-time approval are complete. Project Details, Additional Info, evidence uploads, public video, and Moderate learning level are saved/ready; terms and Submit remain untouched.
 
 ## Stop conditions
 

@@ -28,14 +28,14 @@
 ## Failures and incomplete work
 
 - Entrant confirms 1 actual user and 0 paying users; no interview, testimonial, customer, measured outcome, or production operation is established.
-- May/June/July/August/total and related-party revenue are $0; COGS/marketing/other/total expenses are $0. One-page zero-revenue/P&L PDFs are prepared and visually verified; form uploads remain.
+- May/June/July/August/total and related-party revenue are $0; COGS/marketing/other/total expenses are $0. One-page zero-revenue/P&L PDFs are saved in Devpost.
 - The public demo is not a customer production operation and has no auth, persistence, tenancy, durable audit, or rehearsed rollback.
 - The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but its explicit warning that reporting can take hours or more than 24 hours prevents treating that value as final challenge expense/P&L.
 - UI integration and local/deployed live-browser QA are complete.
 - Final typecheck, lint, 13/13 tests, production build, and direct production-server/token smoke checkpoints passed.
 - Cloud Build successfully built the actual container and Cloud Run revision `deployalign-00003-tlc` deployed it.
 - No actual Claude independent review occurred.
-- The public repository and Cloud Run demo are available. The verified 170-second 1080p H.264/AAC video with 74 captions is public at `https://youtu.be/QOPgHHAWOBA`; Devpost final submission is not completed.
+- The public repository and Cloud Run demo are available. The verified 170-second 1080p H.264/AAC video with 74 captions is public at `https://youtu.be/QOPgHHAWOBA`. Project Details, Additional Info, financial PDFs, and five runtime-evidence images are saved; finalization is 4/5 Draft and terms/Submit remain untouched.
 
 ## Current metrics
 
@@ -55,7 +55,7 @@
 1. Validate the problem with practitioners before expanding scope.
 2. Preserve and periodically recheck non-sensitive local/cloud evidence and accessibility disclosures.
 3. Make fallback and the compile-to-review provider transition explicit.
-4. Recheck billing after the documented lag window and upload the prepared $0 revenue/P&L evidence.
+4. Recheck billing after the documented lag window and confirm the saved $0 revenue/P&L evidence remains attached.
 5. Design identity, persistence, audit, privacy, and observability only if a real pilot warrants them.
 6. Obtain a genuinely independent model/human review if cross-model validation will be claimed.
-7. Add the verified public video to the form, populate/review remaining fields, and reassess the $0-revenue requirement before final submission.
+7. Review the saved 4/5 Draft, reassess the $0-revenue requirement, and obtain action-time approval before terms/Submit.

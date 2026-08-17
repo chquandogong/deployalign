@@ -121,4 +121,4 @@ Archive date, commit (when one exists), exit status, and redacted output. A comm
 - Secrets or real customer data enter build/log/screenshots.
 - Google Cloud product use/deployment or live Gemini is claimed beyond the archived API/runtime/deployment evidence, or Gemini is credited for deterministic graph/gate/target decisions.
 - Production readiness is claimed without auth, persistence, tenant isolation, monitoring, and rollback.
-- Devpost finalization is attempted before the confirmed 1-user/0-paying/$0 financial disclosures, Moderate learning level, prepared evidence uploads, verified public video, and testing-access links receive final human review—or without assessing the stated real-revenue requirement.
+- Devpost terms acceptance or Submit is attempted before the saved 4/5 Draft—including the 796-word story, exact financial disclosures, PDFs, five runtime-evidence images, public video, and testing links—receives final human review, or without assessing the stated real-revenue requirement.

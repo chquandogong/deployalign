@@ -25,8 +25,8 @@ The available review was role-based and performed within the same model family/c
 | Is the wedge coherent? | Yes; conflict-to-decision is sharper than document generation | Yes; typed graph and stable IDs are testable | Only as a clearly labeled synthetic decision-support demo |
 | Is the architecture appropriate? | Hybrid approach supports trust | Deterministic core is a sound prototype boundary | Fallback and demo approval can mislead unless conspicuous |
 | Is it production-ready? | No; user value is unvalidated | No auth, persistence, tenancy, monitoring, or durable audit | No real data should be accepted |
-| Is it challenge-ready? | Technical deployment narrative, public video, and one actual user exist | Live Cloud/Vertex, exact financial disclosures, prepared PDFs, and Moderate learning level are present | $0 revenue may miss the stated requirement; uploads/form/final review remain |
-| Best next step | User interviews and outcome evidence | Preserve deployed/log/public-video evidence and complete form uploads | Rule review and action-time gate before final submission |
+| Is it challenge-ready? | Technical deployment narrative, public video, and one actual user exist | Live Cloud/Vertex, exact financial disclosures, saved PDFs/runtime evidence, and Moderate learning level are present | $0 revenue may miss the stated requirement; final review and Submit approval remain |
+| Best next step | User interviews and outcome evidence | Preserve deployed/log/public-video and saved-form evidence | Rule/link/billing review and action-time gate before terms/Submit |
 
 ## Common conclusions
 
@@ -48,7 +48,7 @@ The available review was role-based and performed within the same model family/c
 ## Facts still requiring independent verification
 
 - Real demand, frequency, and willingness to pay.
-- Final cloud cost after the documented billing-report lag; required evidence/P&L uploads; production-grade alerts and access controls. A current-at-capture ₩0 report and entrant-confirmed $0 expenses are retained.
+- Final cloud cost after the documented billing-report lag; production-grade alerts and access controls. Evidence/P&L uploads are saved, while a current-at-capture ₩0 report and entrant-confirmed $0 expenses are retained.
 - User identity/breakdown appropriate for confidential verification, feedback/testimonials, retention, and measured outcomes. Counts are confirmed at 1 user/0 paying.
 - Final rules/form review; learning level is confirmed as Moderate.
 - Independent model critique from Claude or another genuinely separate system.

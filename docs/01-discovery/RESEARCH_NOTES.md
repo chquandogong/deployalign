@@ -24,9 +24,9 @@ Competition requirements below come from the official Devpost challenge pages re
 | Gemini | LLM projects must use the Gemini API for at least one LLM call in the deployed application | Deployed `gemini-vertex` call using `gemini-2.5-flash` verified; exactly three grounded `AI_DRAFT` candidates and a successful receipt observed |
 | New work | Project must be created after the submission period began; prior boilerplate must be explained | Entrant confirms project start `06-01-26` (June 1, 2026) and no pre-existing code/assets |
 | Repository | Provide a public repository or a private repository shared with `testing@devpost.com` and `judging@hacker.fund` | Public repository available at `https://github.com/chquandogong/deployalign` |
-| Description | Explain how the project meets requirements and its category relevance | Draft exists; truthful compliance story is incomplete |
+| Description | Explain how the project meets requirements and its category relevance | Saved public story is 796 words and includes the explicit no-current-jobs disclosure; finalization remains 4/5 Draft |
 | Demo video | Publicly visible YouTube/Vimeo/Youku video, less than three minutes, showing the functioning project | Verified public YouTube video at `https://youtu.be/QOPgHHAWOBA`; player 2:50; published Aug 17, 2026 |
-| Financial evidence | Total revenue, monthly revenue, total expenses, and marketing/customer-acquisition spend, including zero spend where applicable | Entrant confirms all required values at $0; one-page zero-revenue and P&L PDFs are prepared/visually verified; form uploads are pending |
+| Financial evidence | Total revenue, monthly revenue, total expenses, and marketing/customer-acquisition spend, including zero spend where applicable | Entrant confirms all required values at $0; one-page zero-revenue and P&L PDFs are saved in Devpost |
 | User evidence | Real user counts/breakdown and consent-aware feedback/testimonials | Entrant confirms 1 actual user and 0 paying users; no feedback/testimonial evidence supplied |
 | Testing access | Working project must be available free for judging through a site, demo, or test build | Public unauthenticated demo available at `https://deployalign-1007800160926.asia-northeast3.run.app` |
 | Language | Submission materials must be in English or include English translations | Documentation package is in English |
@@ -51,7 +51,7 @@ The entrant selected **Professional Services Access**. The submission must still
 | “AI-powered” | Verified Vertex AI extraction for exactly three quote-grounded `AI_DRAFT` candidates; deterministic TypeScript owns graph, gates, impact, and targets | Retain redacted deployed receipt/log evidence and never attribute deterministic decisions to Gemini |
 | “Production” | Do not claim | Live URL, monitoring, auth, persistent audit trail, operation history |
 | “Customers/users” | Do not claim; synthetic personas only | Consented real user records and feedback |
-| “Revenue” | Entrant-confirmed May/June/July/August/total and related-party revenue are each $0 | Prepared revenue-evidence/P&L PDFs must be uploaded; never describe $0 as traction |
+| “Revenue” | Entrant-confirmed May/June/July/August/total and related-party revenue are each $0 | Saved revenue-evidence/P&L PDFs; never describe $0 as traction |
 | “Google Cloud” | Public synthetic Cloud Run demo, Cloud Build container, Secret Manager HMAC binding, dedicated runtime identity, Vertex call, redacted logs, and official request/token monitoring are verified | Recheck billing after its lag window; add production controls before any customer-operation claim |
 | “Safety improvement” | Designed to surface unsupported scope in a demo | Real benchmark or user study; never imply certification |
 
@@ -60,5 +60,5 @@ The entrant selected **Professional Services Access**. The submission must still
 - Independent competitor and prior-art scan.
 - Real deployment-review workflow interviews.
 - Data-governance requirements for customer artifacts.
-- Final cloud cost after any delayed charge; prepared evidence/P&L uploads and production-grade cost controls.
+- Final cloud cost after any delayed charge and production-grade cost controls; evidence/P&L uploads are saved.
 - Final form review; learning-level self-assessment is complete at Moderate.

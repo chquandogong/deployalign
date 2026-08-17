@@ -10,7 +10,7 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 - [-] Team/organization representative authorization: not applicable; submitter type is Individual.
 - [-] Organization employee-count condition: not applicable to the individual entrant.
 - [x] Project start is `06-01-26` (June 1, 2026), as confirmed by the entrant.
-- [x] Pre-existing resources disclosed as none: no pre-existing code or assets.
+- [x] Pre-existing response saved exactly as `No pre-existing code or assets.`
 - [ ] Original-work, open-source-license, asset, trademark, music, and privacy review complete.
 
 ## Product and code
@@ -51,7 +51,7 @@ Configuration files and a Dockerfile do not satisfy these evidence items by them
 - [ ] User/customer feedback or testimonials captured with informed consent.
 - [ ] Customer relationships/contact details available for confidential verification if requested.
 - [ ] Business model and sustainability explanation grounded in real operation.
-- [ ] Actual jobs/economic opportunities beyond the founding team distinguished from potential ones.
+- [x] Saved story states: actual jobs or economic opportunities beyond the founder are currently none; future opportunity is potential only and not measured.
 
 The synthetic facilities owner, sales owner, and engineer are demo roles, not users or customers.
 
@@ -61,7 +61,7 @@ The synthetic facilities owner, sales owner, and engineer are demo roles, not us
 - [x] Revenue confirmed by month: May $0, June $0, July $0, August $0.
 - [x] Expenses confirmed: COGS $0, marketing/customer acquisition $0, other $0, total $0.
 - [x] Marketing and customer-acquisition spend disclosed as $0.
-- [x] Simple P&L values and one-page PDF complete: revenue $0, expenses $0, net $0; form upload remains pending.
+- [x] Simple P&L values and one-page PDF complete and saved: revenue $0, expenses $0, net $0.
 - [ ] Stripe/bank/other financial evidence prepared with appropriate redaction.
 - [-] Corporate ID: N/A for the individual entrant.
 - [x] Entrant confirmed and authorized the exact financial/corporate disclosures above for this workflow.
@@ -72,7 +72,7 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 
 - [x] Professional Services Access selected by the entrant.
 - [ ] Category impact supported by actual users/outcomes, not only potential.
-- [x] Local English narrative draft is 772 words by repository check, within the 500–1,000 word guidance.
+- [x] Saved public story is 796 words by repository check, within the 500–1,000 word guidance.
 - [ ] Category relevance and every narrative claim reviewed against real evidence by the human entrant.
 - [x] Human-versus-AI responsibilities are accurate in the prepared copy.
 - [x] “AI-native operations” technical claims map to deployed execution logs and monitoring.
@@ -81,7 +81,7 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 
 ## Exact Additional Info form fields
 
-- [x] One-page A4, unencrypted, entrant-provided/unaudited zero-revenue PDF prepared and visually verified at private `output/pdf/deployalign-zero-revenue-statement.pdf`; form upload pending.
+- [x] One-page A4, unencrypted, entrant-provided/unaudited zero-revenue PDF visually verified and saved in Devpost.
 - [x] Project start date ready in `MM-DD-YY` format: `06-01-26`.
 - [x] Submitter type selected: Individual.
 - [x] Country supplied: Republic of Korea.
@@ -91,14 +91,14 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 - [x] AI-native/live-AI technical answer can cite the bounded deployed `gemini-vertex` flow while preserving the deterministic compiler boundary.
 - [x] Google Cloud/Gemini technical answer can cite Cloud Run, Cloud Build, Secret Manager, dedicated runtime identity, Vertex AI, and redacted logs.
 - [x] Public repository URL available.
-- [ ] Runtime evidence upload reviewed and attached in the form.
-- [x] Pre-existing resources disclosed: none; no pre-existing code/assets.
+- [x] Runtime evidence saved as exactly five reviewed files: `cloud-billing-current-zero-lag-warning.png`, `vertex-gemini-observability-metrics.png`, `live-vertex-approved.png`, `live-vertex-receipts.png`, and `cloud-run-config.png`; older `cloud-run-live-logs.png` is not attached.
+- [x] Pre-existing response saved exactly as `No pre-existing code or assets.`
 - [x] Total and May/June/July/August 2026 revenue ready: each and total $0.
 - [x] Related-party revenue ready: $0.
 - [x] Expense breakdown ready: COGS $0, marketing $0, other $0, total $0.
 - [x] Users ready: 1 actual user, 0 paying users.
 - [x] Learning level selected: Moderate.
-- [x] One-page A4, unencrypted, entrant-provided/unaudited P&L PDF prepared and visually verified at private `output/pdf/deployalign-profit-and-loss.pdf`; form upload pending.
+- [x] One-page A4, unencrypted, entrant-provided/unaudited P&L PDF visually verified and saved in Devpost.
 
 ## Demo video
 
@@ -118,12 +118,13 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 - [ ] Latest official overview, rules, FAQ, and form fields rechecked.
 - [ ] Repository and app URLs are public; re-test them with the final public video URL from a signed-out browser.
 - [x] Authorized Devpost overview draft saved as DeployAlign with the prepared tagline and slug `1030117-deployalign`.
-- [ ] Empty Project Details/Additional Info fields populated only with reviewed facts.
+- [x] Project Details and Additional Info saved with reviewed facts.
 - [ ] Every form answer reviewed by the human entrant.
-- [x] Overview draft save was approved and completed; future material updates remain gated.
+- [x] Overview, Project Details, Additional Info, financial PDFs, and runtime evidence were saved with approval.
+- [x] Finalization currently shows 4/5 Draft; terms acceptance and Submit remain unexecuted.
 - [GATE] Final submission approved immediately before the irreversible action.
 - [ ] Devpost confirmation/receipt captured after submission.
 
 ## Current decision
 
-**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, public video, eligibility, category, project history, users, learning level, and exact $0 financial disclosures are complete. Remaining blockers are required evidence/runtime/P&L uploads, Project Details/Additional Info entry and review, the lag-aware cost check, the zero-revenue rules decision, and action-time approval for final submission.
+**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, public video, 796-word story, eligibility, category, project history, users, learning level, exact $0 financial disclosures, Project Details, Additional Info, PDFs, and five runtime-evidence images are saved. Finalization is 4/5 Draft. Remaining gates are the final link/rules/billing review, the zero-revenue decision, and action-time approval before terms acceptance and Submit.

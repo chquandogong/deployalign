@@ -1,8 +1,8 @@
 # Devpost Submission Draft — DeployAlign
 
-> Status: Devpost overview draft saved; **not compliance-ready and not approved for final submission** · Date: 2026-08-17 · Owner: Human entrant with Codex drafting support
+> Status: Project Details and Additional Info saved; finalization **4/5 Draft**; terms/Submit not executed · Date: 2026-08-17 · Owner: Human entrant with Codex drafting support
 
-The authorized Devpost overview draft is saved as project **DeployAlign** with the prepared tagline and draft slug `1030117-deployalign`. Project Details and Additional Info remain unpopulated. This file is prepared copy, not evidence that the required fields are complete or that the entry was finally submitted.
+The authorized Devpost draft is saved as project **DeployAlign** with slug `1030117-deployalign`. Project Details, Additional Info, both financial PDFs, and five reviewed runtime-evidence images are saved. Finalization shows **4/5 Draft**; the terms control and Submit action have not been executed, and no submission receipt exists.
 
 ## Draft fields
 
@@ -49,7 +49,7 @@ The central insight is that the valuable output is not more generated prose. It 
 
 ### Potential impact and next work
 
-If validated with real deployment teams, DeployAlign could help smaller integrators and engineering-service groups apply consistent review discipline without building a large internal tooling organization. The entrant confirms 1 actual user and 0 paying users, but no customer, testimonial, job, measured outcome, or time saving. May, June, July, August, total, and related-party revenue are each $0; COGS, marketing, other, and total expenses are each $0. These exact values describe an early experiment, not traction or category impact.
+If validated with real deployment teams, DeployAlign could help smaller integrators and engineering-service groups apply consistent review discipline without building a large internal tooling organization. The entrant confirms 1 actual user and 0 paying users, but no customer, testimonial, job, measured outcome, or time saving. May, June, July, August, total, and related-party revenue are each $0; COGS, marketing, other, and total expenses are each $0. These exact values describe an early experiment, not traction or category impact. Actual jobs or economic opportunities beyond the founder are currently none; any future opportunity is only a potential outcome and is not yet measured.
 
 Next, we would test the synthetic workflow with deployment practitioners, collect consented redacted examples, benchmark classification and diagnostic accuracy, and determine whether reviewers act faster or catch more material conflicts. Only then would we add identity, tenant isolation, durable audit events, configurable policies, and production cloud operations.
 
@@ -70,10 +70,10 @@ Next, we would test the synthetic workflow with deployment practitioners, collec
 | Total expenses, breakdown, COGS, and marketing/customer-acquisition spend | COGS $0; marketing/customer acquisition $0; other $0; total $0 |
 | Current simple P&L | Revenue $0; expenses $0; net $0 |
 | Corporate ID | N/A for the individual entrant |
-| Pre-existing resources | None; no pre-existing code or assets |
-| Revenue-evidence PDF and P&L evidence upload | Prepared and visually verified: `output/pdf/deployalign-zero-revenue-statement.pdf` and `output/pdf/deployalign-profit-and-loss.pdf`; form uploads pending |
+| Pre-existing resources | Saved response: `No pre-existing code or assets.` |
+| Revenue-evidence PDF and P&L evidence upload | Saved in Devpost after local visual verification |
 | AI-native operations / live AI | Deployed Vertex extraction is evidenced only for the synthetic demo; business-operation claims are not evidenced |
-| Jobs/economic opportunities beyond founders | Potential only; no actual outcome evidenced |
+| Jobs/economic opportunities beyond founders | Actual jobs/opportunities: none; future opportunity is potential only and not measured |
 
 ## Live Additional Info form map
 
@@ -81,7 +81,7 @@ The currently inspected Devpost form requires the following fields or uploads. D
 
 | Form field | Prepared status / evidence source |
 | --- | --- |
-| Revenue-evidence PDF | Prepared/verified at `output/pdf/deployalign-zero-revenue-statement.pdf`; upload pending |
+| Revenue-evidence PDF | Saved in Devpost |
 | Project start (`MM-DD-YY`) | Ready: `06-01-26` |
 | Submitter type | Ready: Individual |
 | Country | Ready: Republic of Korea |
@@ -91,15 +91,15 @@ The currently inspected Devpost form requires the following fields or uploads. D
 | AI-native operations and live-AI answers | May cite the bounded deployed Vertex extraction, receipt, and logs; must preserve deterministic TypeScript boundary |
 | Google Cloud and Gemini answers | Cloud Run/Cloud Build/Secret Manager/Vertex facts are verified for the synthetic demo |
 | Public repository | `https://github.com/chquandogong/deployalign` |
-| Runtime evidence upload | Redacted deployed UI/log/config plus official Vertex request/token monitoring captures exist; upload/review still requires form approval |
-| Pre-existing resources | Ready: none; no pre-existing code/assets |
+| Runtime evidence upload | Saved as exactly five reviewed files: `cloud-billing-current-zero-lag-warning.png`, `vertex-gemini-observability-metrics.png`, `live-vertex-approved.png`, `live-vertex-receipts.png`, `cloud-run-config.png`; older `cloud-run-live-logs.png` removed |
+| Pre-existing resources | Saved exactly as: `No pre-existing code or assets.` |
 | Total and monthly revenue | Ready: May $0; June $0; July $0; August $0; total $0 |
 | Related-party revenue | Ready: $0 |
 | Total expenses, breakdown, COGS, and marketing spend | Ready: COGS $0; marketing $0; other $0; total $0 |
 | Users and paying users | Ready: 1 user; 0 paying users |
 | Learning level | Ready: Moderate |
-| P&L evidence upload | Prepared/verified at `output/pdf/deployalign-profit-and-loss.pdf`; upload pending |
+| P&L evidence upload | Saved in Devpost |
 
 ## Submission decision
 
-The repository, working app, container deployment, deployed Gemini evidence, public 2:50 video, and all entrant-supplied factual fields are complete. Do not finalize until required evidence/runtime/P&L files are attached, Project Details and Additional Info are populated/reviewed, the billing-lag recheck is considered, and the entrant explicitly approves the final action. The final rules review must address whether 1 user, 0 paying users, and $0 revenue satisfy the stated real-business requirement.
+The repository, working app, container deployment, deployed Gemini evidence, public 2:50 video, 796-word story, Project Details, Additional Info, financial PDFs, runtime evidence, and all entrant-supplied factual fields are saved. Finalization is 4/5 Draft. Do not accept terms or click Submit until the final link/rules/billing review is complete and the entrant explicitly approves those actions. The final rules review must address whether 1 user, 0 paying users, and $0 revenue satisfy the stated real-business requirement.
