@@ -17,4 +17,5 @@ COPY --from=build /app/dist ./dist
 COPY server ./server
 COPY src/domain ./src/domain
 EXPOSE 8080
-CMD ["pnpm", "start"]
+USER node
+CMD ["node", "--import", "tsx", "server/index.ts"]

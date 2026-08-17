@@ -144,6 +144,7 @@ export interface CompileResult {
   provider: 'gemini-vertex' | 'gemini-api' | 'deterministic-demo'
   synthetic: true
   artifacts: SourceArtifact[]
+  aiCandidates: CommitmentNode[]
   nodes: CommitmentNode[]
   edges: GraphEdge[]
   diagnostics: CompilerDiagnostic[]
@@ -152,6 +153,7 @@ export interface CompileResult {
   impact: CompileImpact
   receipts: ExecutionReceipt[]
   generatedAt: string
+  compileToken?: string
 }
 
 export interface CompileRequest {
@@ -161,12 +163,21 @@ export interface CompileRequest {
 export interface ApprovalRequest {
   version: number
   patchId: string
+  compileToken?: string
 }
 
 export interface AiExtractionEvidence {
   provider: 'gemini-vertex' | 'gemini-api'
   model: string
   statementCount: number
+  classifiedStatements: AiClassifiedStatement[]
   rawSummary: string
   durationMs: number
+}
+
+export interface AiClassifiedStatement {
+  artifactId: string
+  quote: string
+  type: CommitmentNodeType
+  confidence: number
 }

@@ -1,0 +1,13 @@
+.gcloudignore
+.git
+.gitignore
+node_modules
+dist
+coverage
+docs
+submission-assets
+private-evidence
+.env
+.env.*
+!.env.example
+*.log

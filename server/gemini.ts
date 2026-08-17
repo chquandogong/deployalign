@@ -1,5 +1,10 @@
 import { GoogleGenAI } from '@google/genai'
-import type { AiExtractionEvidence, CommitmentNodeType, SourceArtifact } from '../src/domain/types'
+import type {
+  AiClassifiedStatement,
+  AiExtractionEvidence,
+  CommitmentNodeType,
+  SourceArtifact,
+} from '../src/domain/types'
 
 const MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash'
 const ALLOWED_TYPES: CommitmentNodeType[] = [
@@ -30,7 +35,11 @@ const getClient = () => {
   const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY
   if (apiKey) {
     return {
-      client: new GoogleGenAI({ apiKey, apiVersion: 'v1beta' }),
+      client: new GoogleGenAI({
+        apiKey,
+        apiVersion: 'v1beta',
+        httpOptions: { timeout: 20_000, retryOptions: { attempts: 1 } },
+      }),
       provider: 'gemini-api' as const,
     }
   }
@@ -43,6 +52,7 @@ const getClient = () => {
         project,
         location: process.env.GOOGLE_CLOUD_LOCATION ?? 'global',
         apiVersion: 'v1',
+        httpOptions: { timeout: 20_000, retryOptions: { attempts: 1 } },
       }),
       provider: 'gemini-vertex' as const,
     }
@@ -90,6 +100,7 @@ export const extractWithGemini = async (
     contents: promptFor(artifacts),
     config: {
       temperature: 0.1,
+      maxOutputTokens: 1_200,
       responseMimeType: 'application/json',
       responseJsonSchema: {
         type: 'object',
@@ -110,7 +121,7 @@ export const extractWithGemini = async (
               },
             },
           },
-          patchRationale: { type: 'string', minLength: 20, maxLength: 500 },
+          patchRationale: { type: 'string' },
         },
       },
     },
@@ -124,11 +135,25 @@ export const extractWithGemini = async (
         statement.quote &&
         artifact.content.includes(statement.quote) &&
         statement.type &&
-        ALLOWED_TYPES.includes(statement.type as CommitmentNodeType),
+        ALLOWED_TYPES.includes(statement.type as CommitmentNodeType) &&
+        typeof statement.confidence === 'number' &&
+        Number.isFinite(statement.confidence) &&
+        statement.confidence >= 0 &&
+        statement.confidence <= 1,
     )
   })
 
-  if (validStatements.length < 3) {
+  const uniqueStatements = Array.from(
+    new Map(
+      validStatements.map((statement) => [
+        `${statement.artifactId}:${statement.type}:${statement.quote}`,
+        statement,
+      ]),
+    ).values(),
+  )
+
+  const coveredArtifacts = new Set(uniqueStatements.map((statement) => statement.artifactId))
+  if (uniqueStatements.length < 3 || artifacts.some((artifact) => !coveredArtifacts.has(artifact.id))) {
     throw new Error('Gemini extraction failed source-map validation.')
   }
 
@@ -140,7 +165,15 @@ export const extractWithGemini = async (
   return {
     provider: configured.provider,
     model: MODEL,
-    statementCount: validStatements.length,
+    statementCount: uniqueStatements.length,
+    classifiedStatements: uniqueStatements.map(
+      (statement): AiClassifiedStatement => ({
+        artifactId: statement.artifactId as string,
+        quote: statement.quote as string,
+        type: statement.type as CommitmentNodeType,
+        confidence: statement.confidence as number,
+      }),
+    ),
     rawSummary: rationale,
     durationMs: Date.now() - started,
   }

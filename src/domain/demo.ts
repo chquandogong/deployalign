@@ -6,7 +6,7 @@ export const DEMO_PROJECT = {
   decisionId: 'DEC-014',
 } as const
 
-export const DEMO_ARTIFACTS: SourceArtifact[] = [
+const demoArtifacts: SourceArtifact[] = [
   {
     id: 'SRC-CUSTOMER-01',
     role: 'customer',
@@ -35,3 +35,9 @@ export const DEMO_ARTIFACTS: SourceArtifact[] = [
       'Current Raman evidence covers five named analytes under controlled conditions. Probe working distance is 10 mm. Twelve critical AOIs are mapped; full-area access is unmeasured. The 800 mm aisle width is customer-reported, not surveyed. Recommend supervised Phase 1 and a blind five-analyte test before any pilot gate.',
   },
 ]
+
+// These values are the fixture oracle used to decide whether public-demo input
+// is safe to compile or send to Gemini. Freeze both layers so no consumer can
+// redefine that boundary at runtime. Compile results receive independent clones.
+for (const artifact of demoArtifacts) Object.freeze(artifact)
+export const DEMO_ARTIFACTS = Object.freeze(demoArtifacts) as unknown as SourceArtifact[]
