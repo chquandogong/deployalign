@@ -31,6 +31,18 @@ describe('DeployAlign deterministic compiler', () => {
     }
   })
 
+  it('keeps every node source quote grounded in an input artifact', () => {
+    const result = compileDemo({ approved: true, now: fixedNow })
+
+    for (const node of result.nodes) {
+      for (const reference of node.sources) {
+        const artifact = result.artifacts.find((item) => item.id === reference.artifactId)
+        expect(artifact, reference.artifactId).toBeDefined()
+        expect(artifact?.content).toContain(reference.quote)
+      }
+    }
+  })
+
   it('proposes only the three bounded scope changes', () => {
     const result = compileDemo({ now: fixedNow })
 
@@ -79,6 +91,32 @@ describe('DeployAlign deterministic compiler', () => {
       const changed = target.sections.filter((item) => item.changed)
       expect(changed.length).toBeGreaterThan(0)
       expect(changed.every((item) => item.decisionIds.includes(result.decisionId))).toBe(true)
+    }
+  })
+
+  it('rejects custom artifacts rather than returning ungrounded hard-coded output', () => {
+    const baseline = compileDemo({ now: fixedNow })
+    const custom = baseline.artifacts.map((artifact, index) =>
+      index === 0 ? { ...artifact, content: 'A real customer document must not enter this demo.' } : artifact,
+    )
+
+    expect(() => compileDemo({ artifacts: custom, now: fixedNow })).toThrow(
+      'only compiles the disclosed synthetic Raman fixture',
+    )
+  })
+
+  it('does not leave dangling diagnostic or edge node references after approval', () => {
+    const result = compileDemo({ approved: true, now: fixedNow })
+    const ids = new Set(result.nodes.map((node) => node.id))
+
+    for (const diagnostic of result.diagnostics) {
+      expect(diagnostic.nodeIds.every((id) => ids.has(id))).toBe(true)
+    }
+    for (const edge of result.edges) {
+      if (!edge.to.startsWith('SOW-') && !edge.to.startsWith('TEST-MANIFEST-')) {
+        expect(ids.has(edge.to), edge.to).toBe(true)
+      }
+      expect(ids.has(edge.from), edge.from).toBe(true)
     }
   })
 })

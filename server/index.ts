@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { compileDemo } from '../src/domain/compiler'
+import { compileDemo, isDemoFixture } from '../src/domain/compiler'
 import { DEMO_ARTIFACTS } from '../src/domain/demo'
 import type { ApprovalRequest, CompileRequest, SourceArtifact } from '../src/domain/types'
 import { extractWithGemini } from './gemini'
@@ -13,7 +13,6 @@ const dist = path.join(root, 'dist')
 const rateWindowMs = 10 * 60 * 1_000
 const maxCompilesPerWindow = 6
 const compileAttempts = new Map<string, number[]>()
-let lastAiEvidence: Awaited<ReturnType<typeof extractWithGemini>>
 
 const log = (event: string, details: Record<string, unknown> = {}) => {
   console.log(
@@ -33,7 +32,11 @@ const boundedArtifacts = (request: CompileRequest): SourceArtifact[] => {
   if (artifacts.some((artifact) => artifact.content.length > 8_000)) {
     throw new Error('Each artifact must be 8,000 characters or fewer.')
   }
-  return artifacts.map((artifact) => ({ ...artifact, content: artifact.content.trim() }))
+  const normalized = artifacts.map((artifact) => ({ ...artifact, content: artifact.content.trim() }))
+  if (!isDemoFixture(normalized)) {
+    throw new Error('This public prototype only accepts the disclosed synthetic Raman fixture.')
+  }
+  return normalized
 }
 
 const consumeCompileAllowance = (key: string) => {
@@ -45,6 +48,7 @@ const consumeCompileAllowance = (key: string) => {
 }
 
 app.disable('x-powered-by')
+app.set('trust proxy', 1)
 app.use(express.json({ limit: '64kb' }))
 app.use((_request, response, next) => {
   response.setHeader('X-Content-Type-Options', 'nosniff')
@@ -70,7 +74,6 @@ app.post('/api/compile', async (request, response) => {
     let aiEvidence: Awaited<ReturnType<typeof extractWithGemini>>
     try {
       aiEvidence = await extractWithGemini(artifacts)
-      lastAiEvidence = aiEvidence
     } catch (error) {
       log('gemini_extraction_rejected', {
         reason: error instanceof Error ? error.message : 'unknown',
@@ -99,7 +102,7 @@ app.post('/api/approve', (request, response) => {
     return
   }
 
-  const result = compileDemo({ approved: true, aiEvidence: lastAiEvidence })
+  const result = compileDemo({ approved: true })
   log('patch_approved', {
     decisionId: result.decisionId,
     version: result.version,

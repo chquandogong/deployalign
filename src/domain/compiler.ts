@@ -144,11 +144,7 @@ const approvedNodes = (): CommitmentNode[] => [
     if (node.id === 'COM-006') {
       return {
         ...node,
-        id: 'SCOPE-014',
-        type: 'ScopeClause' as const,
-        label: 'Approved Phase 1 scope',
-        value: 'Five named analytes at 12 mapped critical AOIs with supervised operation.',
-        status: 'APPROVED' as const,
+        status: 'INVALIDATED' as const,
       }
     }
     if (node.id === 'GATE-001') {
@@ -160,6 +156,19 @@ const approvedNodes = (): CommitmentNode[] => [
     }
     return node
   }),
+  {
+    id: 'SCOPE-014',
+    type: 'ScopeClause',
+    label: 'Approved Phase 1 scope',
+    value: 'Five named analytes at 12 mapped critical AOIs with supervised operation.',
+    status: 'APPROVED',
+    confidence: 1,
+    sources: [
+      source('SRC-ENGINEERING-03', 'five named analytes under controlled conditions'),
+      source('SRC-ENGINEERING-03', 'Twelve critical AOIs are mapped'),
+      source('SRC-ENGINEERING-03', 'Recommend supervised Phase 1'),
+    ],
+  },
   {
     id: DEMO_PROJECT.decisionId,
     type: 'Decision',
@@ -401,6 +410,9 @@ export const compileDemo = (options?: {
   aiEvidence?: AiExtractionEvidence
   now?: string
 }): CompileResult => {
+  if (options?.artifacts && !isDemoFixture(options.artifacts)) {
+    throw new Error('This prototype only compiles the disclosed synthetic Raman fixture.')
+  }
   const approved = options?.approved ?? false
   const generatedAt = options?.now ?? new Date().toISOString()
   const provider = options?.aiEvidence?.provider ?? 'deterministic-demo'
@@ -428,6 +440,18 @@ export const compileDemo = (options?: {
     generatedAt,
   }
 }
+
+export const isDemoFixture = (artifacts: SourceArtifact[]) =>
+  artifacts.length === DEMO_ARTIFACTS.length &&
+  artifacts.every((artifact, index) => {
+    const expected = DEMO_ARTIFACTS[index]
+    return Boolean(
+      expected &&
+        artifact.id === expected.id &&
+        artifact.role === expected.role &&
+        artifact.content.trim() === expected.content.trim(),
+    )
+  })
 
 export const unresolvedBlockerCount = (result: CompileResult) =>
   result.diagnostics.filter((item) => item.severity === 'BLOCKER' && !item.resolved).length

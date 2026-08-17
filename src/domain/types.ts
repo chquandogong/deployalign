@@ -22,7 +22,7 @@ export type CommitmentNodeType =
   | 'VerificationTest'
   | 'ScopeClause'
 
-export type NodeStatus = 'SOURCE' | 'AI_DRAFT' | 'APPROVED' | 'OPEN' | 'PASS'
+export type NodeStatus = 'SOURCE' | 'AI_DRAFT' | 'APPROVED' | 'INVALIDATED' | 'OPEN' | 'PASS'
 
 export interface SourceReference {
   artifactId: string
