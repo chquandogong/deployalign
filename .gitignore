@@ -17,6 +17,9 @@ dist-ssr
 coverage
 artifacts\/
 private-evidence/
+output/
+tmp/
+videos/
 
 # Editor directories and files
 .vscode/*

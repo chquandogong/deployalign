@@ -1,6 +1,6 @@
 # Test Plan
 
-> Status: Local automated, production-server, and live-browser QA passed · Date: 2026-08-17 · Owner: QA
+> Status: Local automated, container, deployed-Vertex, and live-browser QA passed · Date: 2026-08-17 · Owner: QA
 
 ## Objectives
 
@@ -28,7 +28,7 @@
 | Strict fixture identity | Add an unknown key or submit a whitespace-normalized lookalike | Compile rejects before any Gemini prompt | Existing Vitest case passes |
 | AI candidate separation | Valid synthetic `AiExtractionEvidence` | Provider retained, three `AI_DRAFT` candidates exposed, deterministic gate remains `HOLD` | Existing Vitest case passes |
 
-Final updated evidence on 2026-08-17 after the response-isolation, strict-fixture, and responsive containment fixes: `pnpm typecheck`, `pnpm lint`, 13/13 tests, and `pnpm build` all exited 0. The build used Vite 8.2.1, processed 1,570 modules, and emitted 38.83 kB CSS and 241.07 kB JS. A direct production server smoke also passed root 200/no-store/CSP, hashed asset 200/one-year immutable caching, valid/tampered/extra-segment/expired token behavior, and missing-secret production startup failure. Retain redacted command output with the release checkpoint.
+Final updated evidence on 2026-08-17 after the response-isolation, strict-fixture, and responsive containment fixes: `pnpm typecheck`, `pnpm lint`, 13/13 tests, and `pnpm build` all exited 0; the production audit reported zero vulnerabilities. The build used Vite 8.2.1, processed 1,570 modules, and emitted 38.83 kB CSS and 241.07 kB JS. A direct production server smoke also passed root 200/no-store/CSP, hashed asset 200/one-year immutable caching, valid/tampered/extra-segment/expired token behavior, and missing-secret production startup failure. Cloud Build built the actual container and Cloud Run revision `deployalign-00003-tlc` deployed successfully. Retain redacted command and cloud evidence with the release checkpoint.
 
 ## API contract tests to add
 
@@ -64,6 +64,8 @@ Final updated evidence on 2026-08-17 after the response-isolation, strict-fixtur
 | Accessibility | Keyboard navigation, focus visibility, headings/labels, contrast, reduced motion |
 
 Completed against the production Express build in the in-app browser on 2026-08-17: desktop and 320/360 px responsive layouts rendered without page-level horizontal overflow; the top bar remained visible while scrolling; source-to-provenance and provenance-to-graph navigation settled below the sticky header; compile and simulated review advanced `BASELINE V1` to `BASELINE V2` and `HOLD` to `CONDITIONAL PILOT`; the impact view showed six rebuilt and three unchanged sections; all three target tabs and both provenance tabs responded; and the browser console reported zero warnings or errors. Public-safe screenshots are retained in `submission-assets/`.
+
+The same core flow was then verified against the public Cloud Run URL. The UI showed `Gemini via Vertex AI`; `gemini-2.5-flash` classified exactly three source statements as separate `AI_DRAFT` candidates; the AI receipt showed `SUCCESS`; and the signed review token preserved that provider/candidate provenance after approval. Redacted logs recorded `compile_completed` at version 1 with six unresolved diagnostics and `patch_approved` at version 2. Official Vertex AI Model Garden Monitoring also showed the `gemini-2.5-flash` row and last-hour model-request/token-count graphs. The approved UI showed one open blocker, 11 typed nodes, three synced targets, six rebuilt sections, and three unchanged sections. These observations verify the deployed synthetic path and model observability evidence, not Gemini ownership of the deterministic graph/gates/targets or production readiness.
 
 ## User-value tests
 
@@ -117,6 +119,6 @@ Archive date, commit (when one exists), exit status, and redacted output. A comm
 - Any receipt attributes work to Gemini when live extraction was skipped or rejected.
 - Review state becomes unconditional `PASS` while DA-004 or DA-006 remains open.
 - Secrets or real customer data enter build/log/screenshots.
-- Google Cloud product use/deployment or live Gemini is claimed without archived API/runtime/deployment evidence.
+- Google Cloud product use/deployment or live Gemini is claimed beyond the archived API/runtime/deployment evidence, or Gemini is credited for deterministic graph/gate/target decisions.
 - Production readiness is claimed without auth, persistence, tenant isolation, monitoring, and rollback.
-- Devpost finalization is attempted without authentic required user, revenue, expense, repository, video, and testing-access evidence.
+- Devpost finalization is attempted before the confirmed 1-user/0-paying/$0 financial disclosures, Moderate learning level, prepared evidence uploads, public video URL, and testing-access links receive final human review—or without assessing the stated real-revenue requirement.

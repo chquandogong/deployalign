@@ -4,18 +4,18 @@
 
 ## Context and boundaries
 
-DeployAlign is a React/TypeScript single-page application served with an Express API. It demonstrates one synthetic project. The process has no database, authentication, queue, durable audit log, or production deployment.
+DeployAlign is a React/TypeScript single-page application served with an Express API. It demonstrates one synthetic project. The public Cloud Run demo has no database, authentication, queue, or durable audit log and is not a customer production system.
 
-External dependencies are the browser, optional Gemini Developer API or Vertex AI, and a future hosting platform. On 2026-08-17, account `chquan17`, active free-trial/billing status, and project `project-55fbcfd2-0ad6-4c99-a25` were verified. Reauthentication is no longer a blocker, but APIs, IAM, Secret Manager, Cloud Run, live model execution, logs, and cost evidence remain unverified external gates.
+External dependencies are the browser, Gemini Developer API or Vertex AI, and Cloud Run. On 2026-08-17, revision `deployalign-00003-tlc` was verified at `https://deployalign-1007800160926.asia-northeast3.run.app` in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`. The deployed service uses Vertex AI model `gemini-2.5-flash`, runtime identity `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`, and a stable Secret Manager HMAC secret.
 
 ## Components and responsibilities
 
 | Component | Responsibility | Current boundary |
 | --- | --- | --- |
-| React UI | Present sources, graph, diagnostics, patch, targets, impact, and receipts | Result-driven responsive UI is implemented; final live-browser visual QA pending |
+| React UI | Present sources, graph, diagnostics, patch, targets, impact, and receipts | Result-driven responsive UI passed local and deployed live-browser QA |
 | `compileClient` | Call compile/review endpoints with a 60-second timeout | Local fallback only for a network `TypeError`, exact fixture, and compatible review state |
 | Express API | Validate inputs, rate-limit compile, issue/verify provenance tokens, expose health/compile/review, serve static build | In-memory, unauthenticated, single-process demo |
-| Gemini adapter | Classify exact source quotes and propose a concise patch rationale | Opt-in; validated classifications remain separate `AI_DRAFT` candidates |
+| Gemini adapter | Classify exact source quotes and propose a concise patch rationale | Opt-in; deployed Vertex path verified with exactly three validated `AI_DRAFT` candidates; never builds the canonical graph/gates/targets |
 | Deterministic compiler | Build graph, diagnostics, patch, targets, impact, FNV-1a32 fingerprints, and receipts | Six `DEC-014`-linked sections rebuild; three unrelated baseline sections are reused within the approved compile; fingerprints detect change, not cryptographic integrity |
 | Unit tests | Protect grounding, strict fixture identity/schema, gates, AI candidates, patch size, response isolation, rebuild behavior, and decision IDs | Thirteen cases; final run passed 13/13 |
 
@@ -39,13 +39,15 @@ flowchart LR
   AP --> DC
 ```
 
+The deployed path uses Cloud Run with unauthenticated access, min instances 0/max 1, 1 CPU/512 MiB, 60-second timeout, and concurrency 20. Max instances 1 preserves the prototype's process-local assumptions; it is not a scalability claim.
+
 ## Trust boundaries and permissions
 
 - Browser to API is an untrusted boundary; there is no user identity or CSRF/session model.
 - API to Gemini is an external data boundary. Only synthetic data should cross it now.
 - Environment credentials are secret and must never enter the client, repository, logs, screenshots, or submission text.
 - The demo review endpoint checks a known version/patch and verifies an HMAC-SHA256 compile token. The token preserves validated AI provenance and expiry, but its base64url payload is signed rather than encrypted. It is not user authorization, organizational approval, or non-repudiation.
-- Devpost, public video, repository sharing, and production deployment are external-write gates requiring human review.
+- Devpost final submission, public video upload, and material deployment changes are external-write gates requiring human review. The repository and public synthetic demo have already been published.
 
 ## State and storage
 
@@ -56,6 +58,7 @@ flowchart LR
 - Token secret: `COMPILE_TOKEN_SECRET` when configured; local development otherwise uses a random per-process secret. Production refuses to start without a value of at least 32 bytes.
 - Generated targets: returned in the response only; not persisted. Each compile builds a fresh baseline target graph. During an approved compile, six Decision-ID-linked sections are replaced with rebuilt objects while three unrelated canonical baseline section objects are reused within that response; one response cannot mutate a later compile.
 - Section values prefixed `fnv1a32-` are 32-bit FNV-1a change fingerprints. They are not cryptographic integrity hashes or a durable ledger.
+- Live verification: `gemini-2.5-flash` classified exactly three source statements, the UI displayed a successful Gemini receipt, and the signed token retained that provider/candidate provenance after the demo review. Redacted logs recorded `compile_completed` (version 1, six unresolved diagnostics) and `patch_approved` (version 2).
 
 ## Failure modes and recovery
 
@@ -84,7 +87,7 @@ These are extension points, not claims that the current prototype supports them.
 
 ## Open architecture decisions
 
-- Exact Google Cloud hosting and model topology.
+- Production-grade Google Cloud hosting, monitoring, and model topology beyond the bounded demo.
 - Region, retention, encryption, and customer-data policy.
 - Identity and approval-signature model.
 - Tenant-scoped persistence and event model.

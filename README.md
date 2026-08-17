@@ -4,6 +4,8 @@
 
 ![DeployAlign synthetic decision compiler](submission-assets/deployalign-hero.png)
 
+**Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) · **Source:** [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign)
+
 DeployAlign is an evidence-gated, typed decision compiler for bespoke robotics deployments. It turns a customer email, a draft sales proposal, and an engineering review into a source-mapped `Deployment Commitment Graph`, applies deterministic domain checks, proposes the smallest reviewable scope patch, and recompiles only the affected deliverable sections after human approval.
 
 The included scenario is synthetic: a sub-fab Raman inspection pilot. It contains no customer records, confidential company data, real revenue, or measured field outcomes.
@@ -49,7 +51,11 @@ flowchart LR
   E --> J["Structured execution receipts"]
 ```
 
-The production container is designed for Cloud Run. JSON logs written to stdout are captured by Cloud Logging. Live Gemini calls are opt-in and protected by a per-instance demo limiter; a public demo must additionally cap Cloud Run at one instance and use project/model quotas. The UI falls back to a clearly marked deterministic demo when credentials are unavailable.
+The public demo is deployed on Google Cloud Run in `asia-northeast3` with Vertex AI enabled and a one-instance ceiling. Live `gemini-2.5-flash` extraction, approval-token provenance, and Cloud Logging receipts were verified on revision `deployalign-00003-tlc`. Gemini contributes only validated exact-quote `AI_DRAFT` candidates and a rationale sidecar; deterministic TypeScript rules remain authoritative for the canonical graph, diagnostics, gate, patch, and target outputs. When model access is unavailable, the UI reports the failure instead of presenting it as a successful live call.
+
+![Approved live Vertex AI compile](submission-assets/deployalign-live-gemini-approved.png)
+
+![Live Vertex AI and deterministic execution receipts](submission-assets/deployalign-live-gemini-receipts.png)
 
 ## Run locally
 
@@ -89,7 +95,7 @@ docker build -t deployalign .
 docker run --rm -p 8080:8080 deployalign
 ```
 
-For Cloud Run, deploy the container or use source deployment, set `ALLOW_LIVE_GEMINI=true`, store a shared `COMPILE_TOKEN_SECRET` of at least 32 bytes in Secret Manager, cap the prototype at one instance, and bind the minimum required service-account permissions. The service intentionally refuses to start in production without that stable secret. Do not claim a production Gemini or Google Cloud deployment until the deployed URL, model call, Cloud Logging entries, billing statement, and observability screenshots have been verified.
+The current public prototype was built by Cloud Build and deployed to Cloud Run with `ALLOW_LIVE_GEMINI=true`, a dedicated runtime service account, and a shared `COMPILE_TOKEN_SECRET` of at least 32 bytes supplied through Secret Manager. It is capped at one instance because the demo request limiter is process-local. The service intentionally refuses to start in production without the stable secret. The live URL, Vertex model call, approval flow, and structured Cloud Logging entries are verified; current billing totals are not claimed because usage reporting can lag.
 
 ## Safety boundaries
 
@@ -105,7 +111,7 @@ For Cloud Run, deploy the container or use source deployment, set `ALLOW_LIVE_GE
 - Product specification: [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md)
 - Architecture: [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md)
 - Test plan: [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md)
-- Submission evidence gaps: [`docs/submission/EVIDENCE_CHECKLIST.md`](docs/submission/EVIDENCE_CHECKLIST.md)
+- Submission evidence status: [`docs/submission/EVIDENCE_CHECKLIST.md`](docs/submission/EVIDENCE_CHECKLIST.md)
 
 ## License
 

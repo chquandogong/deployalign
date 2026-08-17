@@ -6,11 +6,11 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 
 ## Eligibility and project history
 
-- [ ] Entrant legal-age and territory eligibility confirmed.
-- [ ] Team/organization representative authorized if applicable.
-- [ ] Organization has fewer than 25 employees if entering as an organization.
-- [ ] Project creation after the submission period start evidenced.
-- [ ] Reused Vite/React boilerplate and other pre-existing work explained.
+- [x] Entrant confirms adulthood/legal-age, territory eligibility in the Republic of Korea, and agreement to the official rules.
+- [-] Team/organization representative authorization: not applicable; submitter type is Individual.
+- [-] Organization employee-count condition: not applicable to the individual entrant.
+- [x] Project start is `06-01-26` (June 1, 2026), as confirmed by the entrant.
+- [x] Pre-existing resources disclosed as none: no pre-existing code or assets.
 - [ ] Original-work, open-source-license, asset, trademark, music, and privacy review complete.
 
 ## Product and code
@@ -19,34 +19,35 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 - [x] Bundled artifacts and result declare a synthetic demo.
 - [x] Final result-driven UI is integrated and production-build verified.
 - [x] Live-browser desktop and 320/360 px QA completed; public-safe hero, approved-state, and mobile screenshots retained in `submission-assets/`.
-- [ ] Test/typecheck/lint/build logs attached with date and commit.
-- [ ] Working test build or website available free through the judging period.
+- [x] Test/typecheck/lint/build results recorded for 2026-08-17; live-deployment code checkpoint `70587d3` preceded this documentation refresh.
+- [x] Working unauthenticated website available at `https://deployalign-1007800160926.asia-northeast3.run.app`.
 - [x] Local and container testing instructions prepared; the synthetic demo requires no user credential.
 - [x] Repository contains source, setup instructions, safety boundaries, and evidence documentation.
-- [GATE] Public repository publication or private sharing with `testing@devpost.com` and `judging@hacker.fund` approved and completed.
+- [x] Public repository publication completed at `https://github.com/chquandogong/deployalign`.
 
 ## Google Cloud and Gemini
 
 - [x] Code contains an opt-in Gemini Developer API/Vertex AI adapter.
 - [x] Gemini responses are schema and exact-quote validated.
-- [x] Google account `chquan17` signed-in state verified; reauthentication is no longer a blocker.
+- [x] Authorized Google account session verified; reauthentication is no longer a blocker. The account identifier is excluded from public evidence.
 - [x] Active free-trial/billing state and active project `project-55fbcfd2-0ad6-4c99-a25` verified.
-- [x] Private screenshot records zero spend at capture time; it is not public evidence or a complete expense record.
-- [ ] Required Google Cloud product/APIs, region, quota, IAM/service identity, and ADC/runtime credentials configured and evidenced.
-- [ ] Stable ≥32-byte `COMPILE_TOKEN_SECRET` bound from Secret Manager; demo max instances limited to 1.
-- [ ] Application deployed on its intended platform.
-- [ ] At least one Gemini API call in the deployed application verified.
-- [ ] Redacted Gemini execution/API usage record captured.
-- [ ] Dashboard screenshot/log proves AI execution without exposing secrets or source data.
-- [ ] In-app execution receipts are reconciled with provider/API evidence; fixed demo receipts are not used as proof.
-- [GATE] API/IAM/credential/Secret Manager changes and any cloud deployment approved.
+- [x] Private billing capture shows an Aug 1–15 current report of ₩0 and remaining free-trial credits, with an explicit warning that reporting can take hours or more than 24 hours; it is not a final expense/P&L record.
+- [x] Google Cloud project/region, required APIs, IAM/runtime identity, and deployed Vertex access configured and evidenced.
+- [x] Stable ≥32-byte `COMPILE_TOKEN_SECRET` bound from Secret Manager; demo max instances limited to 1.
+- [x] Application deployed to Cloud Run revision `deployalign-00003-tlc` in `asia-northeast3`.
+- [x] At least one `gemini-vertex` call using `gemini-2.5-flash` in the deployed application verified.
+- [x] Redacted Gemini/Cloud Run execution records captured: `compile_completed` version 1 and `patch_approved` version 2.
+- [x] Public-safe UI evidence shows Gemini provider/model, exactly three `AI_DRAFT` classifications, and a `SUCCESS` receipt without exposing secrets.
+- [x] Official Vertex AI Model Garden Monitoring capture shows `gemini-2.5-flash` plus last-hour model-request and token-count graphs.
+- [x] In-app receipt/provenance reconciled with deployed provider/log evidence; deterministic graph/gate/target work is not attributed to Gemini.
+- [x] API/IAM/runtime identity/Secret Manager changes and bounded public demo deployment were approved and completed.
 
-Configuration files and a Dockerfile do not satisfy these evidence items by themselves.
+Configuration files and a Dockerfile do not satisfy these evidence items by themselves; the checked items above are backed by the deployed flow, Cloud Build/deployment record, UI receipts, and redacted logs.
 
 ## Real business and users
 
 - [ ] Real business launch evidenced.
-- [ ] Individual user count and high-level user breakdown evidenced.
+- [x] Entrant confirms 1 actual user and 0 paying users; no identity is published.
 - [ ] User/customer feedback or testimonials captured with informed consent.
 - [ ] Customer relationships/contact details available for confidential verification if requested.
 - [ ] Business model and sustainability explanation grounded in real operation.
@@ -56,32 +57,54 @@ The synthetic facilities owner, sales owner, and engineer are demo roles, not us
 
 ## Revenue and expenses
 
-- [ ] Total arms-length third-party revenue during the hackathon evidenced in USD.
-- [ ] Revenue broken out for May, June, July, and August 2026.
-- [ ] Total expenses documented with descriptions.
-- [ ] Marketing and customer-acquisition spend disclosed, including a truthful zero if records establish zero.
-- [ ] Simple P&L completed from real records.
+- [x] Entrant confirms total arms-length third-party revenue of $0 and related-party revenue of $0.
+- [x] Revenue confirmed by month: May $0, June $0, July $0, August $0.
+- [x] Expenses confirmed: COGS $0, marketing/customer acquisition $0, other $0, total $0.
+- [x] Marketing and customer-acquisition spend disclosed as $0.
+- [x] Simple P&L values and one-page PDF complete: revenue $0, expenses $0, net $0; form upload remains pending.
 - [ ] Stripe/bank/other financial evidence prepared with appropriate redaction.
-- [ ] Corporate ID included if applicable.
-- [GATE] Financial/corporate evidence disclosure approved by the owner.
+- [-] Corporate ID: N/A for the individual entrant.
+- [x] Entrant confirmed and authorized the exact financial/corporate disclosures above for this workflow.
 
 No amount may be invented, estimated as actual, or inferred from lack of evidence.
 
 ## Narrative and category
 
-- [ ] One official category selected by the human entrant.
+- [x] Professional Services Access selected by the entrant.
 - [ ] Category impact supported by actual users/outcomes, not only potential.
-- [x] Local English narrative draft is 679 words, within the 500–1,000 word guidance.
+- [x] Local English narrative draft is 772 words by repository check, within the 500–1,000 word guidance.
 - [ ] Category relevance and every narrative claim reviewed against real evidence by the human entrant.
-- [ ] Human-versus-AI responsibilities are accurate.
-- [ ] Any “AI-native operations” claim maps to deployed execution logs.
-- [ ] No claim says Google Cloud product use/deployment, live Gemini, production, customer, revenue, job creation, or impact without evidence.
-- [ ] Same-model role review is not described as Claude–GPT cross-validation.
+- [x] Human-versus-AI responsibilities are accurate in the prepared copy.
+- [x] “AI-native operations” technical claims map to deployed execution logs and monitoring.
+- [x] Prepared claims distinguish verified GCP/Gemini, exact $0/user facts, and unverified customer/impact/job/production claims.
+- [x] Same-model role review is not described as Claude–GPT cross-validation.
+
+## Exact Additional Info form fields
+
+- [x] One-page A4, unencrypted, entrant-provided/unaudited zero-revenue PDF prepared and visually verified at private `output/pdf/deployalign-zero-revenue-statement.pdf`; form upload pending.
+- [x] Project start date ready in `MM-DD-YY` format: `06-01-26`.
+- [x] Submitter type selected: Individual.
+- [x] Country supplied: Republic of Korea.
+- [x] Category selected: Professional Services Access.
+- [ ] Impact and measurement answers grounded in actual outcomes.
+- [ ] Business-model and sustainability answers grounded in real operation.
+- [x] AI-native/live-AI technical answer can cite the bounded deployed `gemini-vertex` flow while preserving the deterministic compiler boundary.
+- [x] Google Cloud/Gemini technical answer can cite Cloud Run, Cloud Build, Secret Manager, dedicated runtime identity, Vertex AI, and redacted logs.
+- [x] Public repository URL available.
+- [ ] Runtime evidence upload reviewed and attached in the form.
+- [x] Pre-existing resources disclosed: none; no pre-existing code/assets.
+- [x] Total and May/June/July/August 2026 revenue ready: each and total $0.
+- [x] Related-party revenue ready: $0.
+- [x] Expense breakdown ready: COGS $0, marketing $0, other $0, total $0.
+- [x] Users ready: 1 actual user, 0 paying users.
+- [x] Learning level selected: Moderate.
+- [x] One-page A4, unencrypted, entrant-provided/unaudited P&L PDF prepared and visually verified at private `output/pdf/deployalign-profit-and-loss.pdf`; form upload pending.
 
 ## Demo video
 
-- [ ] Final application footage recorded.
-- [ ] Runtime under three minutes.
+- [x] Final local video generated and verified at `videos/edit/final.mp4`.
+- [x] Runtime is 170 seconds, under three minutes.
+- [x] Technical render verified: 1920×1080, 30 fps, H.264 video, AAC audio, 74 captions.
 - [ ] `SYNTHETIC DEMO` and provider/fallback status visible.
 - [ ] Video shows actual device/platform functionality.
 - [ ] Third-party marks/music/assets cleared.
@@ -92,12 +115,14 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 ## Final form and receipt
 
 - [ ] Latest official overview, rules, FAQ, and form fields rechecked.
-- [ ] Repository, app, and video URLs tested from a signed-out browser.
+- [ ] Repository and app URLs are public; re-test them with the final public video URL from a signed-out browser.
+- [x] Authorized Devpost overview draft saved as DeployAlign with the prepared tagline and slug `1030117-deployalign`.
+- [ ] Empty Project Details/Additional Info fields populated only with reviewed facts.
 - [ ] Every form answer reviewed by the human entrant.
-- [GATE] Saving/updating the Devpost draft approved.
+- [x] Overview draft save was approved and completed; future material updates remain gated.
 - [GATE] Final submission approved immediately before the irreversible action.
 - [ ] Devpost confirmation/receipt captured after submission.
 
 ## Current decision
 
-**Not ready for final submission.** The missing deployed-Gemini, Google Cloud usage/deployment, real user, real business, revenue, expense, repository, working-app, and public-video evidence are substantive requirements—not formatting tasks. Account/project reauthentication is no longer a blocker.
+**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, local video, eligibility, category, project history, users, learning level, and exact $0 financial disclosures are complete. Remaining blockers are the public video URL, required evidence/runtime/P&L uploads, Project Details/Additional Info entry and review, the lag-aware cost check, the zero-revenue rules decision, and action-time approval for final submission.

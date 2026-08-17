@@ -8,9 +8,9 @@ Scores are 1 (weak) to 5 (strong) and reflect evidence in the repository, not as
 
 | Item | Score | Basis | Uncertainty | Validation |
 | --- | ---: | --- | --- | --- |
-| User value | 2 | Material risk is plausible | No real user evidence | Five practitioner interviews |
+| User value | 2 | Material risk is plausible; 1 actual user is confirmed | No interview, behavior, or outcome evidence | Five practitioner interviews |
 | Pain frequency | 1 | No incident/frequency data | Very high | Collect recent examples |
-| Technical feasibility | 4 | Typed compiler, API, UI, and tests are implemented | Live model/cloud verification incomplete | Controlled external cloud verification |
+| Technical feasibility | 4 | Typed compiler, API, UI, tests, Cloud Build container, Cloud Run deployment, and live Vertex call are verified | Production controls remain incomplete | Repeatability and operational-load verification |
 | Data access | 2 | Synthetic artifacts are available | Real data permissions unknown | Redacted-data pilot |
 | Cost efficiency | 3 | Deterministic fallback limits model cost | Hosting/review costs unmeasured | Measure per compile and review time |
 | Risk management | 3 | Source links and a human gate are designed | No auth, tenancy, or production controls | Security design and threat test |
@@ -21,7 +21,7 @@ Total: **22/40**. This supports a technical proof of concept, not a validated bu
 
 ## Desirability
 
-The underlying failure mode—commercial scope exceeding engineering evidence—is credible. The code demonstrates it with a synthetic Raman-inspection case. There are no interviews, signups, active users, testimonials, or customer outcomes, so demand remains the largest unknown.
+The underlying failure mode—commercial scope exceeding engineering evidence—is credible. The code demonstrates it with a synthetic Raman-inspection case. The entrant confirms 1 actual user and 0 paying users, but there are no interviews, testimonials, retention signals, or customer outcomes, so demand remains the largest unknown.
 
 ## Technical feasibility
 
@@ -33,12 +33,15 @@ Key limitations:
 - There is no authentication, persistence, tenant isolation, job queue, or durable audit log.
 - A network-failure fallback returns the same `deterministic-demo` provider as a healthy server-side fallback, so the UI cannot currently distinguish those two paths.
 - A one-hour HMAC-signed compile token now carries validated Gemini provider/candidate evidence through review. Without a configured shared `COMPILE_TOKEN_SECRET`, a restart or another instance cannot verify an earlier token.
-- Google account `chquan17`, active free-trial/billing status, and active project `project-55fbcfd2-0ad6-4c99-a25` were verified on 2026-08-17; a private screenshot showed zero spend at capture time. Reauthentication is no longer a blocker.
-- Required APIs, IAM, Secret Manager, Cloud Run deployment, a live Vertex/Gemini call, runtime logs, and cost evidence are still pending external-action gates.
+- The public synthetic demo is deployed to Cloud Run revision `deployalign-00003-tlc` in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`, with a dedicated Vertex-capable runtime service account and stable HMAC secret from Secret Manager.
+- A deployed `gemini-vertex` compile using `gemini-2.5-flash` returned exactly three validated exact-quote `AI_DRAFT` candidates and a successful receipt; provenance persisted through the HMAC-signed review token. Redacted logs recorded `compile_completed` for version 1 and `patch_approved` for version 2.
+- Cloud Run is intentionally constrained to max instances 1 because rate limiting and operational state are process-local. The public URL demonstrates deployment, not production readiness.
+- Official Vertex AI Model Garden Monitoring shows `gemini-2.5-flash` request and token-count graphs in the last-hour window.
+- A private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, with an explicit warning that costs can take hours or more than 24 hours to appear. The entrant confirms the current challenge P&L as $0 revenue, $0 expenses, and $0 net; one-page zero-revenue/P&L PDFs are prepared and visually verified, while form uploads and one final lag-aware cloud-cost recheck remain.
 
 ## Viability
 
-No pricing, acquisition channel, customer willingness to pay, operating cost, or retention evidence exists. A plausible business model would sell faster, auditable deployment reviews, but it remains a hypothesis. No revenue or expense evidence may be inferred from the prototype.
+No pricing, acquisition channel, customer willingness to pay, or retention evidence exists. The entrant confirms 1 user, 0 paying users, $0 revenue in May/June/July/August and total, $0 related-party revenue, and $0 COGS/marketing/other/total expenses. These truthful zeros describe current operation; they do not validate a business model. A plausible model would sell faster, auditable deployment reviews, but it remains a hypothesis.
 
 ## Risk feasibility
 
@@ -46,15 +49,15 @@ The concept is safe as a clearly labeled synthetic decision-support demo. It is 
 
 ## Challenge feasibility
 
-The official challenge requires a real business with real users and revenue, an application using Google Cloud, and at least one Gemini API call in the deployed application. The inspected repository does not provide that evidence. A code demo alone cannot satisfy those requirements.
+The official challenge requires a real business with real users and revenue, an application using Google Cloud, and at least one Gemini API call in the deployed application. DeployAlign evidences the Google Cloud/Gemini portion and reports 1 actual user, but 0 paying users and $0 revenue. The exact disclosures are now available, yet zero revenue may fail the stated real-revenue requirement and no measured category impact exists. A deployed code demo alone cannot satisfy those requirements.
 
 ## Decision gate
 
 - Technical prototype: **continue**.
 - User validation: **run immediately**.
-- Live Google integration: **pending human-approved API/IAM/secret setup, deployment, and verified call evidence**.
+- Live Google integration: **verified for the public synthetic demo**, including request/token monitoring evidence; production-grade alerts, identity, persistence, durable audit, and final cost controls remain open.
 - Production deployment: **hold** until QA, authentication, privacy, and operational controls exist.
-- Devpost final submission: **hold** unless authentic business, user, financial, deployment, and Gemini evidence is assembled.
+- Devpost final submission: **hold** until the public video URL, prepared evidence uploads, completed-form review, lag-aware cost recheck, and action-time approval are complete; Moderate is selected for learning level, and the zero-revenue rule risk still requires explicit review.
 
 ## Stop conditions
 

@@ -31,7 +31,7 @@ Any UI, screenshot, video, or submission text must preserve:
 - `SYNTHETIC DEMO` for the bundled case.
 - The actual provider: `gemini-vertex`, `gemini-api`, or `deterministic-demo`.
 - `HOLD` versus `CONDITIONAL PILOT`; never relabel as unconditional approval.
-- No real users/revenue/production/GCP deployment unless separately verified.
+- No real users, revenue, customer production, or measured impact unless separately verified. The public synthetic GCP deployment and live Vertex call may be claimed only with their bounded evidence and architecture limits.
 - Same-model role review is not actual Claude–GPT cross-validation.
 
 ## Claims and provenance
@@ -58,7 +58,7 @@ The following always require a person immediately before action:
 - Credential, API, IAM, quota, or secret-management changes.
 - Sending non-synthetic data to an external model/service.
 - Production/cloud deployment or infrastructure changes.
-- Repository sharing/publication and public video upload.
+- Repository sharing/publication and public video upload. The repository publication gate is complete for the current public repository; future visibility changes remain gated.
 - Saving/updating a Devpost draft and final submission.
 - Financial, user, customer, corporate, or personal evidence disclosure.
 

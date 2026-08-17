@@ -1,10 +1,10 @@
 # DeployAlign Runbook
 
-> Status: Local prototype operations only · Date: 2026-08-17 · Owner: Engineering
+> Status: Local and public synthetic-demo operations · Date: 2026-08-17 · Owner: Engineering
 
 ## Supported operating mode
 
-This runbook starts and troubleshoots the local synthetic demo. It does not authorize production deployment or use with real customer/safety data.
+This runbook starts and troubleshoots the local synthetic demo and records the verified public Cloud Run configuration. It does not authorize use with real customer/safety data or imply production readiness.
 
 ## Prerequisites
 
@@ -50,17 +50,31 @@ Set `ALLOW_LIVE_GEMINI=true` and `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in the r
 
 Set `ALLOW_LIVE_GEMINI=true`, `GOOGLE_CLOUD_PROJECT`, and optionally `GOOGLE_CLOUD_LOCATION`.
 
-As of 2026-08-17, Google account `chquan17` is signed in, free-trial/billing status is active, and project `project-55fbcfd2-0ad6-4c99-a25` is active. A private screenshot showed zero spend at capture time. Reauthentication is no longer the blocker. Do not treat this prerequisite check as proof that Vertex AI APIs, IAM, Application Default Credentials, service identity, quotas, or runtime access are ready.
+As of 2026-08-17, the public demo is verified in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`, using Vertex AI model `gemini-2.5-flash` and runtime service account `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`.
 
-With human approval, confirm the intended project/region, enable only required APIs, configure least-privilege IAM and runtime credentials, and verify access without exposing tokens. If the approved local path requires ADC and it is not already valid, the typical interactive command is:
+For a separate local path, confirm the intended project/region, use only required APIs and least-privilege credentials, and avoid exposing tokens. If approved local testing requires ADC and it is not already valid, the typical interactive command is:
 
 ```text
 gcloud auth application-default login
 ```
 
-Do not claim success until a compile response reports `gemini-vertex` or `gemini-api` and a redacted provider/API usage record is retained. No successful live call or Google Cloud deployment is documented yet.
+The deployed verification met this bar: a compile reported `gemini-vertex`; the UI showed a successful `gemini-2.5-flash` receipt for three exact-quote statements; and redacted Cloud Run logs retained `compile_completed` and `patch_approved` events. Do not generalize this bounded synthetic evidence to customer production.
 
-For any Cloud Run deployment, store a stable ≥32-byte `COMPILE_TOKEN_SECRET` in Secret Manager and expose it to the service through the approved secret binding. Do not place it in the image, source, command history, screenshots, or submission. Keep this demo at **max instances 1** because rate limiting and operational state are process-local; a shared token secret alone does not make the service production-distributed.
+The current Cloud Run demo stores a stable ≥32-byte `COMPILE_TOKEN_SECRET` in Secret Manager and exposes it through the approved secret binding. Do not place the value in the image, source, command history, screenshots, or submission. Keep this demo at **max instances 1** because rate limiting and operational state are process-local; a shared token secret alone does not make the service production-distributed.
+
+## Verified Cloud Run configuration
+
+- Public URL: `https://deployalign-1007800160926.asia-northeast3.run.app`
+- Revision: `deployalign-00003-tlc`
+- Region: `asia-northeast3`
+- Access: unauthenticated public synthetic demo
+- Compute: 1 CPU, 512 MiB; timeout 60 seconds; concurrency 20
+- Scaling: min instances 0, max instances 1
+- Live model: `ALLOW_LIVE_GEMINI=true`, Vertex AI `gemini-2.5-flash`
+- Runtime identity: `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`
+- Provenance secret: stable Secret Manager binding; record the secret name/version, never the value
+
+Cloud Build successfully built the container that backs this revision. Official Vertex AI Model Garden Monitoring shows the `gemini-2.5-flash` row and last-hour model-request/token-count graphs. The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but the screen explicitly warns that costs can take hours or more than 24 hours to appear. Recheck after the lag window before confirming final expense/P&L.
 
 ## Verification sequence
 
@@ -87,7 +101,7 @@ Check `/api/health`, compile the default synthetic project, review the patch onc
 
 ## Container build
 
-The Dockerfile builds the Vite bundle and runs Express on port 8080. The production Node/tsx server path was smoke-tested, but a Docker engine was unavailable, so no image-build evidence exists. Building/running the image locally is reversible. Pushing an image, provisioning cloud resources, or deploying it is an external production/publication gate and requires human approval.
+The Dockerfile builds the Vite bundle and runs Express on port 8080. The production Node/tsx server path was smoke-tested, and Cloud Build successfully built and deployed the actual container. A local Docker engine is not required for that evidence. Pushing a new image or materially changing cloud resources remains an external action requiring review.
 
 ## Common incidents
 
@@ -105,6 +119,12 @@ The Dockerfile builds the Vite bundle and runs Express on port 8080. The product
 - Check for the 60-second client timeout or a surfaced abort error.
 - Check server logs for model validation rejection.
 - Confirm the UI labels fallback mode.
+
+### Vertex activity or cost evidence needs reconciliation
+
+- Correlate the in-app provider/receipt with redacted `compile_completed` logs and the official Vertex request/token graphs.
+- Treat request/token graphs as execution observability, not a durable application audit trail.
+- Treat the billing report's ₩0 only as the captured interval/value; wait through the displayed reporting-lag window before final expense disclosure.
 
 ### HTTP 429
 
@@ -127,10 +147,10 @@ The Dockerfile builds the Vite bundle and runs Express on port 8080. The product
 
 ## Rollback
 
-- Local code: return to the last known-good commit once a commit exists.
+- Local code: return to the last known-good public commit; the live-deployment code checkpoint was `70587d3` before the documentation refresh.
 - Live model: set `ALLOW_LIVE_GEMINI=false` and restart; verify provider shows deterministic demo.
 - Token secret: rotate only through approved secret management and expect all outstanding review tokens to become invalid.
-- Public deployment: no rollback procedure exists because no deployment is evidenced. Define and test one before deployment.
+- Public deployment: route traffic back to a known-good Cloud Run revision or redeploy a known-good image; this remains to be rehearsed before any real use.
 - External submission/video/repository: do not assume changes are reversible; use a human pre-flight review before publishing.
 
 ## Logging and data hygiene

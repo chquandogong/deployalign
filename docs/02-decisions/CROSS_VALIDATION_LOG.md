@@ -15,7 +15,7 @@ The available review was role-based and performed within the same model family/c
 - Three synthetic deployment artifacts.
 - Optional Gemini extraction with exact-quote validation.
 - Deterministic policy compiler and local review step.
-- Google account/project/billing prerequisites are verified, but no evidenced users, revenue, production deployment, Google Cloud product use, or successful Gemini call exists.
+- Public Cloud Run deployment, Cloud Build, Secret Manager, dedicated runtime identity, and a successful `gemini-vertex` call are verified for the synthetic demo. Entrant-confirmed facts are 1 actual user, 0 paying users, and $0 revenue/expenses; customer production and measured outcomes are not evidenced.
 - Goal of preparing an English Devpost submission without inventing evidence.
 
 ## Reviewer positions
@@ -25,8 +25,8 @@ The available review was role-based and performed within the same model family/c
 | Is the wedge coherent? | Yes; conflict-to-decision is sharper than document generation | Yes; typed graph and stable IDs are testable | Only as a clearly labeled synthetic decision-support demo |
 | Is the architecture appropriate? | Hybrid approach supports trust | Deterministic core is a sound prototype boundary | Fallback and demo approval can mislead unless conspicuous |
 | Is it production-ready? | No; user value is unvalidated | No auth, persistence, tenancy, monitoring, or durable audit | No real data should be accepted |
-| Is it challenge-ready? | Narrative potential exists | Live Gemini/GCP evidence is missing | Real user/revenue requirements are unmet; finalization would overclaim |
-| Best next step | User interviews | Complete live-browser QA, then run a human-approved cloud verification | Evidence audit and human gate before any publication |
+| Is it challenge-ready? | Technical deployment narrative and one actual user exist | Live Cloud/Vertex, exact financial disclosures, prepared PDFs, and Moderate learning level are present | $0 revenue may miss the stated requirement; public URL/uploads/final review remain |
+| Best next step | User interviews and outcome evidence | Preserve deployed/log/video evidence and complete form uploads | Rule review and action-time gates before video upload/final submission |
 
 ## Common conclusions
 
@@ -40,22 +40,22 @@ The available review was role-based and performed within the same model family/c
 
 | Issue | Optimistic view | Adversarial view | Resolution | Further test |
 | --- | --- | --- | --- | --- |
-| AI differentiation | Typed extraction plus impact graph is differentiated | Most shown behavior may be deterministic | Display provider/receipt and verify one real call | Live redacted run and ablation |
-| Category fit | Professional Services Access is plausible | Industrial deployment review may fit weakly | Keep category pending | Validate user/business story |
+| AI differentiation | Typed extraction plus impact graph is differentiated | Most safety-relevant behavior is deterministic | Display verified `gemini-vertex` receipt and clearly separate three `AI_DRAFT` candidates from deterministic outputs | Independent ablation and corpus benchmark |
+| Category fit | Professional Services Access is selected | Industrial deployment review may fit weakly and has no measured access outcome | State selection without claiming impact | Validate user/business story |
 | Submission now | Deadline creates learning value | Requirements are explicit and unmet | Draft locally; no unsupported final submission | Human rules review |
 | Approval UX | Signed provenance prevents compile/review mismatch | There is still no user auth, durable decision record, or signature | Call it a demo review, not organizational approval | Auth workflow design |
 
 ## Facts still requiring independent verification
 
 - Real demand, frequency, and willingness to pay.
-- Actual challenge eligibility and creation dates.
-- Required Google APIs/IAM/Secret Manager setup, Cloud Run deployment, successful deployed Gemini call, runtime logs, and cost evidence.
-- Real users, revenue, expenses, and testimonials.
+- Final cloud cost after the documented billing-report lag; required evidence/P&L uploads; production-grade alerts and access controls. A current-at-capture ₩0 report and entrant-confirmed $0 expenses are retained.
+- User identity/breakdown appropriate for confidential verification, feedback/testimonials, retention, and measured outcomes. Counts are confirmed at 1 user/0 paying.
+- Final rules/form review; learning level is confirmed as Moderate.
 - Independent model critique from Claude or another genuinely separate system.
 
 ## Final recommendation
 
-Continue as a technical proof of concept and run user validation. Keep submission artifacts as drafts until a person confirms that all official-rule evidence is authentic and complete. Do not describe this log as actual Claude–GPT cross-validation.
+Continue as a publicly deployed technical proof of concept and run user validation. The Cloud/Vertex technical gap is closed for the synthetic demo, but keep submission artifacts as drafts until a person supplies and confirms all remaining official-rule evidence. Do not describe this log as actual Claude–GPT cross-validation.
 
 ## Confidence
 

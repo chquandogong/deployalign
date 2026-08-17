@@ -16,7 +16,7 @@ The competition submission is a distribution deadline, not evidence that the pro
 
 The narrow initial persona is an application/deployment engineer who must reconcile a customer request, a commercial promise, and an engineering evidence envelope before approving a bounded pilot.
 
-This persona is inferred. No named or interviewed user is evidenced.
+This persona is inferred. The entrant confirms 1 actual user and 0 paying users, but no named/interviewed user, persona match, or user outcome is evidenced.
 
 ## Strength of pain evidence
 

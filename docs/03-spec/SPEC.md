@@ -1,6 +1,6 @@
 # DeployAlign Specification
 
-> Status: Prototype implemented; final browser/evidence QA pending · Date: 2026-08-17 · Owner: Product and engineering
+> Status: Prototype implemented; local and deployed technical QA passed · Date: 2026-08-17 · Owner: Product and engineering
 
 ## Problem definition
 
@@ -10,7 +10,7 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 
 - Primary: application/deployment engineer.
 - Secondary: solutions sales and customer facilities owner.
-- Current state: personas only; no verified users.
+- Current state: entrant confirms 1 actual user and 0 paying users; target-persona fit, feedback, and outcomes remain unverified.
 
 ## Core scenario
 
@@ -33,7 +33,7 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 - Explicit pre/post review state.
 - Incremental target compilation and stable FNV-1a32 change fingerprints (not integrity hashes).
 - Execution receipts identifying Gemini, rules, human review, and build stages.
-- Optional live Gemini extraction with exact-quote validation.
+- Opt-in live Gemini extraction with exact-quote validation; verified on the public Cloud Run demo with `gemini-2.5-flash` through Vertex AI.
 - Deterministic fallback that is visible to the user.
 
 ### Excluded
@@ -42,7 +42,7 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 - Customer data ingestion, file upload, persistence, or multi-tenancy.
 - Production authorization, electronic signature, safety certification, or contract approval.
 - Invented acceptance thresholds, pricing, schedules, users, or financial data.
-- Automatic publication, deployment, or competition submission.
+- Automatic publication, material deployment changes, or competition submission.
 
 ## Functional requirements
 
@@ -112,19 +112,19 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 - Typecheck, lint, and production build pass.
 - API contract and failure cases receive automated coverage.
 - Visual QA confirms synthetic/fallback/human-gate disclosures.
-- A live Gemini test is archived separately only after human approval for required APIs, IAM, credentials/secrets, deployment, quota, logging, and cost exposure. Account/project reauthentication is already cleared.
+- A deployed live Gemini test is archived with the Cloud Run revision, provider/model receipt, signed-provenance review result, and redacted logs. The verified path produced exactly three `AI_DRAFT` candidates while deterministic TypeScript retained graph/gate/target ownership.
 
 ## Human approval gates
 
 - Using credentials or transmitting any non-synthetic artifact.
-- Enabling external model calls in a shared/public environment.
+- Enabling or materially changing external model calls in a shared/public environment.
 - Treating the local review action as a real decision.
-- Deploying, publishing, sharing a repository/video, or submitting to Devpost.
+- Material cloud changes, public video publication, or submitting to Devpost. The repository and bounded public demo have already passed their respective gates.
 
 ## Open questions
 
 - Which policy rules are configurable by organization?
 - What identity, signature, and audit-retention model is required?
 - How should source documents be redacted and deleted?
-- Which Google Cloud service and region meet user constraints?
+- What production topology, monitoring, and regional/data controls would meet real-user constraints beyond the current Cloud Run `asia-northeast3` demo?
 - What measurable user or business outcome justifies the product?

@@ -1,6 +1,6 @@
 # Alternatives
 
-> Status: Decision support; category and submission posture still need human approval · Date: 2026-08-17 · Owner: Product lead
+> Status: Category selected; final submission posture still needs human approval · Date: 2026-08-17 · Owner: Product lead
 
 ## Decision 1: Product/technical approach
 
@@ -40,7 +40,7 @@ Use **D, the hybrid compiler**, while running A as the demand-validation baselin
 
 ### Residual risk
 
-The current Gemini output is surfaced as separate `AI_DRAFT` candidate nodes and can supply the patch rationale/provider receipt; deterministic graph nodes, diagnostics, gates, and target compilation do not depend on those candidates. The UI must clearly show when the deterministic path is active. A hybrid diagram does not itself prove that AI is running in production.
+The current Gemini output is surfaced as separate `AI_DRAFT` candidate nodes and can supply the patch rationale/provider receipt; deterministic graph nodes, diagnostics, gates, and target compilation do not depend on those candidates. The public Cloud Run demo verified one `gemini-vertex` path with three exact-quote candidates, but that does not prove customer production operation or transfer deterministic decisions to the model. The UI must clearly show when the fallback path is active.
 
 ## Decision 2: Challenge category
 
@@ -53,15 +53,15 @@ The current Gemini output is surfaced as separate `AI_DRAFT` candidate nodes and
 
 ### Recommendation
 
-Treat **Professional Services Access** as a draft preference, not a fact. A human should choose only after matching the category to authentic users and evidence. If that evidence does not exist, do not force a category story.
+The entrant selected **Professional Services Access**. Keep the category story bounded: 1 actual user is confirmed, but there is no measured access outcome, testimonial, or paying user. Do not convert category selection into an impact claim.
 
 ## Decision 3: Submission posture
 
 | Option | Benefit | Cost/risk | Judgment |
 | --- | --- | --- | --- |
-| Invent missing customers/revenue/GCP evidence | Appears complete | False, unverifiable, disqualifying, unethical | Reject |
-| Finalize the current code demo as if eligible | Meets deadline mechanically | Conflicts with explicit business/user/revenue/deployed-Gemini requirements | Reject |
+| Invent customers, outcomes, or nonzero revenue | Appears complete | False, unverifiable, disqualifying, unethical | Reject |
+| Finalize the current deployed demo as if the business evidence were complete | Meets deadline mechanically | Conflicts with explicit business/user/revenue/expense requirements | Reject |
 | Save a truthful draft only | Preserves work without making unsupported claims | Still requires account and external-write approval | Consider with human approval |
 | Pause until authentic evidence exists | Preserves integrity | Likely misses this submission window | Recommended if requirements remain unmet |
 
-External repository sharing, deployment, public video upload, saving a Devpost draft, and final submission are separate human approval gates.
+Public repository and bounded demo deployment gates are complete. Public video upload, saving/updating the Devpost draft, final submission, and material future deployment changes remain separate human approval gates.

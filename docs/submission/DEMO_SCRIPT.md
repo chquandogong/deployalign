@@ -1,14 +1,23 @@
 # Three-Minute Demo Script
 
-> Status: Draft; record only after final UI and evidence verification · Date: 2026-08-17 · Owner: Presenter
+> Status: Final video rendered and locally verified; public upload awaits human approval · Date: 2026-08-17 · Owner: Presenter
 
 ## Recording rules
 
 - Keep the final video under three minutes; judges are not required to watch beyond three minutes.
 - Show the functioning project, not slides alone.
 - Keep `SYNTHETIC DEMO` and the real provider/fallback state visible.
-- Do not say customer, production, revenue, Google Cloud deployment, or live Gemini unless verified evidence exists.
+- It is safe to show the verified public Cloud Run/Vertex demo. Do not say customer production, revenue, real users, or measured impact.
 - Use only licensed/owned visuals and audio. Public upload is a human approval gate.
+
+## Verified render
+
+- Local file: `videos/edit/final.mp4`
+- Duration: 170 seconds
+- Video: 1920×1080, 30 fps, H.264
+- Audio: AAC
+- Captions: 74
+- Publication: not uploaded; public URL and action-time approval remain pending
 
 ## 0:00–0:20 — Problem and disclosure
 
@@ -34,9 +43,7 @@
 
 **Say:**
 
-“The optional Gemini front end can classify quote-grounded statements. Deterministic rules then emit stable diagnostics: unbounded scope, unsupported commitments, a preference promoted to a constraint, an unverified site claim, missing acceptance criteria, and an open critical test. The provider badge tells you whether Gemini actually ran or the deterministic demo fallback is active.”
-
-If a live call has not been verified, say explicitly: “This run uses the deterministic fallback. Google Cloud account/project access is verified, but deployment and live-call evidence are still pending.”
+“This public Cloud Run demo calls Gemini 2.5 Flash through Vertex AI. Gemini returns three schema-validated candidates grounded in exact source quotes. Deterministic TypeScript then builds the canonical graph and emits stable diagnostics: unbounded scope, unsupported commitments, a preference promoted to a constraint, an unverified site claim, missing acceptance criteria, and an open critical test. The provider badge and success receipt make the live path visible.”
 
 ## 1:25–1:55 — Minimum semantic patch
 
@@ -50,7 +57,7 @@ If a live call has not been verified, say explicitly: “This run uses the deter
 
 **Action:** Trigger the local demo review.
 
-**On screen:** Version changes from 1 to 2; gate becomes `CONDITIONAL PILOT`; DA-004 and DA-006 remain open.
+**On screen:** Version changes from 1 to 2; gate becomes `CONDITIONAL PILOT`; one blocker remains open and DA-004/DA-006 still require evidence.
 
 **Say:**
 
@@ -62,17 +69,18 @@ If a live call has not been verified, say explicitly: “This run uses the deter
 
 **Say:**
 
-“One decision ID propagates into three audiences. Six linked sections rebuild, while three unrelated canonical sections from this compile's fresh baseline are reused without reconstruction. Their FNV-1a32 fingerprints show change only; they are not security proofs. Receipts identify extraction, rules, review, and build stages.”
+“One decision ID propagates into three audiences. Six linked sections rebuild, while three unrelated canonical sections from this compile's fresh baseline remain unchanged. Their FNV-1a32 fingerprints show change only; they are not security proofs. Receipts identify Gemini extraction, deterministic rules, review, and build stages.”
 
 ## 2:48–3:00 — Honest close
 
 **Say:**
 
-“DeployAlign’s thesis is simple: compile promises into bounded, evidence-linked decisions before they become field risk. The next step is real user validation and a verified deployed Gemini path; neither is claimed by this synthetic prototype today.”
+“DeployAlign’s thesis is simple: compile promises into bounded, evidence-linked decisions before they become field risk. The Cloud Run and Gemini path is live for this synthetic demo. Real user validation and business evidence are still next; neither is claimed today.”
 
 ## Evidence to capture during recording
 
 - Provider and synthetic badges.
+- `gemini-2.5-flash` success receipt and three grounded `AI_DRAFT` classifications.
 - Exact source quote navigation.
 - Pre/post gate and version.
 - Six diagnostics and two remaining open items.

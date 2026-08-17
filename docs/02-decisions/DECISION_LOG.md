@@ -55,19 +55,19 @@
 - Rationale: The current project lacks required business evidence and any publication may expose data or make unsupported claims.
 - Rejected: Automatically publishing or finalizing because the deadline is close.
 - Residual risk: Missing the competition deadline.
-- Approval: Pending human decision.
-- Revisit when: Ship checklist and evidence checklist have no blockers.
+- Approval: Public repository and synthetic-demo deployment were approved and completed. Public video upload and final Devpost submission remain separate action-time gates.
+- Revisit when: The public video URL, prepared evidence uploads, zero-revenue rule review, and final submission approval are resolved. Learning level is confirmed as Moderate.
 
-## D-006 — No production or Google Cloud claim without proof
+## D-006 — Limit Google Cloud claims to verified evidence
 
 - Date: 2026-08-17
-- Context: A Dockerfile and Vertex-ready adapter demonstrate implementation intent, not deployment or usage. On 2026-08-17, account `chquan17`, active free-trial/billing status, and active project `project-55fbcfd2-0ad6-4c99-a25` were verified; reauthentication is no longer a blocker.
-- Decision: Describe the project as local/synthetic and the live Gemini path as unverified. Treat API enablement, IAM, Secret Manager, Cloud Run deployment, a live call, logs, and cost evidence as separate human-approved gates.
+- Context: Configuration alone was insufficient evidence. On 2026-08-17, Cloud Build, a public Cloud Run deployment, Secret Manager binding, dedicated runtime identity, a live Vertex call, redacted runtime logs, and official Vertex request/token monitoring were subsequently verified.
+- Decision: Describe the project as a public synthetic Google Cloud demo with a verified `gemini-vertex` call, never as a customer production system. Attribute only exact-quote `AI_DRAFT` classification/rationale to Gemini; deterministic TypeScript owns the canonical graph, diagnostics, gates, impact, and targets.
 - Rationale: Keeps external claims aligned with available evidence.
 - Rejected: Inferring Cloud Run, Vertex usage, or continuous AI operation from configuration files.
-- Residual risk: Challenge baseline cannot be met until authentic evidence exists.
-- Approval: A person must review redacted cloud evidence before external use.
-- Revisit when: A verified deployed live call, runtime/API logs, and cost record are archived.
+- Residual risk: Viewers may confuse deployment with production readiness or treat the billing report's capture-time ₩0 as final despite its explicit warning that reporting can take hours or more than 24 hours.
+- Approval: Redacted cloud evidence was reviewed for the public demo. Business/financial claims and final submission remain human-owned.
+- Revisit when: Current cost records and production-grade monitoring/identity/persistence controls are available.
 
 ## D-007 — Preserve compile provenance with a signed token
 
@@ -79,3 +79,24 @@
 - Residual risk: The payload is signed, not encrypted; an ephemeral default secret invalidates tokens after restart or across instances.
 - Approval: Appropriate for the fixed synthetic demo only. Production requires secret management, token minimization, identity, and durable audit design.
 - Revisit when: Multi-instance hosting or non-synthetic data is considered.
+
+## D-008 — Deploy a tightly bounded public Cloud Run demo
+
+- Date: 2026-08-17
+- Context: Judges require a working application and at least one deployed Gemini call, while the prototype has process-local rate/state and no customer-data controls.
+- Decision: Deploy the fixed synthetic fixture to Cloud Run in `asia-northeast3` with unauthenticated access, min instances 0/max 1, 1 CPU/512 MiB, 60-second timeout, concurrency 20, a dedicated runtime service account, and a stable Secret Manager HMAC secret.
+- Evidence: Revision `deployalign-00003-tlc`; public URL `https://deployalign-1007800160926.asia-northeast3.run.app`; deployed `gemini-2.5-flash` call returned three exact-quote `AI_DRAFT` candidates and a successful receipt; redacted logs recorded compile version 1 and approval version 2.
+- Rationale: Satisfies the technical demonstration need while keeping instance/state assumptions explicit.
+- Residual risk: The public unauthenticated endpoint has no durable audit, tenant isolation, or production access control.
+- Approval: Completed for the synthetic demo only; material deployment changes still require review.
+- Revisit when: Real users or non-synthetic data are considered.
+
+## D-009 — Use exact entrant-confirmed submission facts
+
+- Date: 2026-08-17
+- Context: Devpost requires eligibility, category, user, revenue, expense, project-history, and corporate disclosures that must not be inferred from code or screenshots.
+- Decision: Use only these entrant-confirmed values: individual; Republic of Korea; adult/eligible and rules agreed; project start `06-01-26`; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May/June/July/August/total revenue $0; related-party revenue $0; COGS/marketing/other/total expenses $0; no pre-existing code/assets; corporate ID N/A.
+- Rationale: Makes the form completeable without fabricating traction or costs.
+- Residual risk: $0 revenue may not satisfy the stated real-revenue requirement, and one user without outcomes is weak category-impact evidence.
+- Approval: Entrant confirmed these exact facts for the submission workflow.
+- Revisit when: Only if the entrant supplies a corrected record before final submission; learning level is confirmed as Moderate.
