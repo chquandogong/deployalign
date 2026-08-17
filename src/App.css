@@ -1705,7 +1705,10 @@ footer {
 .footer-brand > span { font-size: 9px; }
 .footer-note { display: flex; align-items: center; gap: 8px; color: #99a583; font-family: var(--mono); font-size: 8px; text-align: center; }
 .footer-meta { display: flex; justify-content: flex-end; gap: 8px; }
-.footer-meta span { padding: 4px 7px; border: 1px solid var(--line); font-family: var(--mono); font-size: 7px; text-transform: uppercase; }
+.footer-meta span,
+.footer-meta a { padding: 4px 7px; border: 1px solid var(--line); color: inherit; font-family: var(--mono); font-size: 7px; text-decoration: none; text-transform: uppercase; }
+.footer-meta a:hover,
+.footer-meta a:focus-visible { border-color: var(--muted); color: var(--text-soft); }
 
 .inspector-grid span,
 .source-trace-link,

@@ -868,7 +868,12 @@ function App() {
       <footer>
         <div className="footer-brand"><BrandMark /><strong>DEPLOY//ALIGN</strong><span>Evidence-gated presales compiler</span></div>
         <div className="footer-note"><ShieldCheck size={14} /> Synthetic run · local demo data · no external systems changed</div>
-        <div className="footer-meta"><span>{result.decisionId}</span><span>BASELINE V{result.version}</span><span>{result.provider}</span></div>
+        <div className="footer-meta">
+          <span>{result.decisionId}</span>
+          <span>BASELINE V{result.version}</span>
+          <span>{result.provider}</span>
+          <a href="/third-party-licenses.txt">THIRD-PARTY LICENSES</a>
+        </div>
       </footer>
     </div>
   )
