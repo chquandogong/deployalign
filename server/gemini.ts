@@ -70,6 +70,7 @@ ${ALLOWED_TYPES.join(', ')}
 
 Rules:
 - quote must be an exact substring of the supplied artifact.
+- Return exactly three classifiedStatements: one representative quote from each artifact.
 - Preserve preference, commitment, constraint, site claim, assumption, and evidence as different types.
 - Do not invent measurements, costs, dates, performance, or evidence.
 - Produce a concise patchRationale for the minimum reviewable scope patch from
@@ -100,7 +101,8 @@ export const extractWithGemini = async (
     contents: promptFor(artifacts),
     config: {
       temperature: 0.1,
-      maxOutputTokens: 1_200,
+      maxOutputTokens: 1_600,
+      thinkingConfig: { thinkingBudget: 0 },
       responseMimeType: 'application/json',
       responseJsonSchema: {
         type: 'object',
@@ -109,7 +111,7 @@ export const extractWithGemini = async (
           classifiedStatements: {
             type: 'array',
             minItems: 3,
-            maxItems: 24,
+            maxItems: 3,
             items: {
               type: 'object',
               required: ['artifactId', 'quote', 'type', 'confidence'],
