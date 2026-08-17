@@ -76,6 +76,7 @@ Rules:
 - Produce a concise patchRationale for the minimum reviewable scope patch from
   "all materials / every area / fully autonomous" to
   "five named analytes / 12 mapped critical AOIs / supervised Phase 1".
+- patchRationale must be one sentence and no more than 300 characters.
 - The rationale is a candidate only; deterministic checks and a human approval gate control the result.
 
 Artifacts:
@@ -160,7 +161,7 @@ export const extractWithGemini = async (
   }
 
   const rationale = payload.patchRationale?.trim()
-  if (!rationale || rationale.length > 500) {
+  if (!rationale || rationale.length > 1_000) {
     throw new Error('Gemini patch rationale failed validation.')
   }
 
