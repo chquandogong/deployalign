@@ -1,0 +1,130 @@
+# DeployAlign Specification
+
+> Status: Prototype implemented; final browser/evidence QA pending · Date: 2026-08-17 · Owner: Product and engineering
+
+## Problem definition
+
+Reviewers need to identify when customer objectives, sales commitments, and engineering evidence disagree, then make the smallest traceable scope decision without silently rewriting unrelated content.
+
+## Users
+
+- Primary: application/deployment engineer.
+- Secondary: solutions sales and customer facilities owner.
+- Current state: personas only; no verified users.
+
+## Core scenario
+
+1. Load three clearly labeled synthetic artifacts.
+2. Compile typed nodes, edges, diagnostics, and a proposed patch.
+3. Inspect exact source references and unresolved blockers.
+4. Review the proposed three-field patch.
+5. Trigger the demo review action.
+6. Compare changed, invalidated, rebuilt, and unchanged targets.
+7. Confirm the result remains conditional because critical evidence is open.
+
+## Scope
+
+### Required in the current prototype
+
+- Synthetic source artifact display.
+- Typed commitment graph and source mappings.
+- Deterministic diagnostic rules with stable codes.
+- Bounded semantic patch with a stable decision ID.
+- Explicit pre/post review state.
+- Incremental target compilation and stable FNV-1a32 change fingerprints (not integrity hashes).
+- Execution receipts identifying Gemini, rules, human review, and build stages.
+- Optional live Gemini extraction with exact-quote validation.
+- Deterministic fallback that is visible to the user.
+
+### Excluded
+
+- Real robot, sensor, ERP, CRM, document-system, or identity integration.
+- Customer data ingestion, file upload, persistence, or multi-tenancy.
+- Production authorization, electronic signature, safety certification, or contract approval.
+- Invented acceptance thresholds, pricing, schedules, users, or financial data.
+- Automatic publication, deployment, or competition submission.
+
+## Functional requirements
+
+| ID | Requirement | Priority | Acceptance criterion |
+| --- | --- | --- | --- |
+| FR-01 | Accept only the three disclosed synthetic artifacts | Must | Count, metadata, or content changes return a bounded error before Gemini |
+| FR-02 | Limit each artifact to 8,000 characters | Must | Oversized artifacts are rejected before compile |
+| FR-03 | Represent commitments as typed nodes with source references | Must | Returned nodes match the declared type model |
+| FR-04 | Emit six known diagnostics for the default pre-review sample | Must | Codes DA-001 through DA-006 are present |
+| FR-05 | Ground every diagnostic quote in its source artifact | Must | Unit test verifies substring presence |
+| FR-06 | Keep the initial gate on `HOLD` with four unresolved blockers | Must | Deterministic unit test passes |
+| FR-07 | Propose only analyte, coverage, and operating-mode changes | Must | Patch contains exactly three fields |
+| FR-08 | Require version 1, patch `PATCH-014-A`, and an unexpired signed compile token for server review | Must | Missing, mismatched, expired, or tampered context returns HTTP 409 |
+| FR-09 | Advance to version 2 and `CONDITIONAL PILOT`, not `PASS` | Must | Unit test verifies both states |
+| FR-10 | Rebuild the six `DEC-014`-linked sections and reuse the three unrelated canonical sections from the same compile's fresh baseline | Must | Impact IDs are exact; rebuilt sections are new objects, unrelated sections are not reconstructed, and their FNV-1a32 fingerprints remain stable; no integrity property is claimed |
+| FR-11 | Use decision `DEC-014` across all changed targets | Must | Unit test verifies every changed section |
+| FR-12 | Attempt live Gemini only when explicitly enabled and configured | Must | Default health reports live model disabled |
+| FR-13 | Validate Gemini JSON, allowed types, exact quotes, and rationale length | Must | Invalid extraction is rejected and deterministic result remains available |
+| FR-14 | Show provider, synthetic state, and open gates | Must | Visual QA confirms persistent disclosure |
+| FR-15 | Present customer memo, SOW, and engineering test manifest outputs | Should | Each target shows status, sections, source/decision linkage, and change fingerprints |
+| FR-16 | Keep all node/diagnostic/edge references valid after review | Must | Unit tests find no dangling references |
+| FR-17 | Keep Gemini classifications separate from the deterministic decision graph | Must | Live classifications appear as `AI_DRAFT` candidates and cannot advance the gate |
+| FR-18 | Preserve validated AI provenance through review | Must | HMAC token round-trip retains provider, candidates, rationale, and relevant receipt data |
+
+## Non-functional requirements
+
+- Performance: client API attempt times out after 60 seconds; no production latency SLO is claimed.
+- Scale: one fixed three-artifact fixture, 8,000 characters maximum per artifact, and six compile attempts per ten minutes per IP on one process.
+- Security: JSON body limited to 64 KB; common hardening headers and CSP set; HMAC review token expires after one hour; no user authentication exists.
+- Privacy: use synthetic text only until data handling, retention, model transmission, and consent policies exist.
+- Accessibility: keyboard-operable controls, visible focus, semantic headings/tables, sufficient contrast, and provider/status not encoded by color alone.
+- Reliability: deterministic compile remains available when Gemini is disabled or rejected; UI must not hide the fallback.
+- Maintainability: stable diagnostic codes, typed interfaces, and unit tests protect the core contract.
+
+## Inputs and outputs
+
+Input: three `SourceArtifact` objects with ID, role, title, owner, update time, and text content.
+
+Output: a `CompileResult` containing project/version/gate/provider metadata, artifacts, separate Gemini candidate nodes, deterministic graph nodes/edges, diagnostics, semantic patch, three compiled targets, impact sets, execution receipts, generation time, and an optional signed compile token.
+
+## Edge cases
+
+- Missing body or artifact list.
+- Incorrect artifact count.
+- Empty/whitespace text after trimming.
+- Artifact longer than 8,000 characters.
+- Gemini returns malformed JSON, ungrounded quote, disallowed type, too few valid statements, or invalid rationale.
+- Client API times out, returns non-2xx, or is unavailable.
+- Repeat review request or patch/version mismatch.
+- Missing, malformed, expired, or wrongly signed compile token.
+- Token issued by another instance or before a restart when no shared secret is configured.
+- Rate limit reached.
+- Review token provenance does not match the requested baseline.
+
+## Failure behavior
+
+- Validation failures return HTTP 400 with a bounded message.
+- Rate-limit failures return 429.
+- Review baseline mismatch returns 409.
+- Invalid or expired compile provenance token returns 409.
+- Gemini extraction rejection is logged and deterministic compilation continues.
+- A network `TypeError` returns a local deterministic result only for the exact fixture; HTTP errors and other failures are surfaced. The current provider value does not distinguish client-local from server-side deterministic execution.
+
+## Test acceptance
+
+- All thirteen existing domain tests pass.
+- Typecheck, lint, and production build pass.
+- API contract and failure cases receive automated coverage.
+- Visual QA confirms synthetic/fallback/human-gate disclosures.
+- A live Gemini test is archived separately only after human approval for required APIs, IAM, credentials/secrets, deployment, quota, logging, and cost exposure. Account/project reauthentication is already cleared.
+
+## Human approval gates
+
+- Using credentials or transmitting any non-synthetic artifact.
+- Enabling external model calls in a shared/public environment.
+- Treating the local review action as a real decision.
+- Deploying, publishing, sharing a repository/video, or submitting to Devpost.
+
+## Open questions
+
+- Which policy rules are configurable by organization?
+- What identity, signature, and audit-retention model is required?
+- How should source documents be redacted and deleted?
+- Which Google Cloud service and region meet user constraints?
+- What measurable user or business outcome justifies the product?
