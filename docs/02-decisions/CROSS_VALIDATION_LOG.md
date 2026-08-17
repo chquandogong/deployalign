@@ -25,8 +25,8 @@ The available review was role-based and performed within the same model family/c
 | Is the wedge coherent? | Yes; conflict-to-decision is sharper than document generation | Yes; typed graph and stable IDs are testable | Only as a clearly labeled synthetic decision-support demo |
 | Is the architecture appropriate? | Hybrid approach supports trust | Deterministic core is a sound prototype boundary | Fallback and demo approval can mislead unless conspicuous |
 | Is it production-ready? | No; user value is unvalidated | No auth, persistence, tenancy, monitoring, or durable audit | No real data should be accepted |
-| Is it challenge-ready? | Technical deployment narrative and one actual user exist | Live Cloud/Vertex, exact financial disclosures, prepared PDFs, and Moderate learning level are present | $0 revenue may miss the stated requirement; public URL/uploads/final review remain |
-| Best next step | User interviews and outcome evidence | Preserve deployed/log/video evidence and complete form uploads | Rule review and action-time gates before video upload/final submission |
+| Is it challenge-ready? | Technical deployment narrative, public video, and one actual user exist | Live Cloud/Vertex, exact financial disclosures, prepared PDFs, and Moderate learning level are present | $0 revenue may miss the stated requirement; uploads/form/final review remain |
+| Best next step | User interviews and outcome evidence | Preserve deployed/log/public-video evidence and complete form uploads | Rule review and action-time gate before final submission |
 
 ## Common conclusions
 

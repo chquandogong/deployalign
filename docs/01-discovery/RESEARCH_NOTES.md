@@ -25,7 +25,7 @@ Competition requirements below come from the official Devpost challenge pages re
 | New work | Project must be created after the submission period began; prior boilerplate must be explained | Entrant confirms project start `06-01-26` (June 1, 2026) and no pre-existing code/assets |
 | Repository | Provide a public repository or a private repository shared with `testing@devpost.com` and `judging@hacker.fund` | Public repository available at `https://github.com/chquandogong/deployalign` |
 | Description | Explain how the project meets requirements and its category relevance | Draft exists; truthful compliance story is incomplete |
-| Demo video | Publicly visible YouTube/Vimeo/Youku video, less than three minutes, showing the functioning project | Local 170-second 1080p H.264/AAC render with 74 captions is verified; public upload/URL remains a human gate |
+| Demo video | Publicly visible YouTube/Vimeo/Youku video, less than three minutes, showing the functioning project | Verified public YouTube video at `https://youtu.be/QOPgHHAWOBA`; player 2:50; published Aug 17, 2026 |
 | Financial evidence | Total revenue, monthly revenue, total expenses, and marketing/customer-acquisition spend, including zero spend where applicable | Entrant confirms all required values at $0; one-page zero-revenue and P&L PDFs are prepared/visually verified; form uploads are pending |
 | User evidence | Real user counts/breakdown and consent-aware feedback/testimonials | Entrant confirms 1 actual user and 0 paying users; no feedback/testimonial evidence supplied |
 | Testing access | Working project must be available free for judging through a site, demo, or test build | Public unauthenticated demo available at `https://deployalign-1007800160926.asia-northeast3.run.app` |

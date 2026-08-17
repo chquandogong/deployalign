@@ -31,5 +31,5 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 2. Preserve redacted Cloud Run/Vertex/receipt and official request/token-monitoring evidence; recheck billing after its documented lag before confirming final expense.
 3. Passing test/type/lint/build evidence and visual disclosure review.
 4. Secret, privacy, license, and repository-history review.
-5. Human action-time approval for video publication, draft saving, and final submission; material deployment changes also require review.
+5. Public video and overview-draft gates are complete. Preserve action-time approval for final submission and review any material video/draft/deployment changes.
 6. Receipt and execution-origin disclosure verified so illustrative demo records cannot be presented as production audit evidence.

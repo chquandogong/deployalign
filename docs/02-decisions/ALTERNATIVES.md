@@ -64,4 +64,4 @@ The entrant selected **Professional Services Access**. Keep the category story b
 | Save a truthful draft only | Preserves work without making unsupported claims | Still requires account and external-write approval | Consider with human approval |
 | Pause until authentic evidence exists | Preserves integrity | Likely misses this submission window | Recommended if requirements remain unmet |
 
-Public repository and bounded demo deployment gates are complete. Public video upload, saving/updating the Devpost draft, final submission, and material future deployment changes remain separate human approval gates.
+Public repository, bounded demo deployment, overview-draft save, and public video gates are complete. Future material draft/deployment/video changes and final submission remain separate human approval gates.

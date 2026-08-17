@@ -9,7 +9,7 @@
 - Cloud demo verified: Cloud Run revision `deployalign-00003-tlc` is public at [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`.
 - Live model evidence: a deployed compile returned provider `gemini-vertex`; `gemini-2.5-flash` produced exactly three exact-quote `AI_DRAFT` classifications, and its successful receipt/provenance survived the signed review transition.
 - Entrant facts confirmed: individual entrant in the Republic of Korea; adult/eligible; official rules agreed; project start `06-01-26`; Professional Services Access selected; 1 actual user, 0 paying users; May–August and total revenue $0; related-party revenue $0; COGS, marketing, other, and total expenses $0; no pre-existing code/assets; corporate ID not applicable.
-- Submission blocker: the local 170-second video still needs a public URL; prepared financial/runtime evidence must be uploaded; remaining form fields must be completed/reviewed; and final submission still requires action-time approval. Zero revenue may also limit compliance/competitiveness under the stated real-revenue requirement. Learning level is confirmed as Moderate.
+- Submission blocker: prepared financial/runtime evidence must be uploaded; remaining form fields must be completed/reviewed; and final submission still requires action-time approval. Zero revenue may also limit compliance/competitiveness under the stated real-revenue requirement. Learning level is Moderate, and the public video is verified.
 - Source of truth: the public repository at [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign), deployed service, redacted evidence, and this documentation. The live-deployment code checkpoint was `70587d3` before this documentation refresh.
 
 ## Core goals
@@ -42,14 +42,14 @@
 | Automated and deployed verification | Done for bounded demo | QA | UI integration complete | Test/build/server-smoke, Cloud Build, deployed browser, and log results |
 | Live Gemini verification | Done for the public synthetic demo | Human + Builder | Vertex AI, runtime identity, deployed service | Redacted compile/log/receipt evidence |
 | Public demo deployment | Done | Human + Builder | Passing QA, least-privilege runtime, stable secret | Public Cloud Run URL and revision |
-| Demo video | Final local render verified; publication blocked gate | Human + Media | Action-time upload/IP/privacy review | `videos/edit/final.mp4`; public URL pending |
+| Demo video | Published and verified | Human + Media | Preserve public availability through judging | [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA); player 2:50; published 2026-08-17 |
 | Devpost final submission | Blocked gate | Human | Rules compliance and truthful business evidence | Submission receipt |
 
 ## Resume point
 
 - Live-deployment code checkpoint: `70587d3`; public repository and Cloud Run demo are available.
 - Next safe action: upload the prepared financial/runtime evidence and review the completed Project Details/Additional Info answers.
-- Public video upload and Devpost final submission remain action-time human approval gates.
+- Public video upload was approved and completed. Devpost final submission remains an action-time human approval gate.
 
 ## Decisions and completed external gates
 
@@ -100,7 +100,7 @@ See `../01-discovery/ASSUMPTIONS.md` for validation status.
 
 ## Next actions
 
-1. Obtain action-time approval and publish the verified 170-second demo video; test its public URL signed out.
+1. Add the verified public video URL to Devpost and include it in the final link check.
 2. Upload the prepared zero-revenue/P&L PDFs and reviewed runtime evidence; learning level is ready as Moderate.
 3. Recheck cloud billing after the documented lag window while preserving the entrant-confirmed $0 current accounting.
 4. Populate and review Project Details/Additional Info with the exact confirmed values and no inferred outcomes.

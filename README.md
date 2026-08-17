@@ -4,7 +4,7 @@
 
 ![DeployAlign synthetic decision compiler](submission-assets/deployalign-hero.png)
 
-**Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) · **Source:** [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign)
+**Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) · **Demo video:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) · **Source:** [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign)
 
 DeployAlign is an evidence-gated, typed decision compiler for bespoke robotics deployments. It turns a customer email, a draft sales proposal, and an engineering review into a source-mapped `Deployment Commitment Graph`, applies deterministic domain checks, proposes the smallest reviewable scope patch, and recompiles only the affected deliverable sections after human approval.
 

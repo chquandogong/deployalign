@@ -11,7 +11,7 @@ The authorized Devpost overview draft is saved as project **DeployAlign** with t
 - Category: **Professional Services Access — selected by the entrant; measured category impact remains unproven**
 - Repository URL: **https://github.com/chquandogong/deployalign**
 - Working application URL: **https://deployalign-1007800160926.asia-northeast3.run.app**
-- Demo video URL: **PENDING public upload and action-time human approval**
+- Demo video URL: **https://youtu.be/QOPgHHAWOBA** — verified public, player 2:50, published Aug 17, 2026
 
 ## Short description
 
@@ -102,4 +102,4 @@ The currently inspected Devpost form requires the following fields or uploads. D
 
 ## Submission decision
 
-The repository, working app, container deployment, deployed Gemini evidence, local 170-second video, and all entrant-supplied factual fields are complete. Do not finalize until the video is publicly uploaded, required evidence/runtime/P&L files are attached, Project Details and Additional Info are populated/reviewed, the billing-lag recheck is considered, and the entrant explicitly approves the final action. The final rules review must address whether 1 user, 0 paying users, and $0 revenue satisfy the stated real-business requirement.
+The repository, working app, container deployment, deployed Gemini evidence, public 2:50 video, and all entrant-supplied factual fields are complete. Do not finalize until required evidence/runtime/P&L files are attached, Project Details and Additional Info are populated/reviewed, the billing-lag recheck is considered, and the entrant explicitly approves the final action. The final rules review must address whether 1 user, 0 paying users, and $0 revenue satisfy the stated real-business requirement.

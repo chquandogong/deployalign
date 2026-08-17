@@ -1,6 +1,6 @@
 # Three-Minute Demo Script
 
-> Status: Final video rendered and locally verified; public upload awaits human approval · Date: 2026-08-17 · Owner: Presenter
+> Status: Final video published and verified · Date: 2026-08-17 · Owner: Presenter
 
 ## Recording rules
 
@@ -8,7 +8,7 @@
 - Show the functioning project, not slides alone.
 - Keep `SYNTHETIC DEMO` and the real provider/fallback state visible.
 - It is safe to show the verified public Cloud Run/Vertex demo. Do not say customer production, revenue, real users, or measured impact.
-- Use only licensed/owned visuals and audio. Public upload is a human approval gate.
+- Use only licensed/owned visuals and audio. The public upload gate was approved and completed.
 
 ## Verified render
 
@@ -17,7 +17,8 @@
 - Video: 1920×1080, 30 fps, H.264
 - Audio: AAC
 - Captions: 74
-- Publication: not uploaded; public URL and action-time approval remain pending
+- Publication: [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA), verified player 2:50, published 2026-08-17
+- Custom thumbnail: not set because YouTube phone verification is required; do not claim one
 
 ## 0:00–0:20 — Problem and disclosure
 

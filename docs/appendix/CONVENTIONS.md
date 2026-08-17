@@ -58,7 +58,7 @@ The following always require a person immediately before action:
 - Credential, API, IAM, quota, or secret-management changes.
 - Sending non-synthetic data to an external model/service.
 - Production/cloud deployment or infrastructure changes.
-- Repository sharing/publication and public video upload. The repository publication gate is complete for the current public repository; future visibility changes remain gated.
+- Repository sharing/publication and public video upload. The current repository and video publication gates are complete; future visibility/content changes remain gated.
 - Saving/updating a Devpost draft and final submission.
 - Financial, user, customer, corporate, or personal evidence disclosure.
 

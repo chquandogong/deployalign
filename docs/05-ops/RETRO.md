@@ -35,7 +35,7 @@
 - Final typecheck, lint, 13/13 tests, production build, and direct production-server/token smoke checkpoints passed.
 - Cloud Build successfully built the actual container and Cloud Run revision `deployalign-00003-tlc` deployed it.
 - No actual Claude independent review occurred.
-- The public repository and Cloud Run demo are available. A verified 170-second 1080p H.264/AAC video with 74 captions exists locally; public video upload and Devpost final submission are not completed.
+- The public repository and Cloud Run demo are available. The verified 170-second 1080p H.264/AAC video with 74 captions is public at `https://youtu.be/QOPgHHAWOBA`; Devpost final submission is not completed.
 
 ## Current metrics
 
@@ -58,4 +58,4 @@
 4. Recheck billing after the documented lag window and upload the prepared $0 revenue/P&L evidence.
 5. Design identity, persistence, audit, privacy, and observability only if a real pilot warrants them.
 6. Obtain a genuinely independent model/human review if cross-model validation will be claimed.
-7. Publish the completed video only after action-time approval, populate/review the form, and reassess the $0-revenue requirement before final submission.
+7. Add the verified public video to the form, populate/review remaining fields, and reassess the $0-revenue requirement before final submission.

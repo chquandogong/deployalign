@@ -109,8 +109,9 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 - [ ] Video shows actual device/platform functionality.
 - [ ] Third-party marks/music/assets cleared.
 - [ ] No secrets, PII, account identifiers, or private evidence visible.
-- [GATE] Public YouTube/Vimeo/Youku upload approved.
-- [ ] Public link tested while signed out.
+- [x] Public YouTube upload approved and completed at `https://youtu.be/QOPgHHAWOBA`.
+- [x] Public link verified live with the correct title, 2:50 player duration, and Aug 17, 2026 publication date.
+- [-] Custom thumbnail not set because YouTube phone verification is required; no custom-thumbnail claim is made.
 
 ## Final form and receipt
 
@@ -125,4 +126,4 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 
 ## Current decision
 
-**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, local video, eligibility, category, project history, users, learning level, and exact $0 financial disclosures are complete. Remaining blockers are the public video URL, required evidence/runtime/P&L uploads, Project Details/Additional Info entry and review, the lag-aware cost check, the zero-revenue rules decision, and action-time approval for final submission.
+**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, public video, eligibility, category, project history, users, learning level, and exact $0 financial disclosures are complete. Remaining blockers are required evidence/runtime/P&L uploads, Project Details/Additional Info entry and review, the lag-aware cost check, the zero-revenue rules decision, and action-time approval for final submission.

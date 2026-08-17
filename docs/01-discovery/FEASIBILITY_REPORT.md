@@ -57,7 +57,7 @@ The official challenge requires a real business with real users and revenue, an 
 - User validation: **run immediately**.
 - Live Google integration: **verified for the public synthetic demo**, including request/token monitoring evidence; production-grade alerts, identity, persistence, durable audit, and final cost controls remain open.
 - Production deployment: **hold** until QA, authentication, privacy, and operational controls exist.
-- Devpost final submission: **hold** until the public video URL, prepared evidence uploads, completed-form review, lag-aware cost recheck, and action-time approval are complete; Moderate is selected for learning level, and the zero-revenue rule risk still requires explicit review.
+- Devpost final submission: **hold** until the prepared evidence uploads, completed-form/link review, lag-aware cost recheck, and action-time approval are complete; the public 2:50 video and Moderate learning level are ready, and the zero-revenue rule risk still requires explicit review.
 
 ## Stop conditions
 

@@ -30,8 +30,9 @@
 - Official Vertex AI Model Garden Monitoring shows `gemini-2.5-flash` model-request and token-count activity in the last-hour view.
 - A private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but it explicitly warns that costs can take hours or more than 24 hours to appear. The entrant confirms current challenge revenue and all expense categories at $0; a final lag-aware billing recheck remains prudent.
 - The entrant confirms: individual; Republic of Korea; adult/eligible; official rules agreed; project start `06-01-26`; no pre-existing code/assets; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May, June, July, August, total, and related-party revenue all $0; COGS, marketing, other, and total expenses all $0; corporate ID N/A.
-- A 170-second, 1920×1080, 30 fps H.264/AAC video with 74 captions is verified locally at `videos/edit/final.mp4`; it has not been publicly uploaded.
-- No evidence establishes a real customer, measured outcome, customer production operation, public video URL, or final submission.
+- A 170-second, 1920×1080, 30 fps H.264/AAC video with 74 captions is verified locally and published at `https://youtu.be/QOPgHHAWOBA`; the live player shows 2:50 and a publication date of 2026-08-17.
+- No custom thumbnail is claimed: YouTube phone verification was required and unavailable for this account.
+- No evidence establishes a real customer, measured outcome, customer production operation, or final submission.
 - The cross-review in `CROSS_VALIDATION_LOG.md` is same-model/role-based and is not an actual independent Claude review.
 
 ## Prohibited assumptions

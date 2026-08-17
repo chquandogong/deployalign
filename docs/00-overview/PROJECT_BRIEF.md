@@ -52,7 +52,7 @@ Verified on 2026-08-17 after the response-isolation and strict-fixture fixes: ty
 
 Also verified on 2026-08-17: the public synthetic demo is running at [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) as Cloud Run revision `deployalign-00003-tlc` in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`. It uses the dedicated runtime service account `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`, a stable HMAC secret from Secret Manager, and `gemini-2.5-flash` on Vertex AI. The service is public, min instances 0/max 1, 1 CPU/512 MiB, 60-second timeout, and concurrency 20.
 
-The deployed browser flow and redacted logs evidence a successful `gemini-vertex` compile, three exact-quote `AI_DRAFT` statements, a `SUCCESS` AI receipt, preserved signed provenance through review, `HOLD` → `CONDITIONAL PILOT`, and six rebuilt/three unchanged target sections. Logs include `compile_completed` for version 1 with six unresolved diagnostics and `patch_approved` for version 2. This is a public synthetic demo, not an evidenced customer production system. Separately, the entrant confirms 1 actual user, 0 paying users, $0 total/monthly/related-party revenue, and $0 COGS/marketing/other/total expenses. No customer, testimonial, measured impact, public video URL, or completed Devpost entry is established.
+The deployed browser flow and redacted logs evidence a successful `gemini-vertex` compile, three exact-quote `AI_DRAFT` statements, a `SUCCESS` AI receipt, preserved signed provenance through review, `HOLD` → `CONDITIONAL PILOT`, and six rebuilt/three unchanged target sections. Logs include `compile_completed` for version 1 with six unresolved diagnostics and `patch_approved` for version 2. This is a public synthetic demo, not an evidenced customer production system. Separately, the entrant confirms 1 actual user, 0 paying users, $0 total/monthly/related-party revenue, and $0 COGS/marketing/other/total expenses. The 2:50 public demo video is verified at [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA). No customer, testimonial, measured impact, or completed Devpost entry is established.
 
 Official Vertex AI Model Garden Monitoring evidence shows a `gemini-2.5-flash` row plus model-request and token-count graphs in the last-hour window. A separate private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, alongside an explicit warning that costs can take hours or more than 24 hours to appear. The entrant confirms the current challenge P&L as $0 revenue, $0 expenses, and $0 net; the billing screen still warrants a final lag-aware recheck before evidence upload.
 
@@ -85,7 +85,7 @@ Official Vertex AI Model Garden Monitoring evidence shows a `gemini-2.5-flash` r
 - Real usage, revenue, expenses, and customer evidence meet the official challenge rules.
 - All external publication and submission steps receive human approval.
 
-The deployed Gemini-call criterion is met for the public synthetic demo. Entrant/user/financial fields and Moderate learning level are confirmed, but one user, no paying users, and $0 revenue do not establish business viability or measured category impact; evidence uploads, public video, and final entrant review remain unresolved.
+The deployed Gemini-call criterion and public-video criterion are met for the synthetic demo. Entrant/user/financial fields and Moderate learning level are confirmed, but one user, no paying users, and $0 revenue do not establish business viability or measured category impact; evidence uploads and final entrant review remain unresolved.
 
 ## Non-goals for this prototype
 
@@ -98,7 +98,7 @@ The deployed Gemini-call criterion is met for the public synthetic demo. Entrant
 
 - Approving any real deployment decision or contract language.
 - Uploading source code, evidence, credentials, financial records, or personal data.
-- Publishing the demo video or materially changing the cloud deployment.
+- Materially changing or replacing the published demo video or cloud deployment.
 - Saving or finalizing the Devpost submission.
 
 The local demo button simulates a review boundary; it is not authenticated approval for a real organization.

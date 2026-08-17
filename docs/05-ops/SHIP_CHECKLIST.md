@@ -63,7 +63,7 @@ No item in this section may be checked from code/configuration alone.
 - [-] Corporate ID N/A for the individual entrant.
 - [x] Public repository available at `https://github.com/chquandogong/deployalign`.
 - [x] Working unauthenticated application available free at `https://deployalign-1007800160926.asia-northeast3.run.app`.
-- [ ] Verified 170-second local video exists; public upload and signed-out link check remain.
+- [x] Public 170-second video verified at `https://youtu.be/QOPgHHAWOBA`; live player shows 2:50 and publication date Aug 17, 2026.
 - [x] English narrative checked against 500–1,000 word guidance on the overview page.
 - [ ] All claims map to the evidence checklist.
 
@@ -80,7 +80,7 @@ No item in this section may be checked from code/configuration alone.
 - [x] API/IAM/Secret Manager configuration and demo quota use approved for the current deployment.
 - [x] Public synthetic-demo deployment approved and completed.
 - [x] Public repository publication approved and completed.
-- [ ] Approve public video upload.
+- [x] Public video upload approved and completed.
 - [x] Authorized overview draft save completed; future material updates remain gated.
 - [ ] Approve the final submission after a last rules/evidence review.
 
@@ -94,4 +94,4 @@ No item in this section may be checked from code/configuration alone.
 
 ## Final judgment
 
-**NO-GO for customer production and final submission.** Technical evidence, local video, all entrant-supplied factual fields, Moderate learning level, and the two financial PDFs are verified/prepared. Final submission remains blocked by public video publication, prepared evidence/runtime/P&L uploads, completed-form review, lag-aware cost confirmation, the zero-revenue rules decision, and action-time approval. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.
+**NO-GO for customer production and final submission.** Technical evidence, public video, all entrant-supplied factual fields, Moderate learning level, and the two financial PDFs are verified/prepared. Final submission remains blocked by prepared evidence/runtime/P&L uploads, completed-form review, lag-aware cost confirmation, the zero-revenue rules decision, and action-time approval. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.
