@@ -98,7 +98,7 @@ No such user experiment has been run yet.
 - Confirm review endpoint cannot be described as authenticated.
 - Confirm the signed token is not described as encrypted, confidential, user-bound, or non-repudiable.
 - Verify logs contain bounded metadata, not full source artifacts.
-- Preserve the deployed browser-bundle notice for React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC; keep the OSS form disclosure, Git author identity exposure, and Microsoft Mark voice redistribution as separate human gates.
+- Preserve the deployed browser-bundle notice and exact submitted OSS disclosure; public Git author identity exposure and Microsoft Mark voice redistribution remain accepted residual risks, not cleared legal conclusions.
 - Use only synthetic data until approved privacy controls exist.
 
 ## Regression commands
@@ -121,4 +121,4 @@ Archive date, commit (when one exists), exit status, and redacted output. A comm
 - Secrets or real customer data enter build/log/screenshots.
 - Google Cloud product use/deployment or live Gemini is claimed beyond the archived API/runtime/deployment evidence, or Gemini is credited for deterministic graph/gate/target decisions.
 - Production readiness is claimed without auth, persistence, tenant isolation, monitoring, and rollback.
-- Devpost terms acceptance or Submit is attempted before the saved 4/5 Draft receives final review of the real-revenue issue, approved OSS disclosure, public Git author name/email exposure, Microsoft Mark voice redistribution uncertainty, links/evidence, and action-time approval.
+- Any record implies eligibility or an award merely because Devpost confirmed submission, or omits that terms acceptance and Submit occurred only after explicit user approval.

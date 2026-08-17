@@ -31,12 +31,12 @@
 - The deployed footer links to `/third-party-licenses.txt`; the URL returned HTTP 200 and 3,462 bytes with full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC license texts.
 - Official Vertex AI Model Garden Monitoring shows `gemini-2.5-flash` model-request and token-count activity in the last-hour view.
 - A private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but it explicitly warns that costs can take hours or more than 24 hours to appear. The entrant confirms current challenge revenue and all expense categories at $0; a final lag-aware billing recheck remains prudent.
-- The entrant confirms: individual; Republic of Korea; adult/eligible; official rules agreed; project start `06-01-26`; no entrant-owned pre-existing code/assets; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May, June, July, August, total, and related-party revenue all $0; COGS, marketing, other, and total expenses all $0; corporate ID N/A. The current saved pre-existing-resources response does not yet disclose standard OSS framework/library use; updating it requires entrant approval.
+- The entrant confirms: individual; Republic of Korea; adult/eligible; official rules agreed; project start `06-01-26`; no entrant-owned pre-existing code/assets; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May, June, July, August, total, and related-party revenue all $0; COGS, marketing, other, and total expenses all $0; corporate ID N/A. Additional Info persisted the exact approved OSS disclosure: `No entrant-owned pre-existing code or assets. Built during the hackathon using standard open-source frameworks and libraries (React, React DOM, Vite, Express, @google/genai, and Lucide) under their respective licenses.`
 - A 170-second, 1920×1080, 30 fps H.264/AAC video with 74 captions is verified locally and published at `https://youtu.be/QOPgHHAWOBA`; the live player shows 2:50 and a publication date of 2026-08-17.
-- Public Git history exposes author name/email metadata; entrant acceptance of that exposure is not yet recorded.
-- The public video uses the Microsoft Mark synthesized voice. Its redistribution basis remains uncertain and requires explicit residual-risk acceptance or replacement before final submission.
+- Public Git history exposes author name/email metadata; the entrant accepted that already-public exposure as a residual risk for submission.
+- The public video uses the Microsoft Mark synthesized voice. Its redistribution basis remains uncertain, and the entrant accepted that uncertainty as a residual risk for submission; acceptance is not a legal-rights determination.
 - No custom thumbnail is claimed: YouTube phone verification was required and unavailable for this account.
-- No evidence establishes a real customer, measured outcome, customer production operation, or final submission.
+- Devpost submission is confirmed at [devpost.com/software/test-q0h69v](https://devpost.com/software/test-q0h69v), but no evidence establishes a real customer, measured outcome, customer production operation, eligibility determination, or award.
 - The cross-review in `CROSS_VALIDATION_LOG.md` is same-model/role-based and is not an actual independent Claude review.
 
 ## Prohibited assumptions
@@ -47,4 +47,4 @@ Do not infer or state any of the following without evidence:
 - The Raman numbers describe a validated real-world system.
 - Google Cloud or Gemini has been used successfully in a real customer production workflow. The public synthetic Cloud Run/Vertex demo is separately verified.
 - Any user count, revenue amount, or expense amount beyond the exact entrant-confirmed values above; any conversion, time saving, risk reduction, or category impact.
-- A Devpost project is finally submitted. Eligibility, Project Details, Additional Info, financial PDFs, and runtime evidence are saved at 4/5 Draft, but the OSS disclosure, Git identity exposure, voice-rights residual risk, terms/Submit, and final receipt remain unresolved.
+- A Devpost submission proves eligibility, compliance, business viability, or an award. The entry reached `Submitted`/`5/5 steps done`, but those conclusions remain unsupported.

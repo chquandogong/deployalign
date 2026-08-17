@@ -25,8 +25,8 @@ The available review was role-based and performed within the same model family/c
 | Is the wedge coherent? | Yes; conflict-to-decision is sharper than document generation | Yes; typed graph and stable IDs are testable | Only as a clearly labeled synthetic decision-support demo |
 | Is the architecture appropriate? | Hybrid approach supports trust | Deterministic core is a sound prototype boundary | Fallback and demo approval can mislead unless conspicuous |
 | Is it production-ready? | No; user value is unvalidated | No auth, persistence, tenancy, monitoring, or durable audit | No real data should be accepted |
-| Is it challenge-ready? | Technical deployment narrative, public video, and one actual user exist | Live Cloud/Vertex, exact financial disclosures, saved PDFs/runtime evidence, and Moderate learning level are present | $0 revenue plus unresolved OSS disclosure, Git identity exposure, and voice-rights gates block final submission |
-| Best next step | User interviews and outcome evidence | Preserve deployed/log/public-video and saved-form evidence | Resolve the three human gates, then rule/link/billing review and action-time approval before terms/Submit |
+| Is it challenge-ready? | Technical deployment narrative, public video, and one actual user exist | Devpost submission and the technical/evidence package are confirmed | $0 revenue and limited impact may affect eligibility/competitiveness; submission is not an award |
+| Best next step | User interviews and outcome evidence | Preserve deployed/log/public-video/submission evidence | Monitor public links and preserve accepted Git-identity/voice residual-risk records |
 
 ## Common conclusions
 
@@ -42,7 +42,7 @@ The available review was role-based and performed within the same model family/c
 | --- | --- | --- | --- | --- |
 | AI differentiation | Typed extraction plus impact graph is differentiated | Most safety-relevant behavior is deterministic | Display verified `gemini-vertex` receipt and clearly separate three `AI_DRAFT` candidates from deterministic outputs | Independent ablation and corpus benchmark |
 | Category fit | Professional Services Access is selected | Industrial deployment review may fit weakly and has no measured access outcome | State selection without claiming impact | Validate user/business story |
-| Submission now | Deadline creates learning value | Requirements are explicit and unmet | Draft locally; no unsupported final submission | Human rules review |
+| Submission now | Deadline creates learning value | Requirements may still be unmet despite truthful disclosure | Submitted after explicit approval without inventing evidence | Preserve confirmation; await organizer judgment |
 | Approval UX | Signed provenance prevents compile/review mismatch | There is still no user auth, durable decision record, or signature | Call it a demo review, not organizational approval | Auth workflow design |
 
 ## Facts still requiring independent verification
@@ -55,7 +55,7 @@ The available review was role-based and performed within the same model family/c
 
 ## Final recommendation
 
-Continue as a publicly deployed technical proof of concept and run user validation. The Cloud/Vertex technical gap is closed for the synthetic demo, but keep submission artifacts as drafts until a person supplies and confirms all remaining official-rule evidence. Do not describe this log as actual Claude–GPT cross-validation.
+Continue as a publicly deployed technical proof of concept and run user validation. Devpost submission is confirmed, but $0 revenue, one user, and no measured outcomes remain material risks; do not call the entry eligible, compliant, shortlisted, or awarded without organizer evidence. Do not describe this log as actual Claude–GPT cross-validation.
 
 ## Confidence
 

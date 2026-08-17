@@ -6,7 +6,7 @@
 
 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) · **Demo video:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) · **Source:** [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign)
 
-**Submission status:** Devpost Project Details and Additional Info are saved; finalization is at **4/5 Draft**. The final terms acceptance and Submit action have not been performed. Before submission, the saved pre-existing-resources answer still needs an approved OSS-framework disclosure update, and the entrant must separately resolve public Git author name/email exposure and the residual Microsoft Mark voice redistribution uncertainty.
+**Submission status:** **Submitted — 5/5 steps done** to Build with Gemini XPRIZE on 2026-08-17 after explicit user approval, terms acceptance, and the Submit action. The public entry is [devpost.com/software/test-q0h69v](https://devpost.com/software/test-q0h69v). Submission does not establish eligibility, an award, business viability, or measured impact; public Git author metadata and Microsoft Mark voice redistribution remain accepted residual risks.
 
 DeployAlign is an evidence-gated, typed decision compiler for bespoke robotics deployments. It turns a customer email, a draft sales proposal, and an engineering review into a source-mapped `Deployment Commitment Graph`, applies deterministic domain checks, proposes the smallest reviewable scope patch, and recompiles only the affected deliverable sections after human approval.
 

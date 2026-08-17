@@ -47,7 +47,7 @@ The deployed path uses Cloud Run with unauthenticated access, min instances 0/ma
 - API to Gemini is an external data boundary. Only synthetic data should cross it now.
 - Environment credentials are secret and must never enter the client, repository, logs, screenshots, or submission text.
 - The demo review endpoint checks a known version/patch and verifies an HMAC-SHA256 compile token. The token preserves validated AI provenance and expiry, but its base64url payload is signed rather than encrypted. It is not user authorization, organizational approval, or non-repudiation.
-- Devpost final submission and material video/deployment changes are external-write gates requiring human review. The repository, public synthetic demo, and public video have already been published.
+- Devpost submission and material video/deployment changes are external-write gates requiring human review. The 2026-08-17 submission was explicitly approved and completed; future material edits remain gated.
 
 ## State and storage
 

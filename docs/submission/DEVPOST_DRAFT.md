@@ -1,10 +1,10 @@
-# Devpost Submission Draft — DeployAlign
+# Devpost Submission Record — DeployAlign
 
-> Status: Project Details and Additional Info saved; finalization **4/5 Draft**; terms/Submit not executed · Date: 2026-08-17 · Owner: Human entrant with Codex drafting support
+> Status: **Submitted; 5/5 steps done** · Date: 2026-08-17 · Owner: Human entrant with Codex drafting support
 
-The authorized Devpost draft is saved as project **DeployAlign** with slug `1030117-deployalign`. Project Details, Additional Info, both financial PDFs, and five reviewed runtime-evidence images are saved. Finalization shows **4/5 Draft**; the terms control and Submit action have not been executed, and no submission receipt exists.
+Project **DeployAlign** was submitted to Build with Gemini XPRIZE after explicit user approval, terms acceptance, and the Submit action. After refresh, the management page showed `Submitted` and `5/5 steps done` with a View link to [devpost.com/software/test-q0h69v](https://devpost.com/software/test-q0h69v). The observed banner was `Project submitted! Continue to edit your project until the hackathon deadline: August 17, 2026 at 04:00pm EDT.` Submission does not establish eligibility, compliance, an award, business viability, or measured impact.
 
-## Draft fields
+## Submitted fields
 
 - Project name: **DeployAlign**
 - Tagline: **Compile deployment promises into evidence-linked decisions before they become field risk.**
@@ -12,12 +12,13 @@ The authorized Devpost draft is saved as project **DeployAlign** with slug `1030
 - Repository URL: **https://github.com/chquandogong/deployalign**
 - Working application URL: **https://deployalign-1007800160926.asia-northeast3.run.app**
 - Demo video URL: **https://youtu.be/QOPgHHAWOBA** — verified public, player 2:50, published Aug 17, 2026
+- Public Devpost URL: **https://devpost.com/software/test-q0h69v** — HEAD 200 after submission
 
 ## Short description
 
 DeployAlign is a synthetic proof of concept for reconciling what a customer asks for, what sales promises, and what engineering can currently evidence. It builds a typed commitment graph, flags unsupported scope, proposes the minimum reviewable patch, and shows exactly which customer, sales, and engineering sections would change after a human review.
 
-## Narrative draft
+## Submitted story
 
 ### The problem
 
@@ -53,11 +54,11 @@ If validated with real deployment teams, DeployAlign could help smaller integrat
 
 Next, we would test the synthetic workflow with deployment practitioners, collect consented redacted examples, benchmark classification and diagnostic accuracy, and determine whether reviewers act faster or catch more material conflicts. Only then would we add identity, tenant isolation, durable audit events, configurable policies, and production cloud operations.
 
-## Entrant-confirmed facts and pending uploads
+## Entrant-confirmed facts and submitted evidence
 
 | Field | Truthful current entry |
 | --- | --- |
-| Eligibility/rules | Adult and eligible; official rules agreed |
+| Eligibility/rules | Entrant attests adult/eligible and rules agreed; no organizer eligibility determination is claimed |
 | Project start date (`MM-DD-YY`) | `06-01-26` (June 1, 2026) |
 | Submitter type and country | Individual; Republic of Korea |
 | Category | Professional Services Access — selected |
@@ -70,29 +71,29 @@ Next, we would test the synthetic workflow with deployment practitioners, collec
 | Total expenses, breakdown, COGS, and marketing/customer-acquisition spend | COGS $0; marketing/customer acquisition $0; other $0; total $0 |
 | Current simple P&L | Revenue $0; expenses $0; net $0 |
 | Corporate ID | N/A for the individual entrant |
-| Pre-existing resources | Current saved response: `No pre-existing code or assets.`; update pending entrant approval to distinguish no entrant-owned assets from standard OSS framework/library use |
+| Pre-existing resources | Persisted exactly: `No entrant-owned pre-existing code or assets. Built during the hackathon using standard open-source frameworks and libraries (React, React DOM, Vite, Express, @google/genai, and Lucide) under their respective licenses.` |
 | Revenue-evidence PDF and P&L evidence upload | Saved in Devpost after local visual verification |
 | AI-native operations / live AI | Deployed Vertex extraction is evidenced only for the synthetic demo; business-operation claims are not evidenced |
 | Jobs/economic opportunities beyond founders | Actual jobs/opportunities: none; future opportunity is potential only and not measured |
 
-## Live Additional Info form map
+## Submitted Additional Info form map
 
-The currently inspected Devpost form requires the following fields or uploads. Do not enter placeholders as facts.
+The following records the submitted fields and uploads. Do not reinterpret platform acceptance as organizer verification.
 
 | Form field | Prepared status / evidence source |
 | --- | --- |
 | Revenue-evidence PDF | Saved in Devpost |
-| Project start (`MM-DD-YY`) | Ready: `06-01-26` |
-| Submitter type | Ready: Individual |
-| Country | Ready: Republic of Korea |
-| Category | Ready: Professional Services Access |
-| Impact and measurement answers | Ready only as a bounded early-stage disclosure: 1 user, no measured outcome; do not claim impact |
+| Project start (`MM-DD-YY`) | Persisted: `06-01-26` |
+| Submitter type | Persisted: Individual |
+| Country | Persisted: Republic of Korea |
+| Category | Persisted: Professional Services Access |
+| Impact and measurement answers | Persisted as a bounded early-stage disclosure: 1 user, no measured outcome; no impact claim |
 | Business model and sustainability answers | Ground in 1 user, 0 paying users, $0 revenue/expense, and the hypothetical future model; do not claim viability |
 | AI-native operations and live-AI answers | May cite the bounded deployed Vertex extraction, receipt, and logs; must preserve deterministic TypeScript boundary |
 | Google Cloud and Gemini answers | Cloud Run/Cloud Build/Secret Manager/Vertex facts are verified for the synthetic demo |
 | Public repository | `https://github.com/chquandogong/deployalign` |
 | Runtime evidence upload | Saved as exactly five reviewed files: `cloud-billing-current-zero-lag-warning.png`, `vertex-gemini-observability-metrics.png`, `live-vertex-approved.png`, `live-vertex-receipts.png`, `cloud-run-config.png`; older `cloud-run-live-logs.png` removed |
-| Pre-existing resources | Currently saved exactly as `No pre-existing code or assets.`; accurate OSS-framework disclosure update is pending entrant approval and is not yet saved |
+| Pre-existing resources | Persisted exactly: `No entrant-owned pre-existing code or assets. Built during the hackathon using standard open-source frameworks and libraries (React, React DOM, Vite, Express, @google/genai, and Lucide) under their respective licenses.` |
 | Total and monthly revenue | Ready: May $0; June $0; July $0; August $0; total $0 |
 | Related-party revenue | Ready: $0 |
 | Total expenses, breakdown, COGS, and marketing spend | Ready: COGS $0; marketing $0; other $0; total $0 |
@@ -100,6 +101,6 @@ The currently inspected Devpost form requires the following fields or uploads. D
 | Learning level | Ready: Moderate |
 | P&L evidence upload | Saved in Devpost |
 
-## Submission decision
+## Submission confirmation
 
-The repository, working app, container deployment, deployed Gemini evidence, public 2:50 video, 796-word story, Project Details, Additional Info, financial PDFs, runtime evidence, and all entrant-supplied factual fields are saved. Finalization is 4/5 Draft. Do not accept terms or click Submit until the final link/rules/billing review, OSS-framework disclosure update, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and explicit action-time approval are complete. The final rules review must address whether 1 user, 0 paying users, and $0 revenue satisfy the stated real-business requirement.
+Terms were accepted and Submit was clicked after explicit user approval. Devpost then showed `Submitted`, `5/5 steps done`, `Submitted to Build with Gemini XPRIZE`, the exact confirmation banner above, and the public URL [devpost.com/software/test-q0h69v](https://devpost.com/software/test-q0h69v). Public Git author name/email exposure and Microsoft Mark voice redistribution uncertainty were accepted as residual risks, not resolved as legal/privacy conclusions. One user, 0 paying users, and $0 revenue may still affect eligibility or competitiveness; no eligibility or award claim is made.

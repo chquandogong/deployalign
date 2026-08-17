@@ -1,6 +1,6 @@
 # Prototype Cycle Retro
 
-> Status: Public demo cycle complete; submission decision pending · Date: 2026-08-17 · Owner: Project team
+> Status: Public demo and Devpost submission complete; residual risks documented · Date: 2026-08-17 · Owner: Project team
 
 ## What was done
 
@@ -35,7 +35,7 @@
 - Final typecheck, lint, 13/13 tests, production build, and direct production-server/token smoke checkpoints passed.
 - Cloud Build successfully built the license-compliance commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` and deployed current Cloud Run revision `deployalign-00004-wgb` at 100% traffic; public health and the HTTP 200/3,462-byte license notice were verified.
 - No actual Claude independent review occurred.
-- The public repository and Cloud Run demo are available. The verified 170-second 1080p H.264/AAC video with 74 captions is public at `https://youtu.be/QOPgHHAWOBA`. Project Details, Additional Info, financial PDFs, and five runtime-evidence images are saved; finalization is 4/5 Draft and terms/Submit remain untouched.
+- The public repository and Cloud Run demo are available. The verified 170-second public video is at `https://youtu.be/QOPgHHAWOBA`. Devpost confirmed `Submitted` and `5/5 steps done` at `https://devpost.com/software/test-q0h69v` after explicit approval, exact OSS disclosure, terms acceptance, and Submit. This does not establish eligibility or an award.
 
 ## Current metrics
 
@@ -58,4 +58,4 @@
 4. Recheck billing after the documented lag window and confirm the saved $0 revenue/P&L evidence remains attached.
 5. Design identity, persistence, audit, privacy, and observability only if a real pilot warrants them.
 6. Obtain a genuinely independent model/human review if cross-model validation will be claimed.
-7. Review the saved 4/5 Draft, reassess the $0-revenue requirement, approve the OSS disclosure, accept public Git author name/email exposure, resolve Microsoft Mark voice redistribution uncertainty, and obtain action-time approval before terms/Submit.
+7. Preserve the submission confirmation and exact OSS disclosure; monitor links/billing and keep the accepted Git-identity/Microsoft Mark risks explicit in any future edit.

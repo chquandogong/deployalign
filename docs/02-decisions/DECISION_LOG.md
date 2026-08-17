@@ -54,9 +54,9 @@
 - Decision: Prepare local drafts and evidence checklists; stop before external writes without a final human review.
 - Rationale: The current project lacks required business evidence and any publication may expose data or make unsupported claims.
 - Rejected: Automatically publishing or finalizing because the deadline is close.
-- Residual risk: Missing the competition deadline.
-- Approval: Public repository, synthetic-demo deployment, public video, Project Details, Additional Info, and evidence uploads were approved and saved. Finalization is 4/5 Draft; terms and Submit remain a separate action-time gate.
-- Revisit when: Zero-revenue/billing review and final submission approval are resolved. Learning level is Moderate and the public video is `https://youtu.be/QOPgHHAWOBA`.
+- Residual risk: A truthful submission may still be ineligible or noncompetitive; public identity and narration-rights uncertainty also remain residual risks.
+- Approval: Public repository, synthetic-demo deployment, public video, form/evidence saves, exact OSS disclosure, terms acceptance, and Submit were explicitly approved and completed. Devpost confirmed `Submitted` and `5/5 steps done`.
+- Revisit when: A material post-submission edit is proposed or an organizer eligibility/result notice arrives.
 
 ## D-006 — Limit Google Cloud claims to verified evidence
 
@@ -66,7 +66,7 @@
 - Rationale: Keeps external claims aligned with available evidence.
 - Rejected: Inferring Cloud Run, Vertex usage, or continuous AI operation from configuration files.
 - Residual risk: Viewers may confuse deployment with production readiness or treat the billing report's capture-time ₩0 as final despite its explicit warning that reporting can take hours or more than 24 hours.
-- Approval: Redacted cloud evidence was reviewed for the public demo. Business/financial claims and final submission remain human-owned.
+- Approval: Redacted cloud evidence was reviewed for the public demo. Business/financial claims and any post-submission edits remain human-owned.
 - Revisit when: Current cost records and production-grade monitoring/identity/persistence controls are available.
 
 ## D-007 — Preserve compile provenance with a signed token
@@ -95,19 +95,30 @@
 
 - Date: 2026-08-17
 - Context: Devpost requires eligibility, category, user, revenue, expense, project-history, and corporate disclosures that must not be inferred from code or screenshots.
-- Decision: Use only these entrant-confirmed values: individual; Republic of Korea; adult/eligible and rules agreed; project start `06-01-26`; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May/June/July/August/total revenue $0; related-party revenue $0; COGS/marketing/other/total expenses $0; no entrant-owned pre-existing code/assets; corporate ID N/A. Standard OSS framework/library use must be disclosed separately.
+- Decision: Use only these entrant-confirmed values: individual; Republic of Korea; adult/eligible and rules agreed; project start `06-01-26`; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May/June/July/August/total revenue $0; related-party revenue $0; COGS/marketing/other/total expenses $0; no entrant-owned pre-existing code/assets; corporate ID N/A. Additional Info persisted the approved standard-OSS disclosure naming React, React DOM, Vite, Express, `@google/genai`, and Lucide.
 - Rationale: Makes the form completeable without fabricating traction or costs.
 - Residual risk: $0 revenue may not satisfy the stated real-revenue requirement, and one user without outcomes is weak category-impact evidence.
 - Approval: Entrant confirmed these exact facts for the submission workflow.
-- Revisit when: The entrant approves the pending OSS-framework disclosure update or supplies another corrected record before final submission; learning level is confirmed as Moderate.
+- Revisit when: The entrant supplies a corrected record during the edit window; learning level remains Moderate.
 
-## D-010 — Deploy browser-bundle license notices while preserving residual human gates
+## D-010 — Deploy browser-bundle license notices while documenting residual risks
 
 - Date: 2026-08-17
-- Context: The public browser bundle distributes third-party code, while the saved Devpost pre-existing-resources response does not distinguish entrant-owned assets from standard OSS dependencies.
-- Decision: Publish the full applicable browser-bundle license texts and expose them from the app footer, but do not alter the Devpost response or accept residual privacy/voice-rights risks without entrant approval.
+- Context: The public browser bundle distributes third-party code, and the original saved Devpost response did not distinguish entrant-owned assets from standard OSS dependencies.
+- Decision: Publish the full applicable browser-bundle license texts, expose them from the app footer, and persist the exact approved OSS disclosure before submission.
 - Evidence: Commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` deployed as revision `deployalign-00004-wgb`; `/third-party-licenses.txt` returned HTTP 200 and 3,462 bytes with React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts; `/api/health` returned the expected live configuration fields.
 - Rationale: Meets the browser-bundle notice obligation without treating software-license publication as approval of unrelated form, identity, or narration-rights decisions.
-- Residual risk: Entrant approval is still missing for the OSS disclosure update and public Git author name/email exposure; Microsoft Mark voice redistribution remains uncertain.
-- Approval: License-file publication and deployment are complete. The three residual human gates and final Devpost terms/Submit remain unapproved.
-- Revisit when: Each residual gate has an entrant decision immediately before final submission.
+- Residual risk: Public Git author name/email exposure and Microsoft Mark voice redistribution remain accepted uncertainties; acceptance is not a legal-rights determination.
+- Approval: License publication and the OSS disclosure are complete. The entrant accepted the two remaining residual risks for submission.
+- Revisit when: A post-submission edit, takedown, or narration replacement is considered.
+
+## D-011 — Submit the truthful Devpost entry after explicit approval
+
+- Date: 2026-08-17
+- Context: The draft, exact disclosures, evidence, public links, and residual risks were reviewed at the action-time gate.
+- Decision: Check the terms control and click Submit only after explicit user approval, preserving the truthful $0 revenue/expense, one-user, no-impact, OSS, privacy, and audio caveats.
+- Evidence: Devpost displayed `Submitted` and `5/5 steps done` after refresh, with a View link to `https://devpost.com/software/test-q0h69v`; the banner read `Project submitted! Continue to edit your project until the hackathon deadline: August 17, 2026 at 04:00pm EDT.` The sidebar said `Submitted to Build with Gemini XPRIZE`.
+- Rationale: Records the completed external action without converting platform acceptance into an eligibility or award claim.
+- Residual risk: Organizers may determine the entry ineligible or noncompetitive; billing lag, public Git identity exposure, and Microsoft Mark redistribution uncertainty remain documented.
+- Approval: Terms acceptance and Submit were explicitly approved immediately before execution.
+- Revisit when: The entrant requests a material edit before the deadline or receives an official result.

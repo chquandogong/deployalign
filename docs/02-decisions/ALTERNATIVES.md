@@ -1,6 +1,6 @@
 # Alternatives
 
-> Status: Category selected; final submission posture still needs human approval · Date: 2026-08-17 · Owner: Product lead
+> Status: Category selected; submission completed with residual risks documented · Date: 2026-08-17 · Owner: Product lead
 
 ## Decision 1: Product/technical approach
 
@@ -61,7 +61,7 @@ The entrant selected **Professional Services Access**. Keep the category story b
 | --- | --- | --- | --- |
 | Invent customers, outcomes, or nonzero revenue | Appears complete | False, unverifiable, disqualifying, unethical | Reject |
 | Finalize the current deployed demo as if the business evidence were complete | Meets deadline mechanically | Conflicts with explicit business/user/revenue/expense requirements | Reject |
-| Save a truthful draft only | Preserves work without making unsupported claims | Final action still requires a separate approval | Current state: 4/5 Draft saved with Project Details, Additional Info, and evidence uploads |
-| Pause until authentic evidence exists | Preserves integrity | Likely misses this submission window | Recommended if requirements remain unmet |
+| Submit the truthful record after explicit approval | Meets the deadline without inventing traction | Eligibility/competitiveness and accepted rights/privacy risks remain | Selected; Devpost confirmed `Submitted` and `5/5 steps done` |
+| Pause until authentic evidence exists | Preserves integrity | Misses the submission window | Not selected; retained as the conservative alternative |
 
-Public repository, bounded demo deployment, overview-draft save, and public video publication are complete. OSS disclosure approval, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, future material changes, and final submission remain separate human gates.
+Public repository, bounded demo deployment, public video, exact OSS disclosure, terms acceptance, and final submission were explicitly approved and completed. Public Git author name/email exposure and Microsoft Mark voice redistribution uncertainty were accepted as residual risks; future material edits remain a separate human gate. Submission does not establish eligibility or an award.

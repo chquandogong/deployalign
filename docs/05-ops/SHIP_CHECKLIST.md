@@ -1,6 +1,6 @@
 # Ship Checklist
 
-> Status: **NO-GO for production or final Devpost submission** · Date: 2026-08-17 · Owner: Release owner
+> Status: **Devpost submitted; NO-GO for customer production** · Date: 2026-08-17 · Owner: Release owner
 
 Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable to the bounded prototype.
 
@@ -48,9 +48,9 @@ No item in this section may be checked from code/configuration alone.
 - [x] Signed compile-to-review provider/evidence provenance mechanism passed direct server token smoke.
 - [ ] Secret scan completed.
 - [x] Production dependency audit completed with zero vulnerabilities; deployed notice includes full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts.
-- [ ] OSS-framework Devpost disclosure update approved and saved.
-- [ ] Microsoft Mark voice redistribution uncertainty accepted or narration replaced.
-- [ ] Public Git author name/email exposure accepted by the entrant.
+- [x] Exact OSS-framework Devpost disclosure approved and saved.
+- [x] Microsoft Mark voice redistribution uncertainty accepted as a residual risk for submission; not legally resolved.
+- [x] Public Git author name/email exposure accepted by the entrant as a residual risk.
 - [x] Retained cloud logs and screenshots are redacted/public-safe; continue reviewing new captures.
 - [ ] Rollback procedure defined and tested for the selected host.
 - [x] Container image build verified through Cloud Build and deployed successfully.
@@ -58,7 +58,7 @@ No item in this section may be checked from code/configuration alone.
 ## Challenge evidence
 
 - [x] Adult/territory eligibility, individual status, Republic of Korea, and official-rules agreement confirmed by the entrant.
-- [x] Project start `06-01-26` and no entrant-owned pre-existing code/assets confirmed; saved OSS disclosure update remains pending approval.
+- [x] Project start `06-01-26`, no entrant-owned pre-existing assets, and exact standard-OSS disclosure persisted.
 - [x] Professional Services Access selected; measured category-impact support remains absent.
 - [x] User counts confirmed at 1 actual user and 0 paying users; consent-aware feedback remains absent.
 - [x] Revenue disclosed by month and total: May/June/July/August/total $0; related-party revenue $0.
@@ -84,10 +84,10 @@ No item in this section may be checked from code/configuration alone.
 - [x] Public synthetic-demo deployment approved and completed.
 - [x] Public repository publication approved and completed.
 - [x] Public video upload approved and completed.
-- [x] Project Details, Additional Info, revenue/P&L PDFs, and five runtime-evidence files saved; finalization is 4/5 Draft.
-- [x] Terms acceptance and Submit have not been executed.
-- [ ] Approve the OSS-framework disclosure update, public Git identity exposure, and Microsoft Mark voice residual risk.
-- [ ] Approve the final submission after a last rules/evidence review.
+- [x] Project Details, Additional Info, revenue/P&L PDFs, five runtime-evidence files, and exact OSS disclosure saved.
+- [x] Terms accepted and Submit clicked after explicit user approval.
+- [x] Refreshed management page showed `Submitted` and `5/5 steps done`; public View link verified.
+- [x] Confirmation banner captured exactly; future material edits require new approval.
 
 ## Rollback and monitoring
 
@@ -99,4 +99,4 @@ No item in this section may be checked from code/configuration alone.
 
 ## Final judgment
 
-**NO-GO for customer production and final submission.** Technical evidence, public video, all entrant-supplied factual fields, Moderate learning level, saved 796-word story, both financial PDFs, and five runtime-evidence images are complete in the 4/5 Draft. Final submission remains blocked by final link/rules/billing review, the zero-revenue decision, OSS-framework disclosure approval, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and action-time approval before terms/Submit. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.
+**SUBMITTED to Devpost; NO-GO for customer production.** The entry reached `Submitted` and `5/5 steps done` after explicit approval. Zero revenue, one user, limited impact, billing lag, and accepted Git-identity/Microsoft Mark residual risks remain; submission is not evidence of eligibility or an award. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.

@@ -1,6 +1,6 @@
 # Devpost Evidence Checklist
 
-> Status: Material blockers open · Date: 2026-08-17 · Owner: Human entrant
+> Status: Devpost submitted; evidence and residual risks recorded · Date: 2026-08-17 · Owner: Human entrant
 
 Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a person immediately before the external action.
 
@@ -10,9 +10,8 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 - [-] Team/organization representative authorization: not applicable; submitter type is Individual.
 - [-] Organization employee-count condition: not applicable to the individual entrant.
 - [x] Project start is `06-01-26` (June 1, 2026), as confirmed by the entrant.
-- [x] Current pre-existing response saved exactly as `No pre-existing code or assets.`
-- [GATE] Entrant approval required to update that response with standard OSS framework/library use before final submission.
-- [ ] Original-work, open-source-license, asset, trademark, music, and privacy review complete.
+- [x] Additional Info persisted exactly: `No entrant-owned pre-existing code or assets. Built during the hackathon using standard open-source frameworks and libraries (React, React DOM, Vite, Express, @google/genai, and Lucide) under their respective licenses.`
+- [x] Deployed browser-bundle license notice verified; Git author exposure and Microsoft Mark voice redistribution remain accepted residual risks, not cleared legal conclusions.
 
 ## Product and code
 
@@ -94,7 +93,7 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 - [x] Google Cloud/Gemini technical answer can cite Cloud Run, Cloud Build, Secret Manager, dedicated runtime identity, Vertex AI, and redacted logs.
 - [x] Public repository URL available.
 - [x] Runtime evidence saved as exactly five reviewed files: `cloud-billing-current-zero-lag-warning.png`, `vertex-gemini-observability-metrics.png`, `live-vertex-approved.png`, `live-vertex-receipts.png`, and `cloud-run-config.png`; older `cloud-run-live-logs.png` is not attached.
-- [x] Current pre-existing response saved exactly as `No pre-existing code or assets.`; approved OSS disclosure update remains pending.
+- [x] Exact approved OSS disclosure persisted before submission, naming React, React DOM, Vite, Express, `@google/genai`, and Lucide.
 - [x] Total and May/June/July/August 2026 revenue ready: each and total $0.
 - [x] Related-party revenue ready: $0.
 - [x] Expense breakdown ready: COGS $0, marketing $0, other $0, total $0.
@@ -109,7 +108,7 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 - [x] Technical render verified: 1920×1080, 30 fps, H.264 video, AAC audio, 74 captions.
 - [ ] `SYNTHETIC DEMO` and provider/fallback status visible.
 - [ ] Video shows actual device/platform functionality.
-- [ ] Third-party marks/music/assets cleared.
+- [x] No external images or music identified; Microsoft Mark voice redistribution uncertainty accepted as a residual risk for submission.
 - [ ] No secrets, PII, account identifiers, or private evidence visible.
 - [x] Public YouTube upload approved and completed at `https://youtu.be/QOPgHHAWOBA`.
 - [x] Public link verified live with the correct title, 2:50 player duration, and Aug 17, 2026 publication date.
@@ -117,19 +116,19 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 
 ## Final form and receipt
 
-- [ ] Latest official overview, rules, FAQ, and form fields rechecked.
-- [ ] Repository and app URLs are public; re-test them with the final public video URL from a signed-out browser.
-- [x] Authorized Devpost overview draft saved as DeployAlign with the prepared tagline and slug `1030117-deployalign`.
+- [x] Action-time form/risk review and explicit submission approval recorded; platform submission is not an eligibility determination.
+- [x] Public Devpost HEAD returned 200 and Cloud Run health returned 200 with `liveGemini=true` at `2026-08-17T19:19:58+09:00`.
+- [x] Devpost entry submitted as DeployAlign; public URL is `https://devpost.com/software/test-q0h69v`.
 - [x] Project Details and Additional Info saved with reviewed facts.
-- [ ] Every form answer reviewed by the human entrant.
+- [x] Final form state and residual risks reviewed/approved by the human entrant at the submission gate.
 - [x] Overview, Project Details, Additional Info, financial PDFs, and runtime evidence were saved with approval.
-- [x] Finalization currently shows 4/5 Draft; terms acceptance and Submit remain unexecuted.
-- [GATE] Entrant approves and saves the OSS-framework disclosure update.
-- [GATE] Entrant accepts public Git author name/email exposure.
-- [GATE] Entrant accepts the Microsoft Mark redistribution residual risk or replaces the narration.
-- [GATE] Final submission approved immediately before the irreversible action.
-- [ ] Devpost confirmation/receipt captured after submission.
+- [x] Additional Info exact OSS disclosure saved before submission.
+- [x] Entrant accepted public Git author name/email exposure as a residual risk.
+- [x] Entrant accepted Microsoft Mark redistribution uncertainty as a residual risk; no legal-rights conclusion is claimed.
+- [x] Terms acceptance and Submit explicitly approved immediately before execution.
+- [x] Refreshed management page showed `Submitted` and `5/5 steps done`; sidebar showed `Submitted to Build with Gemini XPRIZE`.
+- [x] Confirmation captured: `Project submitted! Continue to edit your project until the hackathon deadline: August 17, 2026 at 04:00pm EDT.`
 
 ## Current decision
 
-**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, public video, 796-word story, eligibility, category, project history, users, learning level, exact $0 financial disclosures, Project Details, Additional Info, PDFs, and five runtime-evidence images are saved. Finalization is 4/5 Draft. Remaining gates are final link/rules/billing review, the zero-revenue decision, OSS-framework disclosure approval, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and action-time approval before terms acceptance and Submit.
+**Submitted; 5/5 steps done.** The public entry is `https://devpost.com/software/test-q0h69v`. Exact $0 financial and one-user disclosures, the 796-word story, evidence uploads, and OSS disclosure were preserved. Zero revenue, limited impact, billing lag, public Git identity exposure, and Microsoft Mark voice redistribution remain evaluation or accepted residual risks. Submission does not establish eligibility, compliance, an award, or production readiness.

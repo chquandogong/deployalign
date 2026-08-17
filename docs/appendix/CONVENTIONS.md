@@ -58,8 +58,8 @@ The following always require a person immediately before action:
 - Credential, API, IAM, quota, or secret-management changes.
 - Sending non-synthetic data to an external model/service.
 - Production/cloud deployment or infrastructure changes.
-- Repository sharing/publication and public video upload. Publication is complete, but public Git author name/email exposure acceptance and Microsoft Mark voice redistribution resolution remain gated alongside future visibility/content changes.
-- Saving/updating a Devpost draft and final submission. Current Project Details/Additional Info saves are complete; terms acceptance and Submit remain gated.
+- Repository sharing/publication and public video upload. Publication is complete; the entrant accepted public Git author name/email exposure and Microsoft Mark redistribution uncertainty as residual risks. Future visibility/content changes remain gated.
+- Saving/updating and submitting a Devpost entry. The 2026-08-17 terms acceptance and Submit action were explicitly approved and completed; future material edits remain gated.
 - Financial, user, customer, corporate, or personal evidence disclosure.
 
 Deadline pressure does not remove a gate.

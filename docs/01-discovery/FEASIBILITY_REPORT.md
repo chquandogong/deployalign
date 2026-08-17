@@ -58,7 +58,7 @@ The official challenge requires a real business with real users and revenue, an 
 - User validation: **run immediately**.
 - Live Google integration: **verified for the public synthetic demo**, including request/token monitoring evidence; production-grade alerts, identity, persistence, durable audit, and final cost controls remain open.
 - Production deployment: **hold** until QA, authentication, privacy, and operational controls exist.
-- Devpost final submission: **hold** at 4/5 Draft until final form/link review, lag-aware cost recheck, zero-revenue rule review, an approved OSS-framework disclosure update, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and action-time approval are complete. Project Details, Additional Info, evidence uploads, public video, and Moderate learning level are saved/ready; terms and Submit remain untouched.
+- Devpost final submission: **completed after explicit approval**. Devpost showed `Submitted` and `5/5 steps done`; terms were accepted and Submit was clicked after the exact OSS disclosure persisted. Zero revenue, limited impact, billing lag, public Git identity exposure, and Microsoft Mark voice redistribution remain documented evaluation or accepted residual risks. Submission is not evidence of eligibility or an award.
 
 ## Stop conditions
 

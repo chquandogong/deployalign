@@ -1,10 +1,10 @@
 # Research Notes
 
-> Status: Official-rule snapshot; verify again before submission · Date: 2026-08-17 · Owner: Researcher
+> Status: Official-rule snapshot; submission confirmed, eligibility not adjudicated · Date: 2026-08-17 · Owner: Researcher
 
 ## Source policy
 
-Competition requirements below come from the official Devpost challenge pages retrieved on 2026-08-17. The official rules prevail over summaries, and they may change. Re-open them immediately before any external submission.
+Competition requirements below come from the official Devpost challenge pages retrieved on 2026-08-17. The official rules prevail over summaries. The entry was submitted after human approval; re-open the official pages before any material deadline-period edit and do not infer eligibility or an award from submission.
 
 ## Official sources
 
@@ -17,14 +17,14 @@ Competition requirements below come from the official Devpost challenge pages re
 
 | Requirement | Official statement summarized | Current evidence |
 | --- | --- | --- |
-| Submission deadline | Aug 17, 2026 at 1:00 PM Pacific Time | Deadline is time-critical; no submission receipt evidenced |
+| Submission deadline | Aug 17, 2026 at 1:00 PM Pacific Time | Confirmation observed: `Submitted`, `5/5 steps done`, and the exact deadline banner after Submit |
 | Eligibility | Adult/eligible entrant, applicable territory, and rules acceptance | Entrant confirms individual status, Republic of Korea, adulthood/eligibility, and agreement to the official rules |
 | Business | Build a real business during the hackathon, acquire real users, and generate real revenue | Entrant confirms 1 actual user and 0 paying users; all monthly/total revenue is $0, so the stated real-revenue requirement may remain unmet |
 | Google Cloud | Project must use at least one Google Cloud product | Public Cloud Run demo, Cloud Build, Vertex AI execution, Secret Manager binding, redacted runtime logs, and Vertex request/token monitoring graphs are evidenced in project `project-55fbcfd2-0ad6-4c99-a25` |
 | Gemini | LLM projects must use the Gemini API for at least one LLM call in the deployed application | Deployed `gemini-vertex` call using `gemini-2.5-flash` verified; exactly three grounded `AI_DRAFT` candidates and a successful receipt observed |
-| New work | Project must be created after the submission period began; prior boilerplate must be explained | Entrant confirms project start `06-01-26` (June 1, 2026) and no entrant-owned pre-existing code/assets; the saved form response still needs an approved standard-OSS disclosure update |
+| New work | Project must be created after the submission period began; prior boilerplate must be explained | Entrant confirms project start `06-01-26` and no entrant-owned pre-existing assets; Additional Info persisted the approved standard-OSS disclosure before submission |
 | Repository | Provide a public repository or a private repository shared with `testing@devpost.com` and `judging@hacker.fund` | Public repository available at `https://github.com/chquandogong/deployalign` |
-| Description | Explain how the project meets requirements and its category relevance | Saved public story is 796 words and includes the explicit no-current-jobs disclosure; finalization remains 4/5 Draft |
+| Description | Explain how the project meets requirements and its category relevance | Submitted public story is 796 words and includes the explicit no-current-jobs disclosure |
 | Demo video | Publicly visible YouTube/Vimeo/Youku video, less than three minutes, showing the functioning project | Verified public YouTube video at `https://youtu.be/QOPgHHAWOBA`; player 2:50; published Aug 17, 2026 |
 | Financial evidence | Total revenue, monthly revenue, total expenses, and marketing/customer-acquisition spend, including zero spend where applicable | Entrant confirms all required values at $0; one-page zero-revenue and P&L PDFs are saved in Devpost |
 | User evidence | Real user counts/breakdown and consent-aware feedback/testimonials | Entrant confirms 1 actual user and 0 paying users; no feedback/testimonial evidence supplied |
@@ -53,7 +53,7 @@ The entrant selected **Professional Services Access**. The submission must still
 | “Customers/users” | Do not claim; synthetic personas only | Consented real user records and feedback |
 | “Revenue” | Entrant-confirmed May/June/July/August/total and related-party revenue are each $0 | Saved revenue-evidence/P&L PDFs; never describe $0 as traction |
 | “Google Cloud” | Public synthetic Cloud Run demo, Cloud Build container, Secret Manager HMAC binding, dedicated runtime identity, Vertex call, redacted logs, and official request/token monitoring are verified | Recheck billing after its lag window; add production controls before any customer-operation claim |
-| “Open source / pre-existing resources” | Deployed browser-bundle notice covers React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC | Do not leave the saved `No pre-existing code or assets.` response unqualified; update it only after entrant approval to distinguish entrant-owned assets from standard OSS dependencies |
+| “Open source / pre-existing resources” | Deployed browser-bundle notice covers React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC | Additional Info persisted the exact approved disclosure naming React, React DOM, Vite, Express, `@google/genai`, and Lucide |
 | “Safety improvement” | Designed to surface unsupported scope in a demo | Real benchmark or user study; never imply certification |
 
 ## Research gaps
@@ -63,5 +63,5 @@ The entrant selected **Professional Services Access**. The submission must still
 - Data-governance requirements for customer artifacts.
 - Final cloud cost after any delayed charge and production-grade cost controls; evidence/P&L uploads are saved.
 - Final form review; learning-level self-assessment is complete at Moderate.
-- Entrant approval for the OSS disclosure update and acceptance of public Git author name/email exposure.
-- A documented decision on the Microsoft Mark voice redistribution uncertainty: accept the residual risk or replace the narration.
+- Post-submission preservation of the approved OSS disclosure and accepted public Git author name/email exposure risk.
+- Microsoft Mark voice redistribution remains uncertain; preserve the entrant's residual-risk acceptance and do not present it as a legal determination.
