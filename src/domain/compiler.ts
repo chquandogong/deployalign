@@ -192,7 +192,7 @@ const edges = (approved: boolean): GraphEdge[] => [
   ...(approved
     ? [
         { from: DEMO_PROJECT.decisionId, to: 'SOW-3.2', type: 'GENERATES' as const },
-        { from: DEMO_PROJECT.decisionId, to: 'TEST-MANIFEST-1', type: 'GENERATES' as const },
+        { from: DEMO_PROJECT.decisionId, to: 'TEST-021', type: 'GENERATES' as const },
       ]
     : []),
 ]
@@ -449,6 +449,9 @@ export const isDemoFixture = (artifacts: SourceArtifact[]) =>
       expected &&
         artifact.id === expected.id &&
         artifact.role === expected.role &&
+        artifact.title === expected.title &&
+        artifact.owner === expected.owner &&
+        artifact.updatedAt === expected.updatedAt &&
         artifact.content.trim() === expected.content.trim(),
     )
   })
