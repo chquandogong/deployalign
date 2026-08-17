@@ -1,6 +1,6 @@
 # Test Plan
 
-> Status: Unit tests/typecheck/lint/build passed; final browser evidence pending · Date: 2026-08-17 · Owner: QA
+> Status: Local automated, production-server, and live-browser QA passed · Date: 2026-08-17 · Owner: QA
 
 ## Objectives
 
@@ -62,6 +62,8 @@ Final updated evidence on 2026-08-17 after the response-isolation, strict-fixtur
 | Rate/error | Recoverable message with no raw secret or stack trace |
 | Responsive | Main workflow usable at narrow and desktop widths |
 | Accessibility | Keyboard navigation, focus visibility, headings/labels, contrast, reduced motion |
+
+Completed against the production Express build in the in-app browser on 2026-08-17: desktop and 320/360 px responsive layouts rendered without page-level horizontal overflow; the top bar remained visible while scrolling; source-to-provenance and provenance-to-graph navigation settled below the sticky header; compile and simulated review advanced `BASELINE V1` to `BASELINE V2` and `HOLD` to `CONDITIONAL PILOT`; the impact view showed six rebuilt and three unchanged sections; all three target tabs and both provenance tabs responded; and the browser console reported zero warnings or errors. Public-safe screenshots are retained in `submission-assets/`.
 
 ## User-value tests
 

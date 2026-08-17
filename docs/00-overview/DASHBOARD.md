@@ -9,7 +9,7 @@
 - Cloud prerequisite verified: Google account `chquan17`, active free trial/billing, and active project `project-55fbcfd2-0ad6-4c99-a25` were confirmed on 2026-08-17; reauthentication is no longer the blocker.
 - External cloud gate: API enablement, IAM, Secret Manager, Cloud Run deployment, a live Vertex/Gemini call, redacted logs, and cost evidence remain pending and require human approval.
 - Submission blocker: no evidence of real users, real revenue, a production deployment, or continuous AI operation.
-- Source of truth: repository code and this documentation. Last observed commit is `36ecce6`; the worktree remains dirty with later frontend, core, and documentation changes.
+- Source of truth: repository code and this documentation. The verified implementation and evidence pack are checkpointed through local commit `035c8d3`; no remote has been created.
 
 ## Core goals
 
@@ -25,8 +25,8 @@
 | Feasibility | Done with caveats | `../01-discovery/FEASIBILITY_REPORT.md` | Verify demand and live Gemini |
 | Domain/compiler | Implemented and locally verified | `src/domain/*`; final run 13/13 tests | Preserve final checkpoint evidence |
 | API/Gemini adapter | Implemented, live path unverified | `server/*` | Human-approved API/IAM setup and controlled live test |
-| Browser experience | Implemented and build-verified | Result-driven synthetic sources, graph, diagnostics, patch review, impact matrix, targets, source map, and receipts | Complete live-browser visual QA |
-| Verification | Final typecheck, lint, 13/13 tests, production build, and direct production-server/token smoke checkpoints passed on 2026-08-17 | Reviewer command results | Complete live-browser visual QA |
+| Browser experience | Implemented and live-browser verified | Desktop plus 320/360 px checks; sticky disclosure/header; source navigation; review, target, and receipt flows; public-safe screenshots | Preserve evidence through deployment |
+| Verification | Final typecheck, lint, 13/13 tests, production build, direct production-server/token smoke, and browser checks passed on 2026-08-17 | Reviewer command results and `submission-assets/` | Repeat against deployed URL |
 | Deployment | Not performed | Dockerfile only | Human approval before external deploy |
 | Devpost | Draft only | `../submission/*` | Resolve all evidence blockers, then human review |
 
@@ -46,8 +46,8 @@
 
 ## Resume point
 
-- Last observed commit: `36ecce6`; later verified changes are still uncommitted in the inspected worktree.
-- Next safe action: complete live-browser visual QA and create a deliberate checkpoint after reviewing the dirty worktree.
+- Verified implementation/evidence checkpoint: `035c8d3`; the local worktree was clean before this status refresh.
+- Next safe action: obtain the required human approval for public repository creation and Google Cloud configuration/deployment.
 - Do not automatically resume external publishing or submission; those are one-time human approval gates.
 
 ## Decisions awaiting a person
@@ -98,9 +98,9 @@ See `../01-discovery/ASSUMPTIONS.md` for validation status.
 
 ## Next actions
 
-1. Complete live-browser visual/accessibility QA and archive non-sensitive evidence.
-2. Review the dirty worktree and create a deliberate local checkpoint.
-3. After human approval, verify APIs/IAM/Secret Manager, deploy the synthetic demo, and capture one real Vertex/Gemini call plus redacted logs and cost evidence.
+1. After human approval, create the public repository and verify it contains no secrets or private evidence.
+2. After human approval, verify APIs/IAM/Secret Manager, deploy the synthetic demo, and capture one real Vertex/Gemini call plus redacted logs and cost evidence.
+3. Repeat browser checks against the public URL.
 4. Conduct real user validation and collect consented evidence.
 5. Ask a person to decide whether the challenge requirements can be met truthfully before any final submission.
 

@@ -18,11 +18,11 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 - [x] Source code for the deterministic compiler, API, Gemini adapter, tests, and Docker packaging exists locally.
 - [x] Bundled artifacts and result declare a synthetic demo.
 - [x] Final result-driven UI is integrated and production-build verified.
-- [ ] Live-browser visual/accessibility QA evidence captured.
+- [x] Live-browser desktop and 320/360 px QA completed; public-safe hero, approved-state, and mobile screenshots retained in `submission-assets/`.
 - [ ] Test/typecheck/lint/build logs attached with date and commit.
 - [ ] Working test build or website available free through the judging period.
-- [ ] Testing instructions and any safe credentials prepared.
-- [ ] Repository contains all required source and setup instructions.
+- [x] Local and container testing instructions prepared; the synthetic demo requires no user credential.
+- [x] Repository contains source, setup instructions, safety boundaries, and evidence documentation.
 - [GATE] Public repository publication or private sharing with `testing@devpost.com` and `judging@hacker.fund` approved and completed.
 
 ## Google Cloud and Gemini
