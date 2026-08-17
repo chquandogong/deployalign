@@ -8,7 +8,7 @@
 - Show the functioning project, not slides alone.
 - Keep `SYNTHETIC DEMO` and the real provider/fallback state visible.
 - It is safe to show the verified public Cloud Run/Vertex demo. Do not say customer production, revenue, real users, or measured impact.
-- Use only licensed/owned visuals and audio. The public upload gate was approved and completed.
+- Visual/music provenance review found no external images or music, but Microsoft Mark synthesized-voice redistribution remains a residual uncertainty requiring entrant acceptance or narration replacement before final submission.
 
 ## Verified render
 

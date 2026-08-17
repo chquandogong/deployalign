@@ -6,7 +6,7 @@
 
 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) · **Demo video:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) · **Source:** [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign)
 
-**Submission status:** Devpost Project Details and Additional Info are saved; finalization is at **4/5 Draft**. The final terms acceptance and Submit action have not been performed.
+**Submission status:** Devpost Project Details and Additional Info are saved; finalization is at **4/5 Draft**. The final terms acceptance and Submit action have not been performed. Before submission, the saved pre-existing-resources answer still needs an approved OSS-framework disclosure update, and the entrant must separately resolve public Git author name/email exposure and the residual Microsoft Mark voice redistribution uncertainty.
 
 DeployAlign is an evidence-gated, typed decision compiler for bespoke robotics deployments. It turns a customer email, a draft sales proposal, and an engineering review into a source-mapped `Deployment Commitment Graph`, applies deterministic domain checks, proposes the smallest reviewable scope patch, and recompiles only the affected deliverable sections after human approval.
 
@@ -53,7 +53,9 @@ flowchart LR
   E --> J["Structured execution receipts"]
 ```
 
-The public demo is deployed on Google Cloud Run in `asia-northeast3` with Vertex AI enabled and a one-instance ceiling. Live `gemini-2.5-flash` extraction, approval-token provenance, and Cloud Logging receipts were verified on revision `deployalign-00003-tlc`. Gemini contributes only validated exact-quote `AI_DRAFT` candidates and a rationale sidecar; deterministic TypeScript rules remain authoritative for the canonical graph, diagnostics, gate, patch, and target outputs. When model access is unavailable, the UI reports the failure instead of presenting it as a successful live call.
+The current public demo is Cloud Run revision `deployalign-00004-wgb` in `asia-northeast3`, serving 100% of traffic with Vertex AI enabled and a one-instance ceiling. Its health endpoint returned `ok=true`, `service=deployalign`, and `liveGemini=true`. A prior deployed compile—not the health response alone—verified live `gemini-2.5-flash` extraction, approval-token provenance, and Cloud Logging receipts. Gemini contributes only validated exact-quote `AI_DRAFT` candidates and a rationale sidecar; deterministic TypeScript rules remain authoritative for the canonical graph, diagnostics, gate, patch, and target outputs. When model access is unavailable, the UI reports the failure instead of presenting it as a successful live call.
+
+The deployed footer links to [the 3,462-byte third-party license notice](https://deployalign-1007800160926.asia-northeast3.run.app/third-party-licenses.txt), verified HTTP 200. It includes the full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC license texts.
 
 ![Approved live Vertex AI compile](submission-assets/deployalign-live-gemini-approved.png)
 
@@ -117,4 +119,4 @@ The current public prototype was built by Cloud Build and deployed to Cloud Run 
 
 ## License
 
-MIT. See [`LICENSE`](LICENSE).
+DeployAlign is MIT-licensed; see [`LICENSE`](LICENSE). Browser-bundle third-party notices are published at [`/third-party-licenses.txt`](https://deployalign-1007800160926.asia-northeast3.run.app/third-party-licenses.txt).

@@ -17,7 +17,7 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 | R-09 | Prompt injection or malicious source content influences Gemini rationale | Medium | High | Rationale contains instructions or unrelated text | Treat documents as data; strict schema/quotes; deterministic policies; adversarial tests | AI/security | Open |
 | R-10 | Exact-substring grounding creates false confidence despite missing context | Medium | High | Quote is exact but classification/meaning is wrong | Human source review; semantic benchmarks; context windows and provenance coordinates | AI/QA | Open |
 | R-11 | Diagnostic rules are overfit to the bundled sample | High | High | Performance drops on paraphrases or new domains | Build a consented redacted corpus; measure precision/recall and false negatives | Product/QA | Open |
-| R-12 | Public repository/video exposes secrets, PII, customer data, or unlicensed assets | Medium | Critical | Secret scan or asset provenance is incomplete | Private review, secret/license scan, consent check, human publication gate | Human entrant | Open gate |
+| R-12 | Public repository/video exposes secrets, PII, customer data, or unlicensed assets | Medium | Critical | Public Git author name/email acceptance is unrecorded or Microsoft Mark redistribution remains uncertain | Browser-bundle notice is deployed; obtain identity-exposure acceptance and resolve/replace the voice before submit | Human entrant | Open gate |
 | R-13 | Public demo lacks authentication, persistence, durable monitoring, or tested rollback | High | Critical | Public URL points directly to current demo API | Keep fixed synthetic input and clear demo labels; do not treat as production; add controls before real use | Engineering | Accepted only for bounded demo |
 | R-14 | Challenge deadline pressure causes unsupported claims or incomplete finalization | High | Critical | Required evidence has no source near deadline | Use no-go checklist; preserve drafts; final submit only after human evidence review | Project lead | Open blocker |
 | R-15 | Same-model role review is presented as independent Claude–GPT validation | Medium | Medium | Submission says “cross-model validated” | Disclose review method; obtain truly independent review if claimed | Documentarian | Mitigated |
@@ -30,6 +30,6 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 1. Preserve the exact entrant-confirmed user/revenue/expense facts and assess the $0-revenue rule risk without embellishment.
 2. Preserve redacted Cloud Run/Vertex/receipt and official request/token-monitoring evidence; recheck billing after its documented lag before confirming final expense.
 3. Passing test/type/lint/build evidence and visual disclosure review.
-4. Secret, privacy, license, and repository-history review.
-5. Public video and overview-draft gates are complete. Preserve action-time approval for final submission and review any material video/draft/deployment changes.
+4. Preserve the verified deployed license notice; obtain approval for the OSS-framework form update and public Git author name/email exposure, and resolve the Microsoft Mark voice redistribution uncertainty.
+5. Public video and overview-draft saves are complete, but their residual identity/IP gates remain open. Preserve action-time approval for final submission and review any material video/draft/deployment changes.
 6. Receipt and execution-origin disclosure verified so illustrative demo records cannot be presented as production audit evidence.

@@ -119,7 +119,7 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 - Using credentials or transmitting any non-synthetic artifact.
 - Enabling or materially changing external model calls in a shared/public environment.
 - Treating the local review action as a real decision.
-- Material cloud/video changes or submitting to Devpost. The repository, bounded public demo, and public video have already passed their respective gates.
+- Material cloud/video changes or submitting to Devpost. Publication is complete, but OSS disclosure approval, public Git author name/email exposure acceptance, and Microsoft Mark voice redistribution resolution remain open before final submission.
 
 ## Open questions
 

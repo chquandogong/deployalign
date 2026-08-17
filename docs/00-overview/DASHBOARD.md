@@ -6,12 +6,13 @@
 
 - Phase: Devpost finalization at 4/5 Draft after public demo/evidence verification.
 - Overall judgment: **Technical demo is live; do not claim business or final-submission readiness.**
-- Cloud demo verified: Cloud Run revision `deployalign-00003-tlc` is public at [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`.
+- Cloud demo verified: Cloud Run revision `deployalign-00004-wgb` serves 100% of traffic at [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`. `/api/health` returned `ok=true`, `service=deployalign`, and `liveGemini=true`.
 - Live model evidence: a deployed compile returned provider `gemini-vertex`; `gemini-2.5-flash` produced exactly three exact-quote `AI_DRAFT` classifications, and its successful receipt/provenance survived the signed review transition.
-- Entrant facts confirmed: individual entrant in the Republic of Korea; adult/eligible; official rules agreed; project start `06-01-26`; Professional Services Access selected; 1 actual user, 0 paying users; May–August and total revenue $0; related-party revenue $0; COGS, marketing, other, and total expenses $0; no pre-existing code/assets; corporate ID not applicable.
+- License notice verified: the deployed footer links to [`/third-party-licenses.txt`](https://deployalign-1007800160926.asia-northeast3.run.app/third-party-licenses.txt), which returned HTTP 200 and 3,462 bytes with full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts.
+- Entrant facts confirmed: individual entrant in the Republic of Korea; adult/eligible; official rules agreed; project start `06-01-26`; Professional Services Access selected; 1 actual user, 0 paying users; May–August and total revenue $0; related-party revenue $0; COGS, marketing, other, and total expenses $0; no entrant-owned pre-existing code/assets; corporate ID not applicable. The current saved form response still needs an approved update that discloses standard OSS framework/library use.
 - Devpost state: Project Details and Additional Info are saved, including both financial PDFs and the reviewed five-file runtime-evidence set. Finalization is **4/5 Draft**; terms acceptance and Submit have not been executed.
-- Submission blocker: the zero-revenue rule risk and lag-aware billing check require final review, followed by action-time approval before accepting terms or clicking Submit. Learning level is Moderate, and the public video is verified.
-- Source of truth: the public repository at [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign), deployed service, redacted evidence, and this documentation. The live-deployment code checkpoint was `70587d3` before this documentation refresh.
+- Submission blockers: the zero-revenue rule risk, lag-aware billing check, OSS-framework disclosure update, public Git author name/email exposure acceptance, and Microsoft Mark voice redistribution uncertainty require human review. Learning level is Moderate, the public video is verified, and terms/Submit remain an action-time gate.
+- Source of truth: the public repository at [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign), deployed service, redacted evidence, and this documentation. The license-compliance deployment checkpoint is commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`.
 
 ## Core goals
 
@@ -29,7 +30,7 @@
 | API/Gemini adapter | Implemented and live-verified on Vertex AI | Deployed `gemini-vertex` compile; success receipt; Cloud Run logs; Vertex request/token monitoring graphs | Add alerts and durable operational observability before real operation |
 | Browser experience | Implemented and live-browser verified | Desktop plus 320/360 px checks; sticky disclosure/header; source navigation; review, target, and receipt flows; public-safe screenshots | Preserve disclosure in public video |
 | Verification | Typecheck, lint, 13/13 tests, production build, server/token smoke, Cloud Build container build, deployed browser flow, and runtime-log checks passed on 2026-08-17 | Reviewer command results, Cloud Build/deployment records, redacted logs, and `submission-assets/` | Retain final checkpoint evidence |
-| Deployment | Public synthetic demo deployed | Cloud Run revision `deployalign-00003-tlc`; unauthenticated demo URL | Keep max instances 1; do not call it production-ready |
+| Deployment | Public synthetic demo deployed | Cloud Run revision `deployalign-00004-wgb`; 100% traffic; health and license-notice smoke passed | Keep max instances 1; do not call it production-ready |
 | Devpost | 4/5 Draft; Project Details and Additional Info saved | `../submission/*`; live browser state | Final rules/link review, then action-time approval before terms/Submit |
 
 ## Work board
@@ -48,8 +49,8 @@
 
 ## Resume point
 
-- Live-deployment code checkpoint: `70587d3`; public repository and Cloud Run demo are available.
-- Next safe action: perform the final rules/link/billing review against the saved Project Details and Additional Info.
+- Live-deployment code checkpoint: `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`; public repository and Cloud Run demo are available.
+- Next safe action: obtain decisions on the OSS disclosure, public Git identity exposure, and Microsoft Mark voice residual risk, then perform the final rules/link/billing review against the saved Project Details and Additional Info.
 - Public video upload was approved and completed. Devpost final submission remains an action-time human approval gate.
 
 ## Decisions and completed external gates
@@ -97,14 +98,14 @@ See `../01-discovery/ASSUMPTIONS.md` for validation status.
 - Entrant-confirmed challenge accounting is revenue $0, COGS $0, marketing $0, other expenses $0, total expenses $0, and net $0. The one-page A4 zero-revenue and P&L PDFs are saved in Devpost.
 - Live model calls are opt-in to avoid silent quota use.
 - Active free-trial/billing status is verified. The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but the same screen warns that costs can take hours or more than 24 hours to appear.
-- Cloud Run hosting, Vertex execution, redacted runtime logs, and official Vertex Model Garden request/token-count graphs for `gemini-2.5-flash` are evidenced. The entrant's current challenge P&L is confirmed at $0 revenue/$0 expense/$0 net, while the billing-lag caveat still requires one final cost recheck before upload.
+- Cloud Run hosting, Vertex execution, redacted runtime logs, and official Vertex Model Garden request/token-count graphs for `gemini-2.5-flash` are evidenced. The entrant's current challenge P&L is confirmed at $0 revenue/$0 expense/$0 net, while the billing-lag caveat still requires one final cost recheck before submission.
 
 ## Next actions
 
-1. Add the verified public video URL to Devpost and include it in the final link check.
-2. Confirm the saved zero-revenue/P&L PDFs and five runtime-evidence files remain attached; learning level is Moderate.
-3. Recheck cloud billing after the documented lag window while preserving the entrant-confirmed $0 current accounting.
-4. Review the saved 796-word story and all Additional Info answers with no inferred outcomes.
+1. Update the saved pre-existing-resources answer only after the entrant approves an accurate OSS-framework/library disclosure.
+2. Obtain explicit entrant acceptance of the already-public Git author name/email exposure.
+3. Resolve the Microsoft Mark voice redistribution uncertainty through documented acceptance or a replacement voice.
+4. Confirm the saved PDFs/runtime evidence, public links, 796-word story, and all Additional Info answers; recheck billing after its lag window.
 5. Ask the entrant to approve terms acceptance and final Submit immediately before those actions occur.
 
 ## Links

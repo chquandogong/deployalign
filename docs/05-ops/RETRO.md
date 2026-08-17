@@ -33,7 +33,7 @@
 - The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but its explicit warning that reporting can take hours or more than 24 hours prevents treating that value as final challenge expense/P&L.
 - UI integration and local/deployed live-browser QA are complete.
 - Final typecheck, lint, 13/13 tests, production build, and direct production-server/token smoke checkpoints passed.
-- Cloud Build successfully built the actual container and Cloud Run revision `deployalign-00003-tlc` deployed it.
+- Cloud Build successfully built the license-compliance commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` and deployed current Cloud Run revision `deployalign-00004-wgb` at 100% traffic; public health and the HTTP 200/3,462-byte license notice were verified.
 - No actual Claude independent review occurred.
 - The public repository and Cloud Run demo are available. The verified 170-second 1080p H.264/AAC video with 74 captions is public at `https://youtu.be/QOPgHHAWOBA`. Project Details, Additional Info, financial PDFs, and five runtime-evidence images are saved; finalization is 4/5 Draft and terms/Submit remain untouched.
 
@@ -58,4 +58,4 @@
 4. Recheck billing after the documented lag window and confirm the saved $0 revenue/P&L evidence remains attached.
 5. Design identity, persistence, audit, privacy, and observability only if a real pilot warrants them.
 6. Obtain a genuinely independent model/human review if cross-model validation will be claimed.
-7. Review the saved 4/5 Draft, reassess the $0-revenue requirement, and obtain action-time approval before terms/Submit.
+7. Review the saved 4/5 Draft, reassess the $0-revenue requirement, approve the OSS disclosure, accept public Git author name/email exposure, resolve Microsoft Mark voice redistribution uncertainty, and obtain action-time approval before terms/Submit.

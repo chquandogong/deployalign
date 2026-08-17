@@ -70,7 +70,7 @@ Next, we would test the synthetic workflow with deployment practitioners, collec
 | Total expenses, breakdown, COGS, and marketing/customer-acquisition spend | COGS $0; marketing/customer acquisition $0; other $0; total $0 |
 | Current simple P&L | Revenue $0; expenses $0; net $0 |
 | Corporate ID | N/A for the individual entrant |
-| Pre-existing resources | Saved response: `No pre-existing code or assets.` |
+| Pre-existing resources | Current saved response: `No pre-existing code or assets.`; update pending entrant approval to distinguish no entrant-owned assets from standard OSS framework/library use |
 | Revenue-evidence PDF and P&L evidence upload | Saved in Devpost after local visual verification |
 | AI-native operations / live AI | Deployed Vertex extraction is evidenced only for the synthetic demo; business-operation claims are not evidenced |
 | Jobs/economic opportunities beyond founders | Actual jobs/opportunities: none; future opportunity is potential only and not measured |
@@ -92,7 +92,7 @@ The currently inspected Devpost form requires the following fields or uploads. D
 | Google Cloud and Gemini answers | Cloud Run/Cloud Build/Secret Manager/Vertex facts are verified for the synthetic demo |
 | Public repository | `https://github.com/chquandogong/deployalign` |
 | Runtime evidence upload | Saved as exactly five reviewed files: `cloud-billing-current-zero-lag-warning.png`, `vertex-gemini-observability-metrics.png`, `live-vertex-approved.png`, `live-vertex-receipts.png`, `cloud-run-config.png`; older `cloud-run-live-logs.png` removed |
-| Pre-existing resources | Saved exactly as: `No pre-existing code or assets.` |
+| Pre-existing resources | Currently saved exactly as `No pre-existing code or assets.`; accurate OSS-framework disclosure update is pending entrant approval and is not yet saved |
 | Total and monthly revenue | Ready: May $0; June $0; July $0; August $0; total $0 |
 | Related-party revenue | Ready: $0 |
 | Total expenses, breakdown, COGS, and marketing spend | Ready: COGS $0; marketing $0; other $0; total $0 |
@@ -102,4 +102,4 @@ The currently inspected Devpost form requires the following fields or uploads. D
 
 ## Submission decision
 
-The repository, working app, container deployment, deployed Gemini evidence, public 2:50 video, 796-word story, Project Details, Additional Info, financial PDFs, runtime evidence, and all entrant-supplied factual fields are saved. Finalization is 4/5 Draft. Do not accept terms or click Submit until the final link/rules/billing review is complete and the entrant explicitly approves those actions. The final rules review must address whether 1 user, 0 paying users, and $0 revenue satisfy the stated real-business requirement.
+The repository, working app, container deployment, deployed Gemini evidence, public 2:50 video, 796-word story, Project Details, Additional Info, financial PDFs, runtime evidence, and all entrant-supplied factual fields are saved. Finalization is 4/5 Draft. Do not accept terms or click Submit until the final link/rules/billing review, OSS-framework disclosure update, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and explicit action-time approval are complete. The final rules review must address whether 1 user, 0 paying users, and $0 revenue satisfy the stated real-business requirement.

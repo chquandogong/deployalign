@@ -6,7 +6,7 @@
 
 DeployAlign is a React/TypeScript single-page application served with an Express API. It demonstrates one synthetic project. The public Cloud Run demo has no database, authentication, queue, or durable audit log and is not a customer production system.
 
-External dependencies are the browser, Gemini Developer API or Vertex AI, and Cloud Run. On 2026-08-17, revision `deployalign-00003-tlc` was verified at `https://deployalign-1007800160926.asia-northeast3.run.app` in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`. The deployed service uses Vertex AI model `gemini-2.5-flash`, runtime identity `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`, and a stable Secret Manager HMAC secret.
+External dependencies are the browser, Gemini Developer API or Vertex AI, and Cloud Run. On 2026-08-17, revision `deployalign-00004-wgb` was verified serving 100% of traffic at `https://deployalign-1007800160926.asia-northeast3.run.app` in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`. The deployed service uses Vertex AI model `gemini-2.5-flash`, runtime identity `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`, and a stable Secret Manager HMAC secret. Health returned `ok=true`, `service=deployalign`, and `liveGemini=true`; the footer's third-party notice returned HTTP 200/3,462 bytes with the full applicable browser-bundle license texts.
 
 ## Components and responsibilities
 

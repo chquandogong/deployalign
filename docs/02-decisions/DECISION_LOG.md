@@ -85,7 +85,7 @@
 - Date: 2026-08-17
 - Context: Judges require a working application and at least one deployed Gemini call, while the prototype has process-local rate/state and no customer-data controls.
 - Decision: Deploy the fixed synthetic fixture to Cloud Run in `asia-northeast3` with unauthenticated access, min instances 0/max 1, 1 CPU/512 MiB, 60-second timeout, concurrency 20, a dedicated runtime service account, and a stable Secret Manager HMAC secret.
-- Evidence: Revision `deployalign-00003-tlc`; public URL `https://deployalign-1007800160926.asia-northeast3.run.app`; deployed `gemini-2.5-flash` call returned three exact-quote `AI_DRAFT` candidates and a successful receipt; redacted logs recorded compile version 1 and approval version 2.
+- Evidence: Current revision `deployalign-00004-wgb` serves 100% of traffic at `https://deployalign-1007800160926.asia-northeast3.run.app`; health returned `ok=true`, `service=deployalign`, and `liveGemini=true`. A separately verified deployed `gemini-2.5-flash` call returned three exact-quote `AI_DRAFT` candidates and a successful receipt; redacted logs recorded compile version 1 and approval version 2.
 - Rationale: Satisfies the technical demonstration need while keeping instance/state assumptions explicit.
 - Residual risk: The public unauthenticated endpoint has no durable audit, tenant isolation, or production access control.
 - Approval: Completed for the synthetic demo only; material deployment changes still require review.
@@ -95,8 +95,19 @@
 
 - Date: 2026-08-17
 - Context: Devpost requires eligibility, category, user, revenue, expense, project-history, and corporate disclosures that must not be inferred from code or screenshots.
-- Decision: Use only these entrant-confirmed values: individual; Republic of Korea; adult/eligible and rules agreed; project start `06-01-26`; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May/June/July/August/total revenue $0; related-party revenue $0; COGS/marketing/other/total expenses $0; no pre-existing code/assets; corporate ID N/A.
+- Decision: Use only these entrant-confirmed values: individual; Republic of Korea; adult/eligible and rules agreed; project start `06-01-26`; Professional Services Access; learning level Moderate; 1 actual user; 0 paying users; May/June/July/August/total revenue $0; related-party revenue $0; COGS/marketing/other/total expenses $0; no entrant-owned pre-existing code/assets; corporate ID N/A. Standard OSS framework/library use must be disclosed separately.
 - Rationale: Makes the form completeable without fabricating traction or costs.
 - Residual risk: $0 revenue may not satisfy the stated real-revenue requirement, and one user without outcomes is weak category-impact evidence.
 - Approval: Entrant confirmed these exact facts for the submission workflow.
-- Revisit when: Only if the entrant supplies a corrected record before final submission; learning level is confirmed as Moderate.
+- Revisit when: The entrant approves the pending OSS-framework disclosure update or supplies another corrected record before final submission; learning level is confirmed as Moderate.
+
+## D-010 — Deploy browser-bundle license notices while preserving residual human gates
+
+- Date: 2026-08-17
+- Context: The public browser bundle distributes third-party code, while the saved Devpost pre-existing-resources response does not distinguish entrant-owned assets from standard OSS dependencies.
+- Decision: Publish the full applicable browser-bundle license texts and expose them from the app footer, but do not alter the Devpost response or accept residual privacy/voice-rights risks without entrant approval.
+- Evidence: Commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` deployed as revision `deployalign-00004-wgb`; `/third-party-licenses.txt` returned HTTP 200 and 3,462 bytes with React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts; `/api/health` returned the expected live configuration fields.
+- Rationale: Meets the browser-bundle notice obligation without treating software-license publication as approval of unrelated form, identity, or narration-rights decisions.
+- Residual risk: Entrant approval is still missing for the OSS disclosure update and public Git author name/email exposure; Microsoft Mark voice redistribution remains uncertain.
+- Approval: License-file publication and deployment are complete. The three residual human gates and final Devpost terms/Submit remain unapproved.
+- Revisit when: Each residual gate has an entrant decision immediately before final submission.

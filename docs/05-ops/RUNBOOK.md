@@ -65,7 +65,7 @@ The current Cloud Run demo stores a stable ≥32-byte `COMPILE_TOKEN_SECRET` in 
 ## Verified Cloud Run configuration
 
 - Public URL: `https://deployalign-1007800160926.asia-northeast3.run.app`
-- Revision: `deployalign-00003-tlc`
+- Revision: `deployalign-00004-wgb` (100% traffic)
 - Region: `asia-northeast3`
 - Access: unauthenticated public synthetic demo
 - Compute: 1 CPU, 512 MiB; timeout 60 seconds; concurrency 20
@@ -73,6 +73,8 @@ The current Cloud Run demo stores a stable ≥32-byte `COMPILE_TOKEN_SECRET` in 
 - Live model: `ALLOW_LIVE_GEMINI=true`, Vertex AI `gemini-2.5-flash`
 - Runtime identity: `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`
 - Provenance secret: stable Secret Manager binding; record the secret name/version, never the value
+- Public health: `ok=true`, `service=deployalign`, `liveGemini=true`
+- License notice: footer link to `/third-party-licenses.txt`; verified HTTP 200 and 3,462 bytes
 
 Cloud Build successfully built the container that backs this revision. Official Vertex AI Model Garden Monitoring shows the `gemini-2.5-flash` row and last-hour model-request/token-count graphs. The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but the screen explicitly warns that costs can take hours or more than 24 hours to appear. Recheck after the lag window before confirming final expense/P&L.
 
@@ -147,7 +149,7 @@ The Dockerfile builds the Vite bundle and runs Express on port 8080. The product
 
 ## Rollback
 
-- Local code: return to the last known-good public commit; the live-deployment code checkpoint was `70587d3` before the documentation refresh.
+- Local code: return to the last known-good public commit; the current license-compliance deployment checkpoint is `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`.
 - Live model: set `ALLOW_LIVE_GEMINI=false` and restart; verify provider shows deterministic demo.
 - Token secret: rotate only through approved secret management and expect all outstanding review tokens to become invalid.
 - Public deployment: route traffic back to a known-good Cloud Run revision or redeploy a known-good image; this remains to be rehearsed before any real use.

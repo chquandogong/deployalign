@@ -28,7 +28,7 @@
 | Strict fixture identity | Add an unknown key or submit a whitespace-normalized lookalike | Compile rejects before any Gemini prompt | Existing Vitest case passes |
 | AI candidate separation | Valid synthetic `AiExtractionEvidence` | Provider retained, three `AI_DRAFT` candidates exposed, deterministic gate remains `HOLD` | Existing Vitest case passes |
 
-Final updated evidence on 2026-08-17 after the response-isolation, strict-fixture, and responsive containment fixes: `pnpm typecheck`, `pnpm lint`, 13/13 tests, and `pnpm build` all exited 0; the production audit reported zero vulnerabilities. The build used Vite 8.2.1, processed 1,570 modules, and emitted 38.83 kB CSS and 241.07 kB JS. A direct production server smoke also passed root 200/no-store/CSP, hashed asset 200/one-year immutable caching, valid/tampered/extra-segment/expired token behavior, and missing-secret production startup failure. Cloud Build built the actual container and Cloud Run revision `deployalign-00003-tlc` deployed successfully. Retain redacted command and cloud evidence with the release checkpoint.
+Final updated evidence on 2026-08-17 after the response-isolation, strict-fixture, and responsive containment fixes: `pnpm typecheck`, `pnpm lint`, 13/13 tests, and `pnpm build` all exited 0; the production audit reported zero vulnerabilities. The build used Vite 8.2.1, processed 1,570 modules, and emitted 38.83 kB CSS and 241.07 kB JS. A direct production server smoke also passed root 200/no-store/CSP, hashed asset 200/one-year immutable caching, valid/tampered/extra-segment/expired token behavior, and missing-secret production startup failure. The later license-compliance commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` was built and deployed as current Cloud Run revision `deployalign-00004-wgb`; post-deploy smoke verified 100% traffic, health `ok=true`/`service=deployalign`/`liveGemini=true`, and the footer notice at HTTP 200/3,462 bytes. Retain redacted command and cloud evidence with the release checkpoint.
 
 ## API contract tests to add
 
@@ -98,7 +98,7 @@ No such user experiment has been run yet.
 - Confirm review endpoint cannot be described as authenticated.
 - Confirm the signed token is not described as encrypted, confidential, user-bound, or non-repudiable.
 - Verify logs contain bounded metadata, not full source artifacts.
-- Run dependency, secret, and license scans before any repository sharing.
+- Preserve the deployed browser-bundle notice for React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC; keep the OSS form disclosure, Git author identity exposure, and Microsoft Mark voice redistribution as separate human gates.
 - Use only synthetic data until approved privacy controls exist.
 
 ## Regression commands
@@ -121,4 +121,4 @@ Archive date, commit (when one exists), exit status, and redacted output. A comm
 - Secrets or real customer data enter build/log/screenshots.
 - Google Cloud product use/deployment or live Gemini is claimed beyond the archived API/runtime/deployment evidence, or Gemini is credited for deterministic graph/gate/target decisions.
 - Production readiness is claimed without auth, persistence, tenant isolation, monitoring, and rollback.
-- Devpost terms acceptance or Submit is attempted before the saved 4/5 Draft—including the 796-word story, exact financial disclosures, PDFs, five runtime-evidence images, public video, and testing links—receives final human review, or without assessing the stated real-revenue requirement.
+- Devpost terms acceptance or Submit is attempted before the saved 4/5 Draft receives final review of the real-revenue issue, approved OSS disclosure, public Git author name/email exposure, Microsoft Mark voice redistribution uncertainty, links/evidence, and action-time approval.

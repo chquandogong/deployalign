@@ -10,7 +10,8 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 - [-] Team/organization representative authorization: not applicable; submitter type is Individual.
 - [-] Organization employee-count condition: not applicable to the individual entrant.
 - [x] Project start is `06-01-26` (June 1, 2026), as confirmed by the entrant.
-- [x] Pre-existing response saved exactly as `No pre-existing code or assets.`
+- [x] Current pre-existing response saved exactly as `No pre-existing code or assets.`
+- [GATE] Entrant approval required to update that response with standard OSS framework/library use before final submission.
 - [ ] Original-work, open-source-license, asset, trademark, music, and privacy review complete.
 
 ## Product and code
@@ -19,7 +20,7 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 - [x] Bundled artifacts and result declare a synthetic demo.
 - [x] Final result-driven UI is integrated and production-build verified.
 - [x] Live-browser desktop and 320/360 px QA completed; public-safe hero, approved-state, and mobile screenshots retained in `submission-assets/`.
-- [x] Test/typecheck/lint/build results recorded for 2026-08-17; live-deployment code checkpoint `70587d3` preceded this documentation refresh.
+- [x] Test/typecheck/lint/build results recorded for 2026-08-17; current license-compliance deployment checkpoint is `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`.
 - [x] Working unauthenticated website available at `https://deployalign-1007800160926.asia-northeast3.run.app`.
 - [x] Local and container testing instructions prepared; the synthetic demo requires no user credential.
 - [x] Repository contains source, setup instructions, safety boundaries, and evidence documentation.
@@ -34,7 +35,8 @@ Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a p
 - [x] Private billing capture shows an Aug 1–15 current report of ₩0 and remaining free-trial credits, with an explicit warning that reporting can take hours or more than 24 hours; it is not a final expense/P&L record.
 - [x] Google Cloud project/region, required APIs, IAM/runtime identity, and deployed Vertex access configured and evidenced.
 - [x] Stable ≥32-byte `COMPILE_TOKEN_SECRET` bound from Secret Manager; demo max instances limited to 1.
-- [x] Application deployed to Cloud Run revision `deployalign-00003-tlc` in `asia-northeast3`.
+- [x] Application deployed to Cloud Run revision `deployalign-00004-wgb` at 100% traffic in `asia-northeast3`; public health returned `ok=true`, `service=deployalign`, and `liveGemini=true`.
+- [x] Footer notice verified at HTTP 200/3,462 bytes with full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts.
 - [x] At least one `gemini-vertex` call using `gemini-2.5-flash` in the deployed application verified.
 - [x] Redacted Gemini/Cloud Run execution records captured: `compile_completed` version 1 and `patch_approved` version 2.
 - [x] Public-safe UI evidence shows Gemini provider/model, exactly three `AI_DRAFT` classifications, and a `SUCCESS` receipt without exposing secrets.
@@ -92,7 +94,7 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 - [x] Google Cloud/Gemini technical answer can cite Cloud Run, Cloud Build, Secret Manager, dedicated runtime identity, Vertex AI, and redacted logs.
 - [x] Public repository URL available.
 - [x] Runtime evidence saved as exactly five reviewed files: `cloud-billing-current-zero-lag-warning.png`, `vertex-gemini-observability-metrics.png`, `live-vertex-approved.png`, `live-vertex-receipts.png`, and `cloud-run-config.png`; older `cloud-run-live-logs.png` is not attached.
-- [x] Pre-existing response saved exactly as `No pre-existing code or assets.`
+- [x] Current pre-existing response saved exactly as `No pre-existing code or assets.`; approved OSS disclosure update remains pending.
 - [x] Total and May/June/July/August 2026 revenue ready: each and total $0.
 - [x] Related-party revenue ready: $0.
 - [x] Expense breakdown ready: COGS $0, marketing $0, other $0, total $0.
@@ -122,9 +124,12 @@ No amount may be invented, estimated as actual, or inferred from lack of evidenc
 - [ ] Every form answer reviewed by the human entrant.
 - [x] Overview, Project Details, Additional Info, financial PDFs, and runtime evidence were saved with approval.
 - [x] Finalization currently shows 4/5 Draft; terms acceptance and Submit remain unexecuted.
+- [GATE] Entrant approves and saves the OSS-framework disclosure update.
+- [GATE] Entrant accepts public Git author name/email exposure.
+- [GATE] Entrant accepts the Microsoft Mark redistribution residual risk or replaces the narration.
 - [GATE] Final submission approved immediately before the irreversible action.
 - [ ] Devpost confirmation/receipt captured after submission.
 
 ## Current decision
 
-**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, public video, 796-word story, eligibility, category, project history, users, learning level, exact $0 financial disclosures, Project Details, Additional Info, PDFs, and five runtime-evidence images are saved. Finalization is 4/5 Draft. Remaining gates are the final link/rules/billing review, the zero-revenue decision, and action-time approval before terms acceptance and Submit.
+**Not ready for final submission.** Repository, working app, Cloud/Vertex evidence, public video, 796-word story, eligibility, category, project history, users, learning level, exact $0 financial disclosures, Project Details, Additional Info, PDFs, and five runtime-evidence images are saved. Finalization is 4/5 Draft. Remaining gates are final link/rules/billing review, the zero-revenue decision, OSS-framework disclosure approval, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and action-time approval before terms acceptance and Submit.

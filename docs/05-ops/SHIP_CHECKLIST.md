@@ -36,6 +36,7 @@ Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable
 - [x] Official Vertex AI Model Garden Monitoring capture shows the `gemini-2.5-flash` row and last-hour request/token-count graphs.
 - [x] Devpost runtime evidence saved as five reviewed images: billing lag warning, Vertex metrics, live approved state, live receipts, and Cloud Run config; the older Cloud Run log capture was removed from the upload.
 - [x] Public demo URL and Cloud Run revision attached; this is not production-readiness evidence.
+- [x] Current revision `deployalign-00004-wgb` serves 100% traffic; health and the HTTP 200/3,462-byte footer license notice passed live smoke.
 
 No item in this section may be checked from code/configuration alone.
 
@@ -46,9 +47,10 @@ No item in this section may be checked from code/configuration alone.
 - [x] Cloud Run max instances set to 1 for this demo while rate/state remain process-local.
 - [x] Signed compile-to-review provider/evidence provenance mechanism passed direct server token smoke.
 - [ ] Secret scan completed.
-- [x] Production dependency audit completed with zero vulnerabilities; full license review remains part of the publication/IP gate.
-- [ ] Asset provenance and third-party trademark/music review completed.
-- [ ] Personal/customer data and consent review completed.
+- [x] Production dependency audit completed with zero vulnerabilities; deployed notice includes full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts.
+- [ ] OSS-framework Devpost disclosure update approved and saved.
+- [ ] Microsoft Mark voice redistribution uncertainty accepted or narration replaced.
+- [ ] Public Git author name/email exposure accepted by the entrant.
 - [x] Retained cloud logs and screenshots are redacted/public-safe; continue reviewing new captures.
 - [ ] Rollback procedure defined and tested for the selected host.
 - [x] Container image build verified through Cloud Build and deployed successfully.
@@ -56,7 +58,7 @@ No item in this section may be checked from code/configuration alone.
 ## Challenge evidence
 
 - [x] Adult/territory eligibility, individual status, Republic of Korea, and official-rules agreement confirmed by the entrant.
-- [x] Project start `06-01-26` and no pre-existing code/assets confirmed.
+- [x] Project start `06-01-26` and no entrant-owned pre-existing code/assets confirmed; saved OSS disclosure update remains pending approval.
 - [x] Professional Services Access selected; measured category-impact support remains absent.
 - [x] User counts confirmed at 1 actual user and 0 paying users; consent-aware feedback remains absent.
 - [x] Revenue disclosed by month and total: May/June/July/August/total $0; related-party revenue $0.
@@ -84,6 +86,7 @@ No item in this section may be checked from code/configuration alone.
 - [x] Public video upload approved and completed.
 - [x] Project Details, Additional Info, revenue/P&L PDFs, and five runtime-evidence files saved; finalization is 4/5 Draft.
 - [x] Terms acceptance and Submit have not been executed.
+- [ ] Approve the OSS-framework disclosure update, public Git identity exposure, and Microsoft Mark voice residual risk.
 - [ ] Approve the final submission after a last rules/evidence review.
 
 ## Rollback and monitoring
@@ -96,4 +99,4 @@ No item in this section may be checked from code/configuration alone.
 
 ## Final judgment
 
-**NO-GO for customer production and final submission.** Technical evidence, public video, all entrant-supplied factual fields, Moderate learning level, saved 796-word story, both financial PDFs, and five runtime-evidence images are complete in the 4/5 Draft. Final submission remains blocked by final link/rules/billing review, the zero-revenue decision, and action-time approval before terms/Submit. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.
+**NO-GO for customer production and final submission.** Technical evidence, public video, all entrant-supplied factual fields, Moderate learning level, saved 796-word story, both financial PDFs, and five runtime-evidence images are complete in the 4/5 Draft. Final submission remains blocked by final link/rules/billing review, the zero-revenue decision, OSS-framework disclosure approval, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and action-time approval before terms/Submit. Production use remains blocked by absent auth, persistence, tenant isolation, durable audit, monitoring, and rehearsed rollback.

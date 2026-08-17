@@ -33,8 +33,9 @@ Key limitations:
 - There is no authentication, persistence, tenant isolation, job queue, or durable audit log.
 - A network-failure fallback returns the same `deterministic-demo` provider as a healthy server-side fallback, so the UI cannot currently distinguish those two paths.
 - A one-hour HMAC-signed compile token now carries validated Gemini provider/candidate evidence through review. Without a configured shared `COMPILE_TOKEN_SECRET`, a restart or another instance cannot verify an earlier token.
-- The public synthetic demo is deployed to Cloud Run revision `deployalign-00003-tlc` in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`, with a dedicated Vertex-capable runtime service account and stable HMAC secret from Secret Manager.
+- The public synthetic demo is deployed to Cloud Run revision `deployalign-00004-wgb`, serving 100% of traffic in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`, with a dedicated Vertex-capable runtime service account and stable HMAC secret from Secret Manager. Current health returned `ok=true`, `service=deployalign`, and `liveGemini=true`.
 - A deployed `gemini-vertex` compile using `gemini-2.5-flash` returned exactly three validated exact-quote `AI_DRAFT` candidates and a successful receipt; provenance persisted through the HMAC-signed review token. Redacted logs recorded `compile_completed` for version 1 and `patch_approved` for version 2.
+- The current footer links to a public third-party notice verified at HTTP 200/3,462 bytes with full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts.
 - Cloud Run is intentionally constrained to max instances 1 because rate limiting and operational state are process-local. The public URL demonstrates deployment, not production readiness.
 - Official Vertex AI Model Garden Monitoring shows `gemini-2.5-flash` request and token-count graphs in the last-hour window.
 - A private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, with an explicit warning that costs can take hours or more than 24 hours to appear. The entrant confirms the current challenge P&L as $0 revenue, $0 expenses, and $0 net; one-page zero-revenue/P&L PDFs are saved in Devpost, while one final lag-aware cloud-cost recheck remains.
@@ -57,7 +58,7 @@ The official challenge requires a real business with real users and revenue, an 
 - User validation: **run immediately**.
 - Live Google integration: **verified for the public synthetic demo**, including request/token monitoring evidence; production-grade alerts, identity, persistence, durable audit, and final cost controls remain open.
 - Production deployment: **hold** until QA, authentication, privacy, and operational controls exist.
-- Devpost final submission: **hold** at 4/5 Draft until final form/link review, lag-aware cost recheck, zero-revenue rule review, and action-time approval are complete. Project Details, Additional Info, evidence uploads, public video, and Moderate learning level are saved/ready; terms and Submit remain untouched.
+- Devpost final submission: **hold** at 4/5 Draft until final form/link review, lag-aware cost recheck, zero-revenue rule review, an approved OSS-framework disclosure update, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, and action-time approval are complete. Project Details, Additional Info, evidence uploads, public video, and Moderate learning level are saved/ready; terms and Submit remain untouched.
 
 ## Stop conditions
 

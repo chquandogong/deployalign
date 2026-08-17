@@ -64,4 +64,4 @@ The entrant selected **Professional Services Access**. Keep the category story b
 | Save a truthful draft only | Preserves work without making unsupported claims | Final action still requires a separate approval | Current state: 4/5 Draft saved with Project Details, Additional Info, and evidence uploads |
 | Pause until authentic evidence exists | Preserves integrity | Likely misses this submission window | Recommended if requirements remain unmet |
 
-Public repository, bounded demo deployment, overview-draft save, and public video gates are complete. Future material draft/deployment/video changes and final submission remain separate human approval gates.
+Public repository, bounded demo deployment, overview-draft save, and public video publication are complete. OSS disclosure approval, public Git author name/email exposure acceptance, Microsoft Mark voice redistribution resolution, future material changes, and final submission remain separate human gates.
