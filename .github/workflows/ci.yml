@@ -28,6 +28,9 @@ jobs:
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version-file: .nvmrc
+          # pnpm is provided by Corepack in the next step; setup-node's package-manager
+          # cache probes for the binary first and fails when it is not there yet.
+          package-manager-cache: false
 
       - name: Enable Corepack (pnpm from package.json#packageManager)
         run: corepack enable
