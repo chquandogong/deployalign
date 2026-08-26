@@ -3,6 +3,45 @@
 All notable changes to DeployAlign are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow SemVer.
 
+## [0.5.0] — 2026-08-26
+
+The CLI becomes a **GitHub Action**, the repository ships ready-to-run example document
+sets, and the practitioner pilot gets its kit. Detectors learn two more real-world
+patterns.
+
+### Added
+
+- **`action.yml`** (composite): `uses: chquandogong/deployalign@v0.5.0` with `path`,
+  `fail-on`, `out`, `approved`, `node-version`, `summary`; outputs `verdict`, `gate`,
+  `blockers`, `warnings`, `decision-id`, `report`; appends `report.md` to the job
+  summary; fails the step with exit code 2 when a proposal outruns its evidence. CI
+  self-tests the action on the examples (hospital → `FAIL`/4 blockers, warehouse →
+  `PASS`, Korean → `FAIL`/4 blockers, report contains `12곳의 핵심 구역`).
+- **`examples/`**: `hospital-delivery-robot` (EN, fails), `warehouse-amr` (EN, passes),
+  `sub-fab-raman-ko` (KO, fails) with a README; also the corpus the CLI scene of the demo
+  video uses.
+- **Negation guard**: "will not cover every ward", "does not serve all wards" and Korean
+  clause-final negation ("…을 커버하지 않습니다") no longer count as unbounded scope.
+- **Korean preference narrowing**: "…사족 사륜 로봇이 필요합니다" yields a `CustomerPreference`
+  quoting `사족 사륜 로봇`, mirroring the English "we need a …" rule.
+- **Practitioner pilot kit** (`docs/05-ops/PILOT_KIT.md`): recruiting, a 45-minute session
+  plan, redaction rules, metrics and stop signals; **Detector misfire** issue template that
+  routes every misfire into `corpora.test.ts` before a rule changes.
+- D-019 resolved (synthesized narration kept, owner decision); D-022 records the Action design.
+
+### Changed
+
+- CI actions bumped to `actions/checkout@v7`, `actions/setup-node@v7`,
+  `docker/setup-buildx-action@v4`, `docker/build-push-action@v7` (all SHA-pinned; clears
+  the Node 20 deprecation warning).
+
+### Verification
+
+`pnpm typecheck`, `pnpm lint`, `pnpm test` (75 tests across 7 files) and `pnpm build`
+passed on Node 24.19.0 / pnpm 11.19.0 on 2026-08-26; the three example sets exit 2 / 0 / 2
+as documented; `pnpm dlx github:chquandogong/deployalign#v0.4.1 --version` was verified to
+run the CLI straight from GitHub in under five seconds.
+
 ## [0.4.1] — 2026-08-26
 
 ### Added
