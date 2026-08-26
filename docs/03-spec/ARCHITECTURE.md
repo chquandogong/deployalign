@@ -1,6 +1,6 @@
 # DeployAlign Architecture
 
-> Status: Prototype architecture 0.4.0; not production-approved · Date: 2026-08-26 · Owner: Engineering
+> Status: Prototype architecture 0.5.0; not production-approved · Date: 2026-08-26 · Owner: Engineering
 
 ## Context and boundaries
 
@@ -17,6 +17,7 @@ External dependencies are the browser, Gemini Developer API or Vertex AI, and Cl
 | Express API (`createApp` in `server/app.ts`) | Validate inputs, rate-limit compile, issue/verify provenance tokens, expose health/compile/review, serve static build, label results `executionOrigin: 'server'` | In-memory, unauthenticated, single-process demo; factory takes secret/mode/dist/live-model/logger so tests run isolated instances; `server/index.ts` only listens |
 | Gemini adapter (`server/gemini.ts`) | Classify exact source quotes and propose a concise patch rationale | Opt-in; default model `gemini-3.7-flash` with `thinkingLevel: LOW` (Gemini 2.5 pins keep `thinkingBudget: 0`); pure `validateGeminiPayload` enforces quotes/types/confidence/coverage/rationale; deployed 0.1.0 path verified on `gemini-2.5-flash` — the 0.2.0 default is unit-tested, not yet live-verified; never builds the canonical graph/gates/targets |
 | Deterministic compiler (fixture) | Build graph, diagnostics, patch, targets, impact, FNV-1a32 fingerprints, and receipts for the synthetic case | Six `DEC-014`-linked sections rebuild; three unrelated baseline sections are reused within the approved compile; fingerprints detect change, not cryptographic integrity |
+| GitHub Action (`action.yml`, 0.5.0) | Composite: setup Node → `pnpm install --prod` in the action path → run the CLI → parse `result.json` into outputs → job summary | Same deterministic path as the CLI; self-tested in CI on `examples/` |
 | CLI (`bin/deployalign.mjs` → `cli/main.ts`, 0.4.0) | Load three documents (dir / flags / JSON), run the general or fixture compiler with `executionOrigin: cli`, write outputs, map unresolved diagnostics to exit codes | Deterministic only; no model, no network; tsx-backed so no build step |
 | General compiler (`src/domain/general/`, 0.3.0) | `extractStatements` → `classifyStatements` → `detect` → `compileGeneral`: verbatim clauses, role-aware lexical typing, DA-001–DA-006 as detectors, patch values copied from engineering clauses, generic targets | Local custom mode only; English lexical heuristics; same incremental-rebuild mechanics via the shared `fingerprint.ts` |
 | Automated tests | Protect grounding, strict fixture identity/schema, gates, AI candidates, patch size, response isolation, rebuild behavior, decision IDs, execution origin, Gemini payload validation and the HTTP contract | 38 cases in three suites (14 domain, 11 Gemini validation, 13 API); passed 38/38 on 2026-08-26 |

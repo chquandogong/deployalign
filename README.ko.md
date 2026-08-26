@@ -132,8 +132,16 @@ CLI는 결정론적 경로만 실행합니다 — 모델도, 네트워크도 없
 
 ```yaml
 # .github/workflows/sow-check.yml — 근거를 앞지르는 제안서가 있는 PR을 실패시킨다
-- run: pnpm dlx github:chquandogong/deployalign compile ./deployment-docs --fail-on blocker
+- uses: chquandogong/deployalign@v0.5.0
+  with:
+    path: deployment-docs          # customer*/sales*/engineering* (또는 고객*/영업*/엔지니어링*)
+    fail-on: blocker               # blocker | warning | none
+# 출력: verdict, gate, blockers, warnings, decision-id, report; report.md가 잡 요약에 붙는다
 ```
+
+Action 없이 쓰려면: `pnpm dlx github:chquandogong/deployalign#v0.5.0 compile ./deployment-docs --fail-on blocker`.
+번들 예제로 먼저 시험해 보세요: [`examples/`](examples/) (`hospital-delivery-robot`은 실패,
+`warehouse-amr`은 통과, `sub-fab-raman-ko`는 한국어로 실패).
 
 문서는 **영어 또는 한국어**로 작성할 수 있습니다(1차 어휘 수준 지원; 한계는
 [`CHANGELOG.md`](CHANGELOG.md) 참고).
@@ -156,11 +164,12 @@ flowchart LR
 
 | 계층 | 위치 | 담당 |
 | --- | --- | --- |
-| 도메인 | `src/domain/` | 타입, 정본 픽스처 컴파일러(테스트 14개), frozen 합성 픽스처, 그리고 `general/` — 절 추출, 영어/한국어 어휘 타이핑, 감지기, 근거 기반 패치, 일반 타깃(코퍼스 3종, 테스트 21개) |
+| 도메인 | `src/domain/` | 타입, 정본 픽스처 컴파일러(테스트 14개), frozen 합성 픽스처, 그리고 `general/` — 절 추출, 영어/한국어 어휘 타이핑, 부정어를 인식하는 감지기, 근거 기반 패치, 일반 타깃(코퍼스 5종, 테스트 24개) |
 | API | `server/app.ts`, `server/index.ts` | 입력 경계, 픽스처 가드/커스텀 모드, 레이트 리밋, 모드+패치+아티팩트 해시에 묶인 HMAC 토큰, `/api/health`, `/api/compile`, `/api/approve`, 정적 빌드 서빙; 계약 테스트 18개 |
 | 모델 어댑터 | `server/gemini.ts` | 선택적 Gemini 호출, 프롬프트, `thinkingConfigFor`, 순수 함수 `validateGeminiPayload`; 테스트 11개 |
 | UI | `src/App.tsx`, `src/components/ArtifactEditor.tsx`, `src/lib/exportMarkdown.ts` | 소스, 문서 편집기(커스텀 모드), 그래프 + 노드 인스펙터, 진단, 패치 diff, 승인 경계, 임팩트 테이블, Markdown/JSON 내보내기가 있는 타깃, 소스 맵, 영수증 |
 | CLI | `bin/deployalign.mjs`, `cli/main.ts` | `compile`/`demo`, 파일 이름 역할 판별, 출력 파일, `--fail-on` 판정과 종료 코드; 테스트 6개 |
+| GitHub Action | `action.yml` | CLI를 감싼 composite 액션: 입력/출력, 잡 요약; CI에서 `examples/`로 셀프테스트 |
 
 상세: [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
 [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md).
@@ -211,7 +220,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest — 7개 스위트, 테스트 72개
+pnpm test        # vitest — 7개 스위트, 테스트 75개
 pnpm build       # vite 프로덕션 번들
 ```
 
@@ -252,7 +261,7 @@ docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)
 
 1. ~~**0.3 — 자기 아티팩트 가져오기(로컬 모드).**~~ 0.3.0에서 출시: 결정론적 일반 컴파일러, 감지기 6개, 근거 원문 기반 패치, Markdown/JSON 내보내기, 로컬 전용 플래그(D-016).
 2. ~~**0.4 — CLI와 CI 모드.**~~ 0.4.0에서 출시: `deployalign compile … --fail-on blocker`, 문서 파이프라인용 출력, 1차 한국어 지원.
-3. **0.5 — 실무자 파일럿.** 인터뷰 5건, 비식별화된 샘플, 측정된 정밀도와 결정 소요 시간 — 신원, 영속성, 감사 기능을 만들 가치가 있는지는 이것만이 결정한다.
+3. **0.5 — 실무자 파일럿.** 키트는 준비됨([`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md): 세션 계획, 비식별화 규칙, 지표, 오탐→코퍼스 루프); 인터뷰 자체가 다음 사람의 일이다. 그 결과가 신원, 영속성, 감사 기능을 만들 가치가 있는지를 결정한다.
 
 이슈와 풀 리퀘스트를 환영한다. [`CONTRIBUTING.md`](CONTRIBUTING.md) 참고.
 
@@ -264,8 +273,8 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 [`CHANGELOG.md`](CHANGELOG.md)에, 그 이유는
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)에 기록한다.
 
-0.4.0 기준의 정직한 범위: 결정론적 컴파일러(픽스처·일반), API, UI, CLI, 테스트 72개가 구현되어
-로컬에서 검증됐고, 커스텀 문서 흐름은 헤드리스 브라우저로도 확인했다. 공개 데모는 0.3.0 빌드에서
+0.5.0 기준의 정직한 범위: 결정론적 컴파일러(픽스처·일반), API, UI, CLI, GitHub Action, 테스트 75개가
+구현되어 로컬에서 검증됐고, 커스텀 문서 흐름은 헤드리스 브라우저로, Action은 CI에서 예제 세트로 확인했다. 공개 데모는 0.3.0 빌드에서
 `gemini-3.7-flash` 라이브 호출이 **실제로 검증**됐다(2026-08-26). 라이브 `gemini-2.5-flash` 호출은 배포된 0.1.0 리비전에서 검증됐다.
 `gemini-3.7-flash` 기본값은 단위 테스트를 통과했고 첫 라이브 영수증을 기다린다.
 프로덕션 배포, 고객, 측정된 현장 결과는 없다. 여기 있는 어떤 것도 참가 자격, 수상,
@@ -277,11 +286,12 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | 현재 상태, 작업 보드, 소유자 결정 대기 항목 |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | "쓸모 있음"의 정의와 거기까지의 단계 |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 기능 요구사항 FR-01…FR-31과 인수 기준 |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 기능 요구사항 FR-01…FR-34와 인수 기준 |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | 컴포넌트, 데이터 흐름, 신뢰 경계, 실패 모드 |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 테스트 계획과 상태가 표시된 리스크 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 실행, 검증, 모델 마이그레이션, 문제 해결, 롤백 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-018과 소유자 결정 큐 |
+| [`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md) | 근거를 지어내지 않고 실무자 5명 파일럿을 진행하는 방법 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-022 |
 | [`docs/submission/`](docs/submission/) | 데모 대본, YouTube 메타데이터, Devpost 증거의 역사 기록 |
 
 ## 라이선스

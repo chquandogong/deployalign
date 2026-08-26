@@ -1,6 +1,6 @@
 # Roadmap — from submitted prototype to a tool people use
 
-> Status: Active · Date: 2026-08-26 (0.4.0) · Owner: Project lead
+> Status: Active · Date: 2026-08-26 (0.5.0) · Owner: Project lead
 
 ## What "useful" has to mean here
 
@@ -79,12 +79,18 @@ names or flags or a JSON manifest, `result.json` + `report.md` + three target do
 Korean cues and two more English corpora. Also on 2026-08-26 the public demo was
 redeployed on `gemini-3.7-flash` with a live-verified receipt (D-017).
 
-### 0.5 — Practitioner pilot
+### 0.5 — Practitioner pilot · *kit shipped 2026-08-26; interviews pending*
 
 Five interviews with deployment / application / solutions engineers; redacted samples;
 measure diagnostic precision against their manual review and time-to-decision. Only the
 pilot result decides whether identity, persistence, durable audit and policy
 configuration are worth building.
+
+**What shipped in 0.5.0:** the GitHub Action (`action.yml`, self-tested in CI), three
+example document sets, the pilot kit (`docs/05-ops/PILOT_KIT.md`), the misfire issue
+template, negation-aware detectors and Korean preference narrowing. **What has not
+happened:** any interview. That is now the owner's next human step; the kit tells them
+exactly what to record.
 
 ### Later, only if the pilot says so
 
@@ -104,4 +110,4 @@ traction that is not evidenced.
 | D-016 | ~~Approve the 0.3 custom-artifact design~~ — approved and shipped 2026-08-26 | Done |
 | D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26, revision `deployalign-00005-9vs` on `gemini-3.7-flash` | Done |
 | D-018 | ~~Upload the demo video and swap the README link~~ — v0.4.0 published 2026-08-26 | Done |
-| D-019 | Keep synthesized narration (edge-tts voice) or record a human voice | Synthesized, with the licence note kept in the demo script |
+| D-019 | ~~Keep synthesized narration or record a human voice~~ — synthesized kept (owner, 2026-08-26) | Done |

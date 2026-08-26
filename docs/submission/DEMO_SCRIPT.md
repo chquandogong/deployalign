@@ -8,7 +8,7 @@
 - `SYNTHETIC DEMO` / `USER-SUPPLIED DOCUMENTS` strip, provider badge and execution-origin chip stay visible in every UI shot.
 - Say only what the screen evidences. The recording runs the **deterministic path** (badge `Deterministic fixture fallback · API`, custom mode `Deterministic rules · no model`); the public demo's live Gemini 3.7 Flash path is stated as a verified fact about the deployment (D-017), not shown.
 - No customer, revenue, production-readiness or field-outcome claim. The Korean brief in scene 11–12 is the synthetic Raman fixture translated, not a customer document.
-- Narration is synthesized with edge-tts (`en-US-AndrewMultilingualNeural`, rate +3%). Redistribution terms of Microsoft neural voices remain an accepted, unsettled risk (R-12); a human recording is the alternative (D-019).
+- Narration is synthesized with edge-tts (`en-US-AndrewMultilingualNeural`, rate +3%). Redistribution terms of Microsoft neural voices remain an accepted, unsettled risk (R-12); the owner chose to keep the synthesized voice for now (D-019, 2026-08-26).
 
 ## Verified render (2026-08-26)
 

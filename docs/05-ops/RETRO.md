@@ -1,6 +1,41 @@
 # Retro
 
-> Status: Four cycles recorded — 0.1.0 submission (2026-08-17), 0.2.0 hygiene, 0.3.0 custom documents, 0.4.0 CLI + Korean (all 2026-08-26) · Date: 2026-08-26 · Owner: Project team
+> Status: Six cycles recorded — 0.1.0 submission (2026-08-17); 0.2.0, 0.3.0, 0.4.0, 0.4.1, 0.5.0 (all 2026-08-26) · Date: 2026-08-26 · Owner: Project team
+
+## Cycle 0.5.0 — an Action, examples, and the pilot kit (2026-08-26)
+
+### What was done
+
+- Wrapped the CLI as a composite GitHub Action with typed outputs and a job summary; CI now runs it on three bundled example sets and asserts the verdicts.
+- Added `examples/` (EN fail, EN pass, KO fail) so anyone can try the compiler in one command.
+- Fixed two detector gaps the new corpora exposed: negated quantifiers ("will not cover every ward", "…않습니다") and Korean preference narrowing (`사족 사륜 로봇`).
+- Wrote the practitioner pilot kit and a Detector-misfire issue template; recorded D-019 (synthesized voice kept) and D-022 (Action design); bumped CI actions to current majors.
+
+### What went well
+
+- The examples double as CI fixtures: the Action is exercised end-to-end on every push, so drift in Studio-style selectors cannot happen here — the failure surface is our own CLI, which is tested.
+- Every detector change again started as a corpus sentence; both fixes landed with the affirmative counter-examples asserted in the same test.
+
+### What was learned and corrective actions
+
+- **Negation was the first thing a real proposal would have tripped over** ("will not cover every ward"). Corrective action: the negation guard looks back three tokens in English and at the clause-final predicate in Korean; more forms will come from the pilot.
+- **Shipping the kit is not running the pilot.** Corrective action: the dashboard's next action is now explicitly the owner's first session, not more code.
+
+### Failures and incomplete work
+
+- Zero practitioner interviews so far; all corpora remain synthetic.
+- The Action installs runtime dependencies on every run (seconds, but not free); a published package with a bundled CLI would remove that.
+- Korean support remains lexical.
+
+### Metrics
+
+- Tests: 72 → 75. Corpora: 5 → 6 (negation). Example sets: 0 → 3. Distribution surfaces: UI, API, CLI → + GitHub Action.
+
+### Deferred to the next cycle
+
+1. **Run the pilot** (owner) and file misfires.
+2. Publish the package (npm) with a bundled CLI once the pilot confirms the CLI shape — a gated publication.
+3. Korean morphology beyond particles if the pilot's Korean documents demand it.
 
 ## Cycle 0.4.0 — a command, a second language, and the public demo on the current model (2026-08-26)
 

@@ -36,7 +36,7 @@ Add or update tests with behaviour changes:
 - `server/gemini.test.ts` — model configuration and the pure payload validator.
 - `server/app.test.ts` — HTTP contract (bounds, tokens, rate limit, startup guards, custom mode).
 
-When a detector misfires on real phrasing, add the sentence to a corpus in `corpora.test.ts` first, then fix the lexicon or rule. Korean cues live next to the English ones in `src/domain/general/lexicon.ts`.
+When a detector misfires on real phrasing, file it with the **Detector misfire** issue template (synthetic or redacted text only), add the sentence to a corpus in `corpora.test.ts` first, then fix the lexicon or rule. Korean cues live next to the English ones in `src/domain/general/lexicon.ts`. The `examples/` sets are also CI fixtures for the GitHub Action — keep their expected verdicts stable or update `.github/workflows/ci.yml` with them.
 
 ## Ground rules
 

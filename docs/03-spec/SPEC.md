@@ -1,6 +1,6 @@
 # DeployAlign Specification
 
-> Status: Prototype 0.4.0 implemented; local QA passed; public demo runs 0.3.0 on gemini-3.7-flash · Date: 2026-08-26 · Owner: Product and engineering
+> Status: Prototype 0.5.0 implemented; local QA passed; public demo runs 0.3.0 on gemini-3.7-flash · Date: 2026-08-26 · Owner: Product and engineering
 
 ## Problem definition
 
@@ -81,6 +81,9 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 | FR-29 | Compile from the command line with build-style exit codes | Must | `deployalign compile <dir>` / role flags / `--artifacts`; exit 0 pass, 1 input/usage error, 2 when unresolved diagnostics remain at/above `--fail-on` (`cli/main.test.ts`) |
 | FR-30 | Write pipeline-friendly outputs | Should | `--out` produces `result.json`, `report.md`, `customer-decision-memo.md`, `sales-sow.md`, `engineering-test-manifest.md` |
 | FR-31 | Read Korean documents through the same detectors | Should | Korean Raman corpus reproduces DA-001–DA-006 and a verbatim Korean patch (`corpora.test.ts`); limits documented |
+| FR-32 | Treat negated quantifiers as bounded | Must | "will not cover every ward", "does not serve all wards", "…커버하지 않습니다" yield no unbounded phrase; a self-bounding proposal yields zero diagnostics (`corpora.test.ts`) |
+| FR-33 | Narrow Korean customer preferences to the wanted thing | Should | "…사족 사륜 로봇이 필요합니다" → `CustomerPreference` quoting `사족 사륜 로봇` |
+| FR-34 | Run as a GitHub Action with build-style outcome | Must | `action.yml` inputs/outputs; CI self-test: hospital `FAIL`/4 blockers, warehouse `PASS`, Korean `FAIL` with `12곳의 핵심 구역` in the report |
 
 ## Non-functional requirements
 
@@ -123,7 +126,7 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 
 ## Test acceptance
 
-- All 72 automated tests pass: 14 domain, 15 general-path, 6 corpora (drone, hospital, Korean), 2 export, 6 CLI, 11 Gemini validation, 18 API contract (verified 2026-08-26 on Node 24.19.0).
+- All 75 automated tests pass: 14 domain, 15 general-path, 9 corpora (drone, hospital, Korean, negation), 2 export, 6 CLI, 11 Gemini validation, 18 API contract (verified 2026-08-26 on Node 24.19.0).
 - Typecheck, lint, and production build pass (verified 2026-08-26).
 - API contract and failure cases receive automated coverage (`server/app.test.ts`, 0.2.0).
 - Visual QA confirms synthetic/fallback/human-gate disclosures.

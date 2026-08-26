@@ -1,6 +1,6 @@
 # Decision Log
 
-> Status: Active · Date: 2026-08-26 (0.4.0) · Owner: Project lead
+> Status: Active · Date: 2026-08-26 (0.5.0) · Owner: Project lead
 
 ## D-001 — Use a hybrid evidence compiler
 
@@ -219,6 +219,28 @@
 - Approval: Within the approved 0.4 cycle.
 - Revisit when: a real Korean document set exposes systematic misses.
 
+## D-019 — Keep synthesized narration for the demo videos (resolved)
+
+- Date: 2026-08-26
+- Context: The v0.1.0 video used the Microsoft Mark voice; v0.2.0 and v0.4.0 use `en-US-AndrewMultilingualNeural` through edge-tts. Redistribution terms of Microsoft neural voices are not a settled legal question (R-12). The alternative was a human recording.
+- Decision: **Keep the synthesized voice** ("유지"). The licence note stays in `docs/submission/DEMO_SCRIPT.md`; the reproducible pipeline is the reason — a script change re-renders the whole video in minutes, which a human recording cannot match at this stage.
+- Rationale: Iteration speed matters more than voice provenance while the product changes weekly; the risk is documented, accepted by the owner, and reversible (re-record when the product stabilises).
+- Rejected: Human recording now — slows every release; a paid TTS with clear commercial terms — deferred until the video cadence settles.
+- Residual risk: R-12 unchanged; takedown risk is low but non-zero. Revisit at the practitioner pilot (0.5) or if Microsoft publishes explicit terms.
+- Approval: Owner, 2026-08-26.
+
+## D-022 — Ship the CLI as a composite GitHub Action, self-tested on example sets (0.5.0)
+
+- Date: 2026-08-26
+- Context: Roadmap 0.4/0.5: a docs pipeline should fail when a proposal outruns its evidence; consumers should not have to know pnpm or tsx.
+- Options: (a) a JavaScript action with a bundled `dist/`; (b) a composite action that sets up Node, installs the runtime dependencies from the checked-out action path and runs `bin/deployalign.mjs`; (c) a Docker action.
+- Decision: (b). `action.yml` exposes `path`, `fail-on`, `out`, `approved`, `node-version`, `summary` and outputs `verdict`, `gate`, `blockers`, `warnings`, `decision-id`, `report`; it appends `report.md` to the job summary and propagates exit code 2. CI runs the action against `examples/` and asserts the verdicts, so a selector or dependency drift fails the build rather than a consumer.
+- Rationale: No bundle to rebuild on every change; `pnpm install --prod` takes seconds; behaviour is identical to the local CLI. Docker would be slower and heavier for a text tool.
+- Rejected: (a) until the package is published with a build; (c) for cold-start cost.
+- Residual risk: composite actions inherit the consumer's runner; pnpm download depends on Corepack being present on the runner image (true for GitHub-hosted runners).
+- Approval: Within the approved 0.5 cycle ("계속").
+- Revisit when: the package is published to npm or a marketplace listing is wanted.
+
 ## Owner decision queue
 
 | ID | Decision | Default if silent | Gate type |
@@ -226,4 +248,4 @@
 | D-016 | ~~Approve the 0.3 local-mode design~~ — approved and shipped in 0.3.0 (see entry above) | Done | — |
 | D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26 (`deployalign-00005-9vs`) | Done | — |
 | D-018 | ~~Upload the demo video and swap the links~~ — v0.4.0 published 2026-08-26 (https://youtu.be/3sWnxibKU1Q) after explicit owner approval | Done | — |
-| D-019 | Synthesized narration voice vs. human recording | Synthesized, licence note kept | Brand / rights |
+| D-019 | ~~Synthesized narration voice vs. human recording~~ — owner chose to keep the synthesized voice (2026-08-26) | Done | — |

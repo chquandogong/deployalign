@@ -1,8 +1,20 @@
 # Ship Checklist
 
-> Status: **v0.4.0 repository release — GO; Cloud Run redeploy — DONE (v0.3.0, D-017); video upload — GATED; customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
+> Status: **v0.5.0 repository release — GO; Cloud Run — v0.3.0 live (D-017 done); video — v0.4.0 published (D-018 done); customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
 
 Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable to the bounded prototype.
+
+## v0.5.0 repository release (2026-08-26)
+
+- [x] `pnpm typecheck`, `pnpm lint`, `pnpm test` (75/75 across 7 files), `pnpm build` exited 0 on Node 24.19.0 / pnpm 11.19.0.
+- [x] `node bin/deployalign.mjs compile examples/…` exits 2 / 0 / 2 for hospital / warehouse / Korean as documented in `examples/README.md`.
+- [x] `action.yml` authored; CI job `action` asserts verdicts, blocker counts and report content on the three example sets (result recorded in the release notes once the run is green).
+- [x] Negation guard and Korean preference narrowing covered by corpora tests; all earlier corpora still green.
+- [x] `CHANGELOG.md` 0.5.0, version bump, README ×3 updated together, D-019/D-022 recorded, FR-32–FR-34 added, pilot kit and issue template present.
+- [x] No secrets, account identifiers or personal data added; example sets are synthetic.
+- [-] npm publish — intentionally not performed (publication gate; consider after the pilot).
+
+Judgment: **GO** to tag `v0.5.0`, push and publish a GitHub release.
 
 ## v0.4.0 repository release (2026-08-26)
 

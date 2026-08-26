@@ -123,8 +123,16 @@ pnpm exec deployalign compile ./deployment-docs --out ./deployment-docs/compiled
 
 ```yaml
 # .github/workflows/sow-check.yml —— 让提案超出证据的 PR 失败
-- run: pnpm dlx github:chquandogong/deployalign compile ./deployment-docs --fail-on blocker
+- uses: chquandogong/deployalign@v0.5.0
+  with:
+    path: deployment-docs          # customer*/sales*/engineering*（或 고객*/영업*/엔지니어링*）
+    fail-on: blocker               # blocker | warning | none
+# 输出：verdict、gate、blockers、warnings、decision-id、report；report.md 会附加到作业摘要
 ```
+
+不使用 Action 时：`pnpm dlx github:chquandogong/deployalign#v0.5.0 compile ./deployment-docs --fail-on blocker`。
+先用内置示例试试：[`examples/`](examples/)（`hospital-delivery-robot` 失败，`warehouse-amr` 通过，
+`sub-fab-raman-ko` 以韩文失败）。
 
 文档可以是**英文或韩文**（首版词法级支持；限制见 [`CHANGELOG.md`](CHANGELOG.md)）。
 
@@ -146,11 +154,12 @@ flowchart LR
 
 | 层 | 位置 | 职责 |
 | --- | --- | --- |
-| 领域 | `src/domain/` | 类型、规范夹具编译器（14 个测试）、frozen 合成夹具，以及 `general/`——子句抽取、英文/韩文词法定型、检测器、基于证据的补丁、通用目标文档（3 个语料、21 个测试） |
+| 领域 | `src/domain/` | 类型、规范夹具编译器（14 个测试）、frozen 合成夹具，以及 `general/`——子句抽取、英文/韩文词法定型、识别否定的检测器、基于证据的补丁、通用目标文档（5 个语料、24 个测试） |
 | API | `server/app.ts`、`server/index.ts` | 输入边界、夹具守卫/自定义模式、限流、绑定模式+补丁+材料哈希的 HMAC 令牌、`/api/health`、`/api/compile`、`/api/approve`、静态构建；18 个契约测试 |
 | 模型适配器 | `server/gemini.ts` | 可选 Gemini 调用、提示词、`thinkingConfigFor`、纯函数 `validateGeminiPayload`；11 个测试 |
 | UI | `src/App.tsx`、`src/components/ArtifactEditor.tsx`、`src/lib/exportMarkdown.ts` | 源材料、文档编辑器（自定义模式）、图 + 节点检视器、诊断、补丁 diff、批准边界、影响表、带 Markdown/JSON 导出的目标文档、源映射、回执 |
 | CLI | `bin/deployalign.mjs`、`cli/main.ts` | `compile`/`demo`、按文件名判定角色、输出文件、`--fail-on` 判定与退出码；6 个测试 |
+| GitHub Action | `action.yml` | 包装 CLI 的 composite action：输入/输出、作业摘要；在 CI 中用 `examples/` 自测 |
 
 详见：[`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
 [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md)。
@@ -201,7 +210,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest —— 7 个套件、72 个测试
+pnpm test        # vitest —— 7 个套件、75 个测试
 pnpm build       # vite 生产构建
 ```
 
@@ -238,7 +247,7 @@ docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)
 
 1. ~~**0.3 —— 使用自己的材料（本地模式）。**~~ 已在 0.3.0 发布：确定性通用编译器、六个检测器、逐字证据补丁、Markdown/JSON 导出、仅限本地的标志（D-016）。
 2. ~~**0.4 —— CLI 与 CI 模式。**~~ 已在 0.4.0 发布：`deployalign compile … --fail-on blocker`、面向文档流水线的输出、首版韩文支持。
-3. **0.5 —— 从业者试点。** 五次访谈、脱敏样本、实测精度与决策耗时——只有这些才能决定身份、持久化与审计是否值得构建。
+3. **0.5 —— 从业者试点。** 工具包已就绪（[`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md)：会话计划、脱敏规则、指标、误报→语料循环）；访谈本身是下一步需要人来完成的事。其结果决定身份、持久化与审计是否值得构建。
 
 欢迎 issue 与 pull request；见 [`CONTRIBUTING.md`](CONTRIBUTING.md)。
 
@@ -249,7 +258,7 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 不是终点。项目在公开环境中继续推进；变更记录在 [`CHANGELOG.md`](CHANGELOG.md)，背后的理由记录在
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)。
 
-截至 0.4.0 的诚实范围：确定性编译器（夹具与通用）、API、UI、CLI 与 72 个测试已实现并在本地验证，自定义文档流程也经过了无头浏览器验证；公开演示运行 0.3.0 构建，其 `gemini-3.7-flash` 调用已**实时验证**（2026-08-26）；实时 `gemini-2.5-flash`
+截至 0.5.0 的诚实范围：确定性编译器（夹具与通用）、API、UI、CLI、GitHub Action 与 75 个测试已实现并在本地验证，自定义文档流程经过了无头浏览器验证，Action 在 CI 中用示例集自测；公开演示运行 0.3.0 构建，其 `gemini-3.7-flash` 调用已**实时验证**（2026-08-26）；实时 `gemini-2.5-flash`
 调用已在已部署的 0.1.0 版本上验证；`gemini-3.7-flash` 默认值已通过单元测试，等待第一份实时回执；
 没有生产部署、没有客户、没有实测的现场结果。这里的一切都不构成参赛资格、奖项或商业可行性的证明。
 
@@ -259,11 +268,12 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | 当前状态、工作板、等待所有者决策的事项 |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | "有用"的定义及通往它的阶段 |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-31 与验收标准 |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-34 与验收标准 |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | 组件、数据流、信任边界、失效模式 |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 测试计划与带状态的风险 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 运行、验证、迁移模型、排障、回滚 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-018 与所有者决策队列 |
+| [`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md) | 如何在不臆造证据的前提下开展五位从业者的试点 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-022 |
 | [`docs/submission/`](docs/submission/) | 演示脚本、YouTube 元数据，以及 Devpost 证据的历史记录 |
 
 ## 许可证
