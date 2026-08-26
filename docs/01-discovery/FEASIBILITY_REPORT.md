@@ -1,6 +1,6 @@
 # Feasibility Report
 
-> Status: Conditional go for technical PoC; no-go for unsupported business claims · Date: 2026-08-17 · Owner: Product and engineering
+> Status: Conditional go for technical PoC; no-go for unsupported business claims · Date: 2026-08-26 (fallback-ambiguity bullet updated for 0.2.0; scorecard unchanged) · Owner: Product and engineering
 
 ## Scorecard
 

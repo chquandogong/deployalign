@@ -109,6 +109,19 @@
 4. Feed every misfire from real (redacted) documents through the Detector-misfire template into `corpora.test.ts` (R-22).
 5. Recruit five practitioners for the validation experiment described in `../01-discovery/OFFICE_HOURS.md`.
 
+## Review 2026-08-26 — video · git · submission
+
+| Area | Checked | Result |
+| --- | --- | --- |
+| Video v0.4.0 (`3sWnxibKU1Q`) | Public player metadata | Public, playable, 1080p processed, 188 s; caption tracks `en`, `ko`, `zh-Hans` (+ auto `en`); description carries chapters and the repository link; 16 tags; category changed from "People & Blogs" to "Science & Technology" via Studio during this review |
+| Video v0.1.0 (`QOPgHHAWOBA`) | Public player metadata | Public, playable, 170 s; kept as the submission record |
+| Video ↔ product drift | Scene list vs 0.6.0 UI | Video shows the 0.4.0 UI; 0.6.0 only adds the "Load an example" row in the editor — no re-render needed |
+| Git | Tags, releases, changelog, version, ancestry | `v0.1.0`–`v0.6.0` all on `main`, each with a changelog section and a GitHub release (`v0.1.0` created retroactively as a historical release); `package.json` = `0.6.0`; working tree clean; `pnpm audit --prod` clean; CI green on the last run (3 jobs) |
+| Links | 99 relative + 24 external in READMEs/docs | All resolve (only `http://localhost:5173` is unreachable by design) |
+| Public demo | `/api/health` | `version 0.3.0`, `liveGemini true`, `model gemini-3.7-flash`, `customArtifacts false` |
+| Submission | Devpost page | Live: title, tagline, Try-it-out links, Built With, team; the entry references the 0.1.0 video by design. Hackathon page: **"This hackathon has ended — Winners announced soon"** (listed end date 2026-09-25). No edits are possible or intended after the deadline |
+| Historical docs | Header dates | Discovery/submission records keep `2026-08-17` on purpose (records, not living docs); `FEASIBILITY_REPORT.md` date bumped because one bullet was corrected |
+
 ## Links
 
 - [Project brief](PROJECT_BRIEF.md) · [Roadmap](ROADMAP.md)

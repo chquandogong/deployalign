@@ -31,3 +31,6 @@ videos/
 *.njsproj
 *.sln
 *.sw?
+
+# CLI / Action default output directory
+deployalign-out/
