@@ -3,6 +3,58 @@
 All notable changes to DeployAlign are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow SemVer.
 
+## [0.4.0] — 2026-08-26
+
+The decision compiler becomes a command. `deployalign compile ./docs --fail-on blocker`
+turns a proposal that outruns its evidence into a failed build, and the detectors learn
+their first Korean. The public demo now runs the current code on Gemini 3.7 Flash.
+
+### Added
+
+- **CLI** (`bin/deployalign.mjs` → `cli/main.ts`, runs the TypeScript directly through
+  tsx): `compile <dir>` (roles from file names `customer*`/`sales*`/`engineering*` or
+  `고객*`/`영업*`/`엔지니어링*`), `--customer/--sales/--engineering` files, or
+  `--artifacts file.json`; `--out <dir>` writes `result.json`, `report.md` and the three
+  target documents; `--fail-on blocker|warning|none` sets the verdict (exit 2 on
+  failure, 1 on usage/input error); `--approved` renders the reviewed baseline and says
+  so; `--json`, `--quiet`; `demo` compiles the bundled fixture. No model is called. 6 tests.
+- **First-pass Korean support** in the general compiler: Hangul tokenisation, particle
+  stripping for linking, native numerals and attached counters (`12곳의`, `5종`), stage
+  labels (`1단계`), units and percentages (`800 mm입니다`, `95퍼센트`), predicate-ending
+  boundaries (`커버합니다`), noun-before-quantifier phrases (`시설 전체`), and Korean cue
+  lists for every detector. A Korean translation of the Raman fixture reproduces the
+  six diagnostics and a verbatim Korean patch (`다섯 가지 명명된 분석 물질`, `12곳의 핵심
+  구역`, `감독 하의 1단계 운영`).
+- **Two more English corpora** (drone inspection, hospital delivery robot) that pin
+  down bounded lists (`all five flare stacks`), stage labels (`Phase 2`), measurable
+  acceptance (`no smaller than 10 cm at 95% recall`), completed tests, `ward`-type area
+  nouns, and site-claim clustering with number-free unverified statements.
+- `ExecutionOrigin` gains `cli`.
+
+### Changed
+
+- **Public demo redeployed (D-017):** Cloud Run revision `deployalign-00005-9vs` serves
+  the `v0.3.0` build with `GEMINI_MODEL=gemini-3.7-flash`; health reports
+  `version 0.3.0`, `model gemini-3.7-flash`, `customArtifacts false`, and a live compile
+  returned `provider gemini-vertex` with the receipt *"gemini-3.7-flash classified 3
+  source statements"*. Risks R-19/R-20 closed; assumption A-11 validated.
+- Detector fixes found by the new corpora: `attended operation` no longer swallows
+  `for the…`; "Verified data covers…" is evidence, not a completed test; unverified
+  statements without a number join the site-claim cluster they describe.
+
+### Limits
+
+- Korean support is lexical and first-pass: no morphological analysis, so unusual
+  particles, spacing or honorific forms will be missed; English narrowing of customer
+  preferences is not yet mirrored in Korean.
+- The CLI runs the deterministic path only; Gemini candidates are an API/UI feature.
+
+### Verification
+
+`pnpm typecheck`, `pnpm lint`, `pnpm test` (72 tests across 7 files) and `pnpm build`
+passed on Node 24.19.0 / pnpm 11.19.0 on 2026-08-26; `node bin/deployalign.mjs demo`
+exits 2 (four open blockers) as designed.
+
 ## [0.3.0] — 2026-08-26
 
 The tool stops being fixture-only. Behind a local-only flag it now compiles **your own**

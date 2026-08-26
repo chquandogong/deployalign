@@ -1,7 +1,7 @@
 {
   "name": "deployalign",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Evidence-gated decision compiler for bespoke robotics presales and deployment",
   "license": "MIT",
   "repository": {
@@ -13,6 +13,9 @@
   },
   "type": "module",
   "packageManager": "pnpm@11.19.0",
+  "bin": {
+    "deployalign": "bin/deployalign.mjs"
+  },
   "scripts": {
     "dev": "concurrently -k \"vite --host 0.0.0.0\" \"tsx watch server/index.ts\"",
     "build": "tsc -b && vite build",
@@ -20,7 +23,8 @@
     "preview": "vite preview",
     "start": "tsx server/index.ts",
     "test": "vitest run",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "cli": "node bin/deployalign.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
