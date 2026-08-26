@@ -138,9 +138,10 @@ export interface ExecutionReceipt {
 /**
  * Where a CompileResult object was computed. Only the compiler API process may
  * label a result `server`; anything built inside the browser (initial preview or
- * the exact-fixture network-failure fallback) is `browser`.
+ * the exact-fixture network-failure fallback) is `browser`; the command-line
+ * compiler labels its results `cli`.
  */
-export type ExecutionOrigin = 'server' | 'browser'
+export type ExecutionOrigin = 'server' | 'browser' | 'cli'
 
 /** Which compile path produced a result. */
 export type CompileMode = 'fixture' | 'custom'

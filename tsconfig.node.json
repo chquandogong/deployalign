@@ -20,5 +20,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "server", "src/domain"]
+  "include": ["vite.config.ts", "server", "src/domain", "src/lib/exportMarkdown.ts", "cli"]
 }
