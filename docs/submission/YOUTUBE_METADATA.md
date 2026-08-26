@@ -2,7 +2,7 @@
 
 > Status: v0.4.0 published at https://youtu.be/3sWnxibKU1Q (D-018 done, owner-approved 2026-08-26) · Date: 2026-08-26 · Owner: Human entrant
 
-File: `DeployAlign-Demo-v0.4.0.mp4` (3:07, 1080p30). Subtitle files `.en.srt`, `.ko.srt`, `.zh.srt` (15 cues). Visibility: **Public**. Audience: **not made for kids**. Custom thumbnail: only if the channel has phone verification; otherwise the auto-thumbnail and no claim. After publishing, the link is recorded in `README.md`, `README.ko.md`, `README.zh.md`, `docs/00-overview/DASHBOARD.md` and `DEMO_SCRIPT.md`.
+File: `DeployAlign-Demo-v0.4.0.mp4` (3:07, 1080p30). Subtitle tracks English, Korean and Chinese (Simplified) uploaded from the `.srt` files and published on 2026-08-26 (video language: English). Visibility: **Public**. Audience: **not made for kids**. Custom thumbnail: only if the channel has phone verification; otherwise the auto-thumbnail and no claim. After publishing, the link is recorded in `README.md`, `README.ko.md`, `README.zh.md`, `docs/00-overview/DASHBOARD.md` and `DEMO_SCRIPT.md`.
 
 ## Chapters (in every description)
 
