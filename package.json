@@ -1,7 +1,16 @@
 {
   "name": "deployalign",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "Evidence-gated decision compiler for bespoke robotics presales and deployment",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chquandogong/deployalign.git"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
   "type": "module",
   "packageManager": "pnpm@11.19.0",
   "scripts": {
