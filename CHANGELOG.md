@@ -3,6 +3,24 @@
 All notable changes to DeployAlign are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow SemVer.
 
+## [0.6.0] — 2026-08-26
+
+### Added
+
+- **Example presets in the editor.** Local mode gains a "Load an example" row —
+  *Hospital delivery robot (EN · fails)*, *Warehouse AMR fleet (EN · passes)*,
+  *서브팹 라만 검사 파일럿 (KO · 실패)* — so a pilot session starts from a known case
+  before pasting real documents. `src/domain/examples.ts` is the single source of truth;
+  a test asserts it mirrors `examples/` byte-for-byte and compiles to the documented
+  verdicts (3 tests).
+- A CLI/Action hint under the editor pointing at the equivalent build-step command.
+
+### Verification
+
+`pnpm typecheck`, `pnpm lint`, `pnpm test` (78 tests across 8 files) and `pnpm build`
+passed on Node 24.19.0 / pnpm 11.19.0 on 2026-08-26; headless-browser QA loaded the Korean
+preset, compiled it and saw the `CUSTOM` chip with six diagnostics and zero console errors.
+
 ## [0.5.0] — 2026-08-26
 
 The CLI becomes a **GitHub Action**, the repository ships ready-to-run example document
