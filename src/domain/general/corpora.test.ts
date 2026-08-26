@@ -82,6 +82,12 @@ describe('corpus · Korean sub-fab Raman pilot (first-pass Korean cues)', () => 
   const typed = classifyStatements(extractStatements(corpus))
   const result = compileGeneral({ artifacts: corpus, now: fixedNow })
 
+  it('narrows the Korean platform preference to the wanted thing', () => {
+    const customer = typed.filter((t) => t.statement.role === 'customer')
+    expect(customer[0]).toMatchObject({ type: 'CustomerObjective' })
+    expect(customer[1]).toMatchObject({ type: 'CustomerPreference', quote: '사족 사륜 로봇' })
+  })
+
   it('splits Korean sentences and types them by role', () => {
     expect(extractStatements(corpus).filter((s) => s.role === 'engineering')).toHaveLength(6)
     const sales = typed.filter((t) => t.statement.role === 'sales')
@@ -114,5 +120,27 @@ describe('corpus · Korean sub-fab Raman pilot (first-pass Korean cues)', () => 
     expect(approved.gate).toBe('CONDITIONAL PILOT')
     expect(approved.diagnostics.find((d) => d.code === 'DA-001')?.resolved).toBe(true)
     expect(approved.diagnostics.find((d) => d.code === 'DA-006')?.resolved).toBe(false)
+  })
+})
+
+describe('corpus · negated quantifiers are bounded, not unbounded', () => {
+  it('ignores "not every" and Korean clause-final negation', () => {
+    expect(unboundedPhrases('We will not cover every ward in Phase 1; coverage is limited to six mapped wards.')).toEqual([])
+    expect(unboundedPhrases('The robot does not serve all wards at night.')).toEqual([])
+    expect(unboundedPhrases('1단계에서는 모든 구역을 커버하지 않습니다.')).toEqual([])
+    expect(unboundedPhrases('The robot serves every ward.')).toHaveLength(1)
+    expect(unboundedPhrases('1단계는 시설 전체를 커버합니다.')).toHaveLength(1)
+  })
+
+  it('raises nothing on a proposal that explicitly bounds its own scope', () => {
+    const result = compileGeneral({
+      artifacts: [
+        artifact('customer', 'We would like the robot to serve the surgical wing first. Lift doors were measured at 900 mm by our facilities team.'),
+        artifact('sales', 'Phase 1 will not cover every ward; it serves the six mapped surgical wards in attended operation. Acceptance is 95% on-time delivery over two weeks.'),
+        artifact('engineering', 'Six wards are mapped and validated. Lift door width was measured at 900 mm. The route validation trial was completed on 2026-08-10.'),
+      ],
+      now: fixedNow,
+    })
+    expect(result.diagnostics.map((d) => d.code)).toEqual([])
   })
 })

@@ -74,6 +74,18 @@ const flagsFor = (text: string, quantities: Quantity[]): StatementFlags => {
 
 const PREFERENCE_OBJECT = /(?:need|want|would like|'d like|prefer)\s+(?:a|an)\s+(.+?)(?=\s+(?:that|which|to|for|so|with|and)\b|[.;]|$)/i
 
+// Korean: the wanted thing sits right before 이/가 필요 or 을/를 원(합니다) — take up to three words.
+const KO_PREFERENCE_OBJECT =
+  /((?:[가-힣A-Za-z0-9]+\s+){0,2}[가-힣A-Za-z0-9]+?)(?:이|가)\s*(?:필요|있으면|좋겠)|((?:[가-힣A-Za-z0-9]+\s+){0,2}[가-힣A-Za-z0-9]+?)(?:을|를)\s*(?:원합|원해|희망|선호|바랍)/
+
+const preferenceObjectOf = (text: string): string | undefined => {
+  const english = PREFERENCE_OBJECT.exec(text)
+  if (english) return english[1]!.trim()
+  const korean = KO_PREFERENCE_OBJECT.exec(text)
+  const captured = korean?.[1] ?? korean?.[2]
+  return captured ? captured.trim() : undefined
+}
+
 const build = (
   statement: Statement,
   type: CommitmentNodeType,
@@ -113,25 +125,16 @@ export const classifyStatement = (statement: Statement): TypedStatement[] => {
         return [build(statement, 'SiteClaim', 0.85, flags, quantities)]
       }
       if (measurement) return [build(statement, 'SiteClaim', 0.7, flags, quantities)]
-      const preferenceObject = PREFERENCE_OBJECT.exec(text)
+      const preferenceObject = preferenceObjectOf(text)
       const hasObjective = unboundedPhrases(text).length > 0
       if (preferenceObject && hasObjective) {
         return [
           build(statement, 'CustomerObjective', 0.8, flags, quantities),
-          build(statement, 'CustomerPreference', 0.8, flags, quantities, preferenceObject[1]!.trim()),
+          build(statement, 'CustomerPreference', 0.8, flags, quantities, preferenceObject),
         ]
       }
       if (flags.preference) {
-        return [
-          build(
-            statement,
-            'CustomerPreference',
-            0.8,
-            flags,
-            quantities,
-            preferenceObject ? preferenceObject[1]!.trim() : statement.text,
-          ),
-        ]
+        return [build(statement, 'CustomerPreference', 0.8, flags, quantities, preferenceObject ?? statement.text)]
       }
       return [build(statement, 'CustomerObjective', 0.75, flags, quantities)]
     }

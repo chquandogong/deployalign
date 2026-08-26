@@ -286,6 +286,20 @@ const trimSlice = (text: string, start: number, end: number) => {
  * claims ("autonomously", "자율적으로") that leave a commitment unbounded. A
  * quantifier followed by a number ("all five analytes") is bounded and skipped.
  */
+const ENGLISH_NEGATORS = new Set(['not', 'never', 'without', 'no', 'neither', 'nor', 'cannot', "won't", "doesn't", "isn't", "aren't"])
+const KOREAN_NEGATED_CLAUSE = /(않습니다|않는다|않았습니다|않음|아닙니다|아니다|없습니다|없다|못합니다|못한다|불가합니다|불가)[.!?]?\s*$/
+
+/** True when a quantifier phrase is negated: "not every ward", "…을 커버하지 않습니다". */
+export const isNegatedQuantifier = (text: string, tokens: WordToken[], index: number) => {
+  // English: a negator within the three preceding words of the same clause ("will not cover every ward").
+  for (let back = 1; back <= 3 && index - back >= 0; back += 1) {
+    const candidate = tokens[index - back]!
+    if (/[,.;:]/.test(text.slice(candidate.end, tokens[index - back + 1]!.start))) break
+    if (ENGLISH_NEGATORS.has(candidate.word.replace(/[.,;:]$/, ''))) return true
+  }
+  return isHangul(text) && KOREAN_NEGATED_CLAUSE.test(text.trim())
+}
+
 export const unboundedPhrases = (text: string): QuantifiedPhrase[] => {
   const tokens = wordTokens(text)
   const phrases: QuantifiedPhrase[] = []
@@ -296,6 +310,8 @@ export const unboundedPhrases = (text: string): QuantifiedPhrase[] => {
     const isQuantifier = wordMatches(quantifier, UNIVERSAL_QUANTIFIERS as readonly string[])
     const isAutonomy = wordMatches(quantifier, AUTONOMY_CUES)
     if (!isQuantifier && !isAutonomy) return
+    // "not every ward" / "…모든 구역을 커버하지 않습니다" bound the scope rather than widen it.
+    if (isNegatedQuantifier(text, tokens, index)) return
     const next = tokens[index + 1]
     if (isQuantifier && next && numericValue(next.word.split('-')[0] ?? '') !== undefined) return
     if (isQuantifier && next && /^\d/.test(next.word)) return
