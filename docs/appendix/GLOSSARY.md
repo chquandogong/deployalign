@@ -1,17 +1,20 @@
 # Glossary
 
-> Status: Active · Date: 2026-08-26 · Owner: Documentarian
+> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Documentarian
 
 | Term | Meaning in DeployAlign |
 | --- | --- |
 | AOI | Area of interest. The demo uses 12 mapped critical AOIs as a synthetic bounded scope. |
 | Artifact | One source record from the synthetic customer, sales, or engineering perspective. |
 | Commitment graph | Typed nodes and relationships representing objectives, preferences, commitments, constraints, assumptions, evidence, tests, decisions, and gates. |
+| Clause | The unit the general compiler extracts: a sentence, semicolon-separated part or line of an artifact, kept as a verbatim substring with its line number. |
 | Compile | Transform source artifacts into graph nodes, diagnostics, a proposed patch, target documents, impact sets, and receipts. |
 | Compile provenance token | One-hour base64url payload signed with HMAC-SHA256 that carries validated AI evidence through review. It is not encrypted, user authentication, or a durable approval record. |
 | Conditional pilot | Demo gate after the patch is reviewed while the blind test and site survey remain open. It is not field authorization. |
+| Custom mode | Local-only compile path (`ALLOW_CUSTOM_ARTIFACTS=true`) for user-supplied artifacts through the general compiler; results carry `mode: custom`, `synthetic: false`. The public demo never enables it. |
 | Decision ID | Stable identifier (`DEC-014`) attached to affected target sections. |
 | Deterministic fallback | Deterministic compiler path used server-side when Gemini is disabled/rejected, or client-side for an eligible exact-fixture network failure. Since 0.2.0 the `executionOrigin` field tells the two apart. |
+| Detector | A deterministic rule that turns typed clauses into one of DA-001–DA-006 with source quotes. Lexical heuristics — candidates for review, not conclusions. |
 | Diagnostic | A coded blocker or warning linked to source references and graph nodes. |
 | Execution origin | `executionOrigin` on a compile result: `server` when the compiler API process built it (token-bearing, rate-limited, logged) or `browser` when this page built it (initial preview or network-failure fallback). Disclosure, not an integrity guarantee. |
 | Evidence envelope | The bounded claims supported by source evidence. In the synthetic demo: five named analytes under controlled conditions. |

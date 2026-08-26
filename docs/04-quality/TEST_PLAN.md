@@ -1,6 +1,6 @@
 # Test Plan
 
-> Status: 0.2.0 local automated QA passed (38 tests); 0.1.0 deployed-Vertex and live-browser evidence retained · Date: 2026-08-26 · Owner: QA
+> Status: 0.3.0 local automated QA passed (60 tests) plus headless-browser QA of custom mode; 0.1.0 deployed-Vertex evidence retained · Date: 2026-08-26 · Owner: QA
 
 ## Objectives
 
@@ -31,6 +31,27 @@
 
 Final updated evidence on 2026-08-17 after the response-isolation, strict-fixture, and responsive containment fixes: `pnpm typecheck`, `pnpm lint`, 13/13 tests, and `pnpm build` all exited 0; the production audit reported zero vulnerabilities. The build used Vite 8.2.1, processed 1,570 modules, and emitted 38.83 kB CSS and 241.07 kB JS. A direct production server smoke also passed root 200/no-store/CSP, hashed asset 200/one-year immutable caching, valid/tampered/extra-segment/expired token behavior, and missing-secret production startup failure. The later license-compliance commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` was built and deployed as current Cloud Run revision `deployalign-00004-wgb`; post-deploy smoke verified 100% traffic, health `ok=true`/`service=deployalign`/`liveGemini=true`, and the footer notice at HTTP 200/3,462 bytes. Retain redacted command and cloud evidence with the release checkpoint.
 
+## General-path tests (`src/domain/general/general.test.ts`, 15 cases — 0.3.0)
+
+| Case | Input | Expected result |
+| --- | --- | --- |
+| Clause extraction | Fixture; multi-line note with bullets | 12 verbatim clauses with offsets/line numbers; line numbers track blank lines and bullets; fragments without letters dropped |
+| Typing | Fixture clauses | Customer opener → objective + narrowed preference (`four-legged, four-wheeled robot`); hedged measurement → `SiteClaim`; mandatory/acceptance sales text flagged; engineering → evidence / constraint / assumption / unverified site claim / open test |
+| Unbounded phrases | Sales promise | `entire facility` (coverage), `autonomously` (autonomy), `any leaked material` (scope) |
+| Fixture reproduction | Fixture through `compileGeneral` | Same six codes and severities as the canonical compiler; 4 unresolved blockers; `HOLD` |
+| Patch derivation | Fixture | `analyte scope: any leaked material → five named analytes`, `coverage: entire facility → Twelve critical AOIs`, `operating mode: autonomously → supervised Phase 1`, plus a platform-requirement change; resolves DA-001/002/003/005 |
+| Approval | Fixture, approved | v2, `CONDITIONAL PILOT`, DA-004/DA-006 open, `SCOPE-001` + decision node present, commitment `INVALIDATED` |
+| Incremental rebuild | Fixture before/after | ≥ 6 decision-linked sections recompiled; `CDM-3`, `SOW-7.1`, `ENG-CONST` keep fingerprints |
+| Grounding / references | Both baselines | Every node and diagnostic quote is a substring; no dangling node/edge references |
+| Determinism / isolation | Same input twice; mutate one result | Equal outputs; later compile unaffected |
+| Clean corpus | Bounded warehouse AMR case with completed tests | Zero diagnostics, empty patch, tests `PASS` |
+| Unsupported corpus | Unbounded promise, no measured evidence | DA-001, DA-002, DA-006; empty patch with explanatory rationale; no `SCOPE-001` after approval |
+| Hostile text | "Ignore prior instructions…" inside a document | Treated as data; gate `HOLD`, patch `PROPOSED` |
+
+## Export tests (`src/lib/exportMarkdown.test.ts`, 2 cases — 0.3.0)
+
+Markdown contains gate, diagnostics with quotes, patch table, recompiled markers, source map and the synthetic disclosure; file names are sanitised.
+
 ## Gemini validator tests (`server/gemini.test.ts`, 11 cases — 0.2.0)
 
 | Case | Input | Expected result |
@@ -45,7 +66,7 @@ Final updated evidence on 2026-08-17 after the response-isolation, strict-fixtur
 | Rationale bounds | Whitespace-only or > 1,000 characters | Throws `rationale failed validation` |
 | Empty payload | `{}` | Throws |
 
-## API contract tests (`server/app.test.ts`, 13 cases — implemented in 0.2.0)
+## API contract tests (`server/app.test.ts`, 18 cases — 13 from 0.2.0, 5 custom-mode cases from 0.3.0)
 
 | Case | Request | Expected result | Status |
 | --- | --- | --- | --- |
@@ -60,8 +81,13 @@ Final updated evidence on 2026-08-17 after the response-isolation, strict-fixtur
 | Unknown API route | `GET /api/nope` | HTTP 404 JSON | Passing |
 | Rate limit | Seventh compile in one window on an isolated instance | HTTP 429, `Retry-After: 600` | Passing |
 | Production secret guard | `nodeEnv: production` without secret; short secret in any mode | `createApp` throws | Passing |
+| Custom mode advertised | `allowCustomArtifacts: true` | Health `customArtifacts: true`; fixture still `mode: fixture`, `DEC-014` | Passing |
+| Custom compile | Three role-tagged custom texts | 200; `mode: custom`, `synthetic: false`, `server` origin, `HOLD`; DA-001/002/004/005/006; patch `three named analytes` / `Eight critical zones` / `supervised operation` | Passing |
+| Custom review binding | Approve without artifacts; with altered artifacts; with the fixture patch id; with the identical set | 409 / 409 / 409 / 200 v2 `CONDITIONAL PILOT` with `SCOPE-001` | Passing |
+| Custom validation | Two customer documents; a 3-character document | 400 with role message; 400 with length message | Passing |
+| Key stripping | Extra `hidden` key on each artifact | 200; artifacts contain only the six schema keys | Passing |
 
-Still not automated (tracked): oversize artifact (> 8,000 chars), body > 64 KB, expired-token path (needs clock injection), Gemini malformed/ungrounded responses through the HTTP path (validator is unit-tested), multi-instance routing.
+Still not automated (tracked): oversize artifact (> 8,000 chars), body > 64 KB, expired-token path (needs clock injection), Gemini malformed/ungrounded responses through the HTTP path (validator is unit-tested), multi-instance routing, custom mode combined with live Gemini.
 
 ## API contract tests originally planned (2026-08-17 list, retained for traceability)
 
@@ -100,6 +126,16 @@ Completed against the production Express build in the in-app browser on 2026-08-
 
 The same core flow was then verified against the public Cloud Run URL. The UI showed `Gemini via Vertex AI`; `gemini-2.5-flash` classified exactly three source statements as separate `AI_DRAFT` candidates; the AI receipt showed `SUCCESS`; and the signed review token preserved that provider/candidate provenance after approval. Redacted logs recorded `compile_completed` at version 1 with six unresolved diagnostics and `patch_approved` at version 2. Official Vertex AI Model Garden Monitoring also showed the `gemini-2.5-flash` row and last-hour model-request/token-count graphs. The approved UI showed one open blocker, 11 typed nodes, three synced targets, six rebuilt sections, and three unchanged sections. These observations verify the deployed synthetic path and model observability evidence, not Gemini ownership of the deterministic graph/gates/targets or production readiness.
 
+## Browser QA — custom-document flow (0.3.0, 2026-08-26)
+
+Headless Chromium (Playwright 1.58) against the production build started with `ALLOW_CUSTOM_ARTIFACTS=true` on a local port:
+
+1. Health-driven toggle **Use your own documents** visible → editor with three text areas.
+2. Pasted a synthetic plant-leak corpus → **Compile these documents** → notice "Compiled by the compiler API"; strip `USER-SUPPLIED DOCUMENTS`; chip `CUSTOM`; project `CUSTOM REVIEW · E242501D`; diagnostics `DA-001, DA-002, DA-004, DA-005, DA-006`; three patch rows with `three named analytes`, `Eight critical zones`, `supervised operation`; gate `HOLD`.
+3. **Simulate approval & recompile** → `CONDITIONAL PILOT`, `HUMAN RECEIPT`, badge `6 RECOMPILED`.
+4. **Markdown** export → download `custom-review-e242501d-v2.md` (6,181 bytes) starting with `# Custom review` and containing the patch table.
+5. Zero console errors or page errors. Screenshots: `docs/assets/custom-mode-0.3.0.png`, `docs/assets/custom-patch-0.3.0.png`.
+
 ## User-value tests
 
 | Hypothesis | Experiment | Success signal | Failure signal |
@@ -137,7 +173,7 @@ No such user experiment has been run yet.
 ## Regression commands
 
 ```text
-pnpm test        # 38 tests: 14 domain · 11 Gemini validation · 13 API contract
+pnpm test        # 60 tests: 14 domain · 15 general path · 2 export · 11 Gemini validation · 18 API contract
 pnpm typecheck
 pnpm lint
 pnpm build
@@ -145,7 +181,7 @@ pnpm build
 
 Archive date, commit (when one exists), exit status, and redacted output. A command listed here is not proof that it passed.
 
-Evidence 2026-08-26 (0.2.0, Node 24.19.0, pnpm 11.19.0): all four commands exited 0; Vitest reported 38/38 across three files; Vite emitted 39.50 kB CSS and 242.71 kB JS. A production-mode HTTP smoke against `pnpm start` on a local port returned health `version 0.2.0` / `model gemini-3.7-flash`, compile → approve with `executionOrigin: server`, HTTP 409 for a tampered token, root `no-store` with CSP, one-year immutable hashed assets, and the 3,462-byte licence notice. **Not covered in this cycle:** a live `gemini-3.7-flash` call (no credentials in the build environment) and the Cloud Run container build (CI performs the image build; the deployed revision is unchanged).
+Evidence 2026-08-26 (0.3.0, Node 24.19.0, pnpm 11.19.0): all four commands exited 0; Vitest reported 60/60 across five files; the browser QA above passed. Earlier the same day (0.2.0): 38/38 across three files; Vite emitted 39.50 kB CSS and 242.71 kB JS. A production-mode HTTP smoke against `pnpm start` on a local port returned health `version 0.2.0` / `model gemini-3.7-flash`, compile → approve with `executionOrigin: server`, HTTP 409 for a tampered token, root `no-store` with CSP, one-year immutable hashed assets, and the 3,462-byte licence notice. **Not covered in this cycle:** a live `gemini-3.7-flash` call (no credentials in the build environment) and the Cloud Run container build (CI performs the image build; the deployed revision is unchanged).
 
 ## Release blockers
 

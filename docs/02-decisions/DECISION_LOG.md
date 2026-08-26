@@ -1,6 +1,6 @@
 # Decision Log
 
-> Status: Active · Date: 2026-08-26 · Owner: Project lead
+> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Project lead
 
 ## D-001 — Use a hybrid evidence compiler
 
@@ -171,11 +171,24 @@
 - Approval: Local render is reversible. **Uploading to YouTube and swapping the README link is a publication gate (D-018) and was not performed autonomously.**
 - Revisit when: The owner uploads v2 or chooses a human voice (D-019).
 
+## D-016 — Ship "bring your own artifacts" as a local-only general compiler (0.3.0)
+
+- Date: 2026-08-26
+- Context: The owner approved the roadmap's next cycle ("go"). The fixture-only prototype proves a mechanism but cannot be used on anyone's real documents.
+- Options: (a) relax the fixture guard everywhere; (b) a local-only mode behind a flag with a general compiler; (c) Gemini-only extraction for custom documents; (d) wait for practitioner interviews first.
+- Decision: (b). `ALLOW_CUSTOM_ARTIFACTS=true` enables a deterministic general path — clause extraction, role-aware lexical typing, DA-001–DA-006 as detectors, patch values copied verbatim from engineering statements, three generic targets. The public demo keeps the fixture guard. Gemini stays an optional, separately-shown candidate layer with a hardened prompt for untrusted text.
+- Rationale: A reviewer can only judge the tool on their own text; a deterministic baseline is testable offline and keeps "rules own the gate" true even when no model is configured.
+- Rejected: (a) would send arbitrary text to Gemini on the public endpoint; (c) is unverifiable without credentials and would make the gate depend on a model; (d) leaves nothing for practitioners to try.
+- **Amended acceptance criterion:** the roadmap said the fixture must reproduce "byte-for-byte" through the general path. That is impossible — the canonical nodes are hand-authored labels ("Detect hazardous leaks") that do not appear in the source text. The criterion is now: same six codes with the same severities, the three canonical patch categories with values taken from the engineering clauses, `HOLD` → `CONDITIONAL PILOT`, DA-004/DA-006 still open after review, unrelated sections keep their fingerprints. Verified by `src/domain/general/general.test.ts`.
+- Residual risk: lexical detectors over/under-fire on unfamiliar phrasing (R-22); user text reaches Gemini when both flags are on (R-23); English only.
+- Approval: Owner "go" on 2026-08-26 to the proposed next cycle; local-only default keeps the privacy posture unchanged for the public demo.
+- Revisit when: two practitioners have run redacted documents through it (roadmap 0.5).
+
 ## Owner decision queue
 
 | ID | Decision | Default if silent | Gate type |
 | --- | --- | --- | --- |
-| D-016 | Approve the 0.3 "bring your own artifacts" local-mode design (`ROADMAP.md`) | Not started | Privacy — non-synthetic text to a model |
+| D-016 | ~~Approve the 0.3 local-mode design~~ — approved and shipped in 0.3.0 (see entry above) | Done | — |
 | D-017 | Redeploy Cloud Run with 0.2.0 and verify a live `gemini-3.7-flash` receipt | Public demo stays on 0.1.0 / 2.5 Flash | Production deployment |
 | D-018 | Upload demo video v2 and swap the README/YouTube links | README keeps the 2026-08-17 video | Public publication |
 | D-019 | Synthesized narration voice vs. human recording | Synthesized, licence note kept | Brand / rights |

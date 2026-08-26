@@ -97,6 +97,31 @@ The live 0.1.0 deployment with real Gemini receipts, as verified on 2026-08-17:
 
 ![Approved state with live Gemini receipts](submission-assets/deployalign-live-gemini-approved.png)
 
+## Run it on your own documents (local mode, 0.3)
+
+The public demo compiles only the synthetic fixture — that guard is a security boundary
+for an unauthenticated endpoint. Locally, one flag opens a **general compile path** for
+your own three documents:
+
+```bash
+ALLOW_CUSTOM_ARTIFACTS=true pnpm dev
+```
+
+The hero gains a **Use your own documents** button. Paste a customer note, a sales
+proposal and an engineering review; the compiler splits them into verbatim clauses, types
+each clause with role-aware lexical rules, runs `DA-001`–`DA-006` as detectors, and
+proposes a patch whose every replacement value is **copied from an engineering
+statement** — if the engineering text names no bounded quantity, no patch is proposed and
+the rationale says so. Review, approve, and export the result as Markdown or JSON.
+
+![Custom mode — user-supplied documents compiled locally](docs/assets/custom-mode-0.3.0.png)
+
+What to expect, honestly:
+
+- The detectors are **English lexical heuristics**. They find candidates for a reviewer and quote their source; they do not decide anything and will miss phrasing they were not written for. Korean and other languages are on the roadmap.
+- The gate stays `HOLD` until a person reviews, even when nothing fires, and never becomes an unconditional `PASS`.
+- Your text stays with your own API process. It reaches Gemini **only** if that process also runs with `ALLOW_LIVE_GEMINI=true`; never enable both on a public deployment.
+
 ## Architecture
 
 ```mermaid
@@ -115,10 +140,10 @@ flowchart LR
 
 | Layer | Where | What it owns |
 | --- | --- | --- |
-| Domain | `src/domain/` | Types, the deterministic compiler, the synthetic fixture (frozen), 14 tests |
-| API | `server/app.ts`, `server/index.ts` | Input bounds, rate limit, HMAC provenance tokens, `/api/health`, `/api/compile`, `/api/approve`, static build; 13 contract tests |
+| Domain | `src/domain/` | Types, the canonical fixture compiler (14 tests), the frozen synthetic fixture, and `general/` — clause extraction, lexical typing, detectors, evidence-derived patch, generic targets (15 tests) |
+| API | `server/app.ts`, `server/index.ts` | Input bounds, fixture guard / custom mode, rate limit, HMAC tokens bound to mode + patch + artifact hash, `/api/health`, `/api/compile`, `/api/approve`, static build; 18 contract tests |
 | Model adapter | `server/gemini.ts` | Opt-in Gemini call, prompt, `thinkingConfigFor`, pure `validateGeminiPayload`; 11 tests |
-| UI | `src/App.tsx` | Sources, graph + node inspector, diagnostics, patch diff, approval boundary, impact table, targets, source map, receipts |
+| UI | `src/App.tsx`, `src/components/ArtifactEditor.tsx`, `src/lib/exportMarkdown.ts` | Sources, document editor (custom mode), graph + node inspector, diagnostics, patch diff, approval boundary, impact table, targets with Markdown/JSON export, source map, receipts |
 
 Details: [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
 [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md).
@@ -155,6 +180,7 @@ server-side credential path. Never put a key in a client-side `VITE_*` variable.
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `ALLOW_LIVE_GEMINI` | `false` | Opt in to model calls; the public demo cannot spend quota silently |
+| `ALLOW_CUSTOM_ARTIFACTS` | `false` | Local mode: accept your own three documents through the general compiler. Keep it off on public deployments |
 | `GEMINI_API_KEY` | — | Path A: Gemini Developer API |
 | `GOOGLE_CLOUD_PROJECT` / `GOOGLE_CLOUD_LOCATION` | — / `global` | Path B: Vertex AI with Application Default Credentials. Keep `global` for Gemini 3.x |
 | `GEMINI_MODEL` | `gemini-3.7-flash` | Pin any model. Gemini 2.5 Flash is on a Vertex AI retirement track (2026-10-16) |
@@ -170,7 +196,7 @@ server-side credential path. Never put a key in a client-side `VITE_*` variable.
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest — 38 tests in 3 suites
+pnpm test        # vitest — 60 tests in 5 suites
 pnpm build       # vite production bundle
 ```
 
@@ -200,7 +226,7 @@ in [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md).
 - Generated documents are **drafts** until a person approves the semantic patch; the demo's approve button illustrates that boundary and is not authenticated approval.
 - Gemini **cannot invent** measurements, cost, schedule, physical feasibility or safety certification, and cannot advance the gate.
 - Source quotes returned by the model must match the artifact **exactly** or are rejected.
-- The public prototype compiles **only the disclosed synthetic fixture**; any change to count, metadata or content is refused before the model is called.
+- The public prototype compiles **only the disclosed synthetic fixture**; any change to count, metadata or content is refused before the model is called. Custom mode is a local-only flag and is never enabled on the public demo.
 - The compile token is signed, not encrypted; the rate limit is in-memory; fingerprints are `fnv1a32` change detectors, not integrity hashes. See [`SECURITY.md`](SECURITY.md) and [`docs/04-quality/RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md).
 - DeployAlign does not control a robot and does not certify chemical detection or facility access.
 
@@ -210,8 +236,8 @@ The mechanism is proven on one synthetic case. "Useful" means a deployment engin
 can run it on **their own** three documents and act on the result. The next steps, each
 with success and stop criteria, are in [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md):
 
-1. **0.3 — Bring your own artifacts (local mode).** Turn the six fixture-bound diagnostics into general detectors over a Gemini-extracted, exact-quote graph; export targets as Markdown/JSON. Default off; privacy decision D-016.
-2. **0.4 — CLI and CI mode.** `deployalign compile ./artifacts --fail-on blocker` so a SOW edit that outruns evidence fails the docs pipeline.
+1. ~~**0.3 — Bring your own artifacts (local mode).**~~ Shipped in 0.3.0: deterministic general compiler, six detectors, verbatim-evidence patch, Markdown/JSON export, local-only flag (D-016).
+2. **0.4 — CLI and CI mode.** `deployalign compile ./artifacts --fail-on blocker` so a SOW edit that outruns evidence fails the docs pipeline — the general compiler now exists to power it.
 3. **0.5 — Practitioner pilot.** Five interviews, redacted samples, measured precision and time-to-decision — the only thing that decides whether identity, persistence and audit are worth building.
 
 Issues and pull requests are welcome; see [`CONTRIBUTING.md`](CONTRIBUTING.md).
@@ -224,8 +250,9 @@ checkpoint (`v0.1.0`), not the finish line. The project continues in the open; c
 are recorded in [`CHANGELOG.md`](CHANGELOG.md) and the reasoning behind them in
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md).
 
-Honest scope, as of 0.2.0: the deterministic compiler, API, UI and tests are
-implemented and verified locally; a live `gemini-2.5-flash` call was verified on the
+Honest scope, as of 0.3.0: the deterministic compilers (fixture and general), API, UI and
+60 tests are implemented and verified locally, including a headless-browser run of the
+custom-document flow; a live `gemini-2.5-flash` call was verified on the
 deployed 0.1.0 revision; the `gemini-3.7-flash` default is unit-tested and awaits its
 first live receipt; there is no production deployment, no customer, and no measured
 field outcome. Nothing here establishes eligibility, an award or business viability.
@@ -236,11 +263,11 @@ field outcome. Nothing here establishes eligibility, an award or business viabil
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | Current state, work board, decisions waiting on the owner |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | What "useful" means and the phases to get there |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | Functional requirements FR-01…FR-22 and acceptance criteria |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | Functional requirements FR-01…FR-28 and acceptance criteria |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | Components, data flow, trust boundaries, failure modes |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | Test plan and risks with state |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | Run, verify, migrate the model, troubleshoot, roll back |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-015 and the owner decision queue |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-016 and the owner decision queue |
 | [`docs/submission/`](docs/submission/) | Demo script, YouTube metadata, and the historical Devpost evidence record |
 
 ## License

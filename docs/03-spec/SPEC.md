@@ -1,6 +1,6 @@
 # DeployAlign Specification
 
-> Status: Prototype 0.2.0 implemented; local QA passed; deployed 0.1.0 revision unchanged · Date: 2026-08-26 · Owner: Product and engineering
+> Status: Prototype 0.3.0 implemented; local QA passed; deployed 0.1.0 revision unchanged · Date: 2026-08-26 · Owner: Product and engineering
 
 ## Problem definition
 
@@ -41,7 +41,7 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 ### Excluded
 
 - Real robot, sensor, ERP, CRM, document-system, or identity integration.
-- Customer data ingestion, file upload, persistence, or multi-tenancy.
+- File upload, persistence, or multi-tenancy. (Pasting your own three texts is supported **locally** since 0.3.0 behind `ALLOW_CUSTOM_ARTIFACTS`; the public demo remains fixture-only.)
 - Production authorization, electronic signature, safety certification, or contract approval.
 - Invented acceptance thresholds, pricing, schedules, users, or financial data.
 - Automatic publication, material deployment changes, or competition submission.
@@ -72,11 +72,17 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 | FR-20 | Report service version and configured model on `/api/health` | Should | API test asserts `version` (SemVer) and `model` (`gemini-*`) |
 | FR-21 | Default to a generally available Gemini model with a compatible thinking configuration | Must | `DEFAULT_GEMINI_MODEL` is `gemini-3.7-flash`; `thinkingConfigFor` returns `thinkingLevel` for Gemini 3 and `thinkingBudget: 0` for Gemini 2.5 (unit tests) |
 | FR-22 | Cover the HTTP contract automatically | Must | `server/app.test.ts` exercises health, compile bounds, malformed JSON, token tamper, review round trip, 404, rate limit and startup guards |
+| FR-23 | Compile user-supplied artifacts through a deterministic general path when `ALLOW_CUSTOM_ARTIFACTS=true` | Must | One document per role, ≥ 20 chars; `mode: custom`, `synthetic: false`; fixture still uses the canonical compiler (API tests) |
+| FR-24 | Run DA-001–DA-006 as detectors over extracted clauses; ground every finding in a verbatim quote | Must | `general.test.ts`: fixture reproduces the six codes/severities; clean corpus yields none; every quote is a substring |
+| FR-25 | Derive patch values only from engineering statements; propose nothing when none exist | Must | Fixture yields `five named analytes` / `Twelve critical AOIs` / `supervised Phase 1`; unsupported corpus yields an empty patch with an explanatory rationale |
+| FR-26 | Bind custom review to the compiled artifacts | Must | Token carries mode, patch id and SHA-256 of artifacts; mismatched or missing artifacts → 409 |
+| FR-27 | Export the compiled result as Markdown and JSON in the browser | Should | `exportMarkdown.test.ts`; headless-browser download check |
+| FR-28 | Show the document editor only when the API advertises custom mode | Should | Health `customArtifacts` drives the toggle; fixture-only deployments never show it |
 
 ## Non-functional requirements
 
 - Performance: client API attempt times out after 60 seconds; no production latency SLO is claimed.
-- Scale: one fixed three-artifact fixture, 8,000 characters maximum per artifact, and six compile attempts per ten minutes per IP on one process.
+- Scale: one fixed three-artifact fixture on the public demo, or any three role-tagged texts in local custom mode; 8,000 characters maximum per artifact; six compile attempts per ten minutes per IP on one process.
 - Security: JSON body limited to 64 KB; common hardening headers and CSP set; HMAC review token expires after one hour; no user authentication exists.
 - Privacy: use synthetic text only until data handling, retention, model transmission, and consent policies exist.
 - Accessibility: keyboard-operable controls, visible focus, semantic headings/tables, sufficient contrast, and provider/status not encoded by color alone.
@@ -114,7 +120,7 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 
 ## Test acceptance
 
-- All 38 automated tests pass: 14 domain, 11 Gemini validation, 13 API contract (verified 2026-08-26 on Node 24.19.0).
+- All 60 automated tests pass: 14 domain, 15 general-path, 2 export, 11 Gemini validation, 18 API contract (verified 2026-08-26 on Node 24.19.0).
 - Typecheck, lint, and production build pass (verified 2026-08-26).
 - API contract and failure cases receive automated coverage (`server/app.test.ts`, 0.2.0).
 - Visual QA confirms synthetic/fallback/human-gate disclosures.

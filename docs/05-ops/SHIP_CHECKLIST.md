@@ -1,8 +1,20 @@
 # Ship Checklist
 
-> Status: **v0.2.0 repository release — GO; Cloud Run redeploy, video upload — GATED; customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
+> Status: **v0.3.0 repository release — GO; Cloud Run redeploy (auth pending), video upload — GATED; customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
 
 Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable to the bounded prototype.
+
+## v0.3.0 repository release (2026-08-26)
+
+- [x] `pnpm typecheck`, `pnpm lint`, `pnpm test` (60/60 across 5 files), `pnpm build` exited 0 on Node 24.19.0 / pnpm 11.19.0.
+- [x] Headless-browser QA of the custom-document flow (editor → compile → approve → Markdown export) passed with zero console errors; screenshots in `docs/assets/`.
+- [x] Fixture behaviour unchanged: canonical compiler still used for the synthetic case; 14 domain tests untouched and passing.
+- [x] Custom mode off by default; token binds artifact hash; runbook forbids the flag on the public demo (R-23).
+- [x] `CHANGELOG.md` 0.3.0, version bump, README ×3 updated together, D-016 recorded with the amended criterion, R-22/R-23 added, FR-23–FR-28 added.
+- [ ] Live `gemini-3.7-flash` receipt — not part of this release; D-017 blocked on owner authentication.
+- [-] Cloud Run redeploy, YouTube upload — owner gates, intentionally not performed.
+
+Judgment: **GO** to tag `v0.3.0`, push and publish a GitHub release.
 
 ## v0.2.0 repository release (2026-08-26)
 

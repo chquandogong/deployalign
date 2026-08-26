@@ -1,6 +1,46 @@
 # Retro
 
-> Status: Two cycles recorded — 0.1.0 submission (2026-08-17) and 0.2.0 post-submission (2026-08-26) · Date: 2026-08-26 · Owner: Project team
+> Status: Three cycles recorded — 0.1.0 submission (2026-08-17), 0.2.0 hygiene (2026-08-26), 0.3.0 custom documents (2026-08-26) · Date: 2026-08-26 · Owner: Project team
+
+## Cycle 0.3.0 — the tool compiles your own documents (2026-08-26)
+
+### What was done
+
+- Built the general compiler: verbatim clause extraction with line numbers, role-aware lexical typing into the eleven node types, DA-001–DA-006 as detectors, a patch whose values are copied from engineering clauses, generic targets with the same incremental-rebuild mechanics.
+- Added a local-only API mode (`ALLOW_CUSTOM_ARTIFACTS`) with review tokens bound to an artifact hash, a document editor gated by health, and Markdown/JSON export.
+- 38 → 60 tests; headless-browser QA of the full custom flow; screenshots for the docs.
+- Installed a user-space gcloud and wrote the gated redeploy script for D-017.
+
+### What went well
+
+- Writing the acceptance tests before tuning the lexicon exposed each false assumption in one run: newline boundaries, the autonomy cue swallowing the next noun phrase, the coverage enumeration typed by its adjective, hyphenated number-adjectives counted as enumerations, a DA-002 warning on a pricing sentence. Every fix landed in a test.
+- The fixture stays byte-identical through the canonical compiler, so nothing from 0.2.0 (video, screenshots, README claims) went stale.
+- Keeping replacement values verbatim ("Twelve critical AOIs", not "12") made the rationale literally true: every patch value can be found in the engineering text.
+
+### What was learned and corrective actions
+
+- **"Byte-for-byte" was the wrong acceptance criterion** for a general path against hand-authored canonical nodes; the roadmap now states the criterion that was actually testable (same codes/severities/patch categories/gate behaviour). Corrective action: write acceptance criteria as assertions before promising them in a roadmap.
+- **Heuristics need a corpus discipline.** Three synthetic corpora (fixture, clean warehouse, unsupported plant) caught the false positives that mattered; real phrasing will find more. Corrective action: every misfire reported by a practitioner becomes a corpus sentence first (CONTRIBUTING).
+- **Wording is part of the contract.** The provider badge said "fixture fallback" in custom mode until the screenshot was actually looked at. Corrective action: mode-aware strings are now part of the UI review checklist.
+
+### Failures and incomplete work
+
+- No live `gemini-3.7-flash` call and no redeploy: the build machine has no Google credentials; gcloud is installed but `gcloud auth login` is an owner action (D-017).
+- Gemini is not extended to classify all statements in custom mode; it still returns three representative candidates.
+- English-only detectors; Korean documents will yield few nodes.
+- Still no practitioner has run a real document through it.
+
+### Metrics
+
+- Tests: 38 → 60 (5 files). Detectors generalised: 0 → 6. Corpora: 1 → 3.
+- Browser QA: 1 scripted run, 0 console errors, export verified.
+
+### Deferred to the next cycle
+
+1. D-017 redeploy after owner auth (before 2026-10-16).
+2. 0.4 CLI/CI mode on the general compiler.
+3. Korean cue lists and clause splitting for `.`/`다.` sentences.
+4. Practitioner interviews and redacted-document corpora (R-22).
 
 ## Cycle 0.2.0 — post-submission hygiene and honesty (2026-08-26)
 

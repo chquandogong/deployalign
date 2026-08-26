@@ -1,6 +1,6 @@
 # Risk Register
 
-> Status: Active · Date: 2026-08-26 · Owner: Red team and project lead
+> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Red team and project lead
 
 Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means reduced, not eliminated.
 
@@ -16,7 +16,7 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 | R-08 | In-memory IP rate limit is bypassed, shared incorrectly, or lost on restart | Medium | Medium | Abuse or inconsistent 429 behavior across replicas | Managed rate limit and identity in production | Backend | Accepted for local demo |
 | R-09 | Prompt injection or malicious source content influences Gemini rationale | Medium | High | Rationale contains instructions or unrelated text | Treat documents as data; strict schema/quotes; deterministic policies; adversarial tests | AI/security | Open |
 | R-10 | Exact-substring grounding creates false confidence despite missing context | Medium | High | Quote is exact but classification/meaning is wrong | Human source review; semantic benchmarks; context windows and provenance coordinates | AI/QA | Open |
-| R-11 | Diagnostic rules are overfit to the bundled sample | High | High | Performance drops on paraphrases or new domains | Build a consented redacted corpus; measure precision/recall and false negatives | Product/QA | Open |
+| R-11 | Diagnostic rules are overfit to the bundled sample | Medium | High | Performance drops on paraphrases or new domains | 0.3.0 general detectors reproduce the fixture and pass a bounded warehouse corpus with zero findings and an unsupported corpus with the expected blockers; still synthetic — measure on consented redacted documents (roadmap 0.5) | Product/QA | Mitigating |
 | R-12 | Public repository/video exposes secrets, PII, customer data, or unlicensed assets | Medium | Critical | Public Git author metadata is exposed and Microsoft Mark redistribution remains uncertain | Browser-bundle notice and exact OSS disclosure are complete; entrant accepted the identity/audio residual risks for submission | Human entrant | Accepted residual risk |
 | R-13 | Public demo lacks authentication, persistence, durable monitoring, or tested rollback | High | Critical | Public URL points directly to current demo API | Keep fixed synthetic input and clear demo labels; do not treat as production; add controls before real use | Engineering | Accepted only for bounded demo |
 | R-14 | Challenge deadline pressure causes unsupported claims or incomplete finalization | High | Critical | Required evidence has no source near deadline | Preserve exact evidence and confirmation; require approval for material edits | Project lead | Submission gate satisfied |
@@ -27,6 +27,8 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 | R-19 | Default model retirement breaks the live path: Vertex AI lists 2026-10-16 for `gemini-2.5-flash`, which the deployed 0.1.0 revision still uses | High | Medium | Live compiles start failing validation or return provider errors; health still says `liveGemini=true` | Default moved to `gemini-3.7-flash` in 0.2.0 (D-013); redeploy and verify a live receipt before 2026-10-16 (D-017) | Engineering + owner | Open until redeploy |
 | R-20 | New default model is not live-verified: `thinkingLevel` and structured output on `gemini-3.7-flash` are covered by unit tests only | Medium | Medium | First deploy logs `gemini_extraction_rejected` or an SDK error | Verify one live compile on Vertex `global` at deploy time; `GEMINI_MODEL` pin is the rollback | Engineering | Open |
 | R-21 | Translated READMEs drift from the English source of truth | Medium | Low | A change lands in `README.md` only | CONTRIBUTING requires all three or an `i18n` issue; CI does not enforce it | Documentarian | Accepted |
+| R-22 | Lexical detectors over- or under-fire on real phrasing (English-only cue lists, clause-per-line splitting, keyword-overlap linking) | High | Medium | Reviewers see a wrong type, a missed quantifier, or a spurious DA-002 | Every finding quotes its source and is labelled heuristic; the gate never passes without a person; collect misfires from practitioners into the test corpora | Product/QA | Open — inherent to 0.3 |
+| R-23 | Custom mode plus live Gemini sends user-supplied text to the model | Medium | High | `ALLOW_CUSTOM_ARTIFACTS=true` on a deployment with `ALLOW_LIVE_GEMINI=true` | Both flags default off; the runbook forbids custom mode on the public demo; the UI states where text goes; prompt tells the model the text is untrusted data | Owner/Ops | Open — documented control |
 
 ## Highest-priority controls before any public action
 

@@ -93,6 +93,29 @@ recompile**을 누른 뒤 임팩트 테이블을 비교해 보라: 6개 섹션�
 
 ![라이브 Gemini 영수증이 있는 승인 상태](submission-assets/deployalign-live-gemini-approved.png)
 
+## 자기 문서로 돌려보기 (로컬 모드, 0.3)
+
+공개 데모는 합성 픽스처만 컴파일합니다 — 인증 없는 엔드포인트의 보안 경계입니다. 로컬에서는
+플래그 하나로 자기 문서 세 개를 위한 **일반 컴파일 경로**가 열립니다:
+
+```bash
+ALLOW_CUSTOM_ARTIFACTS=true pnpm dev
+```
+
+히어로에 **Use your own documents** 버튼이 생깁니다. 고객 메모, 영업 제안서, 엔지니어링 리뷰를
+붙여 넣으면 컴파일러가 원문 그대로의 절(clause)로 나누고, 역할을 고려한 어휘 규칙으로 각 절의
+타입을 정하고, `DA-001`–`DA-006`을 감지기로 실행한 뒤, **모든 대체 값을 엔지니어링 문장에서
+복사한** 패치를 제안합니다 — 엔지니어링 텍스트에 한정된 수량이 없으면 패치를 제안하지 않고 그
+이유를 근거란에 적습니다. 검토·승인하고 결과를 Markdown 또는 JSON으로 내보낼 수 있습니다.
+
+![커스텀 모드 — 사용자 문서를 로컬에서 컴파일](docs/assets/custom-mode-0.3.0.png)
+
+정직하게 기대할 것:
+
+- 감지기는 **영어 어휘 휴리스틱**입니다. 검토자를 위한 후보를 찾아 출처를 인용할 뿐, 무엇도 결정하지 않으며 규칙에 없는 표현은 놓칩니다. 한국어 등 다른 언어는 로드맵에 있습니다.
+- 게이트는 아무것도 걸리지 않아도 사람이 검토하기 전까지 `HOLD`이며, 절대 무조건 `PASS`가 되지 않습니다.
+- 텍스트는 자신의 API 프로세스에만 머무릅니다. 그 프로세스가 `ALLOW_LIVE_GEMINI=true`로도 실행될 때**만** Gemini에 전달됩니다. 공개 배포에서 두 플래그를 함께 켜지 마세요.
+
 ## 아키텍처
 
 ```mermaid
@@ -111,10 +134,10 @@ flowchart LR
 
 | 계층 | 위치 | 담당 |
 | --- | --- | --- |
-| 도메인 | `src/domain/` | 타입, 결정론적 컴파일러, 합성 픽스처(frozen), 테스트 14개 |
-| API | `server/app.ts`, `server/index.ts` | 입력 경계, 레이트 리밋, HMAC 출처 토큰, `/api/health`, `/api/compile`, `/api/approve`, 정적 빌드 서빙; 계약 테스트 13개 |
+| 도메인 | `src/domain/` | 타입, 정본 픽스처 컴파일러(테스트 14개), frozen 합성 픽스처, 그리고 `general/` — 절 추출, 어휘 타이핑, 감지기, 근거 기반 패치, 일반 타깃(테스트 15개) |
+| API | `server/app.ts`, `server/index.ts` | 입력 경계, 픽스처 가드/커스텀 모드, 레이트 리밋, 모드+패치+아티팩트 해시에 묶인 HMAC 토큰, `/api/health`, `/api/compile`, `/api/approve`, 정적 빌드 서빙; 계약 테스트 18개 |
 | 모델 어댑터 | `server/gemini.ts` | 선택적 Gemini 호출, 프롬프트, `thinkingConfigFor`, 순수 함수 `validateGeminiPayload`; 테스트 11개 |
-| UI | `src/App.tsx` | 소스, 그래프 + 노드 인스펙터, 진단, 패치 diff, 승인 경계, 임팩트 테이블, 타깃, 소스 맵, 영수증 |
+| UI | `src/App.tsx`, `src/components/ArtifactEditor.tsx`, `src/lib/exportMarkdown.ts` | 소스, 문서 편집기(커스텀 모드), 그래프 + 노드 인스펙터, 진단, 패치 diff, 승인 경계, 임팩트 테이블, Markdown/JSON 내보내기가 있는 타깃, 소스 맵, 영수증 |
 
 상세: [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
 [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md).
@@ -151,6 +174,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 | 변수 | 기본값 | 용도 |
 | --- | --- | --- |
 | `ALLOW_LIVE_GEMINI` | `false` | 모델 호출 opt-in; 공개 데모가 조용히 쿼터를 쓰지 못하게 함 |
+| `ALLOW_CUSTOM_ARTIFACTS` | `false` | 로컬 모드: 자기 문서 세 개를 일반 컴파일러로 받아들임. 공개 배포에서는 꺼 둘 것 |
 | `GEMINI_API_KEY` | — | 경로 A: Gemini Developer API |
 | `GOOGLE_CLOUD_PROJECT` / `GOOGLE_CLOUD_LOCATION` | — / `global` | 경로 B: Application Default Credentials를 사용하는 Vertex AI. Gemini 3.x는 `global` 유지 |
 | `GEMINI_MODEL` | `gemini-3.7-flash` | 모델 고정. Gemini 2.5 Flash는 Vertex AI 은퇴 일정(2026-10-16)에 올라 있음 |
@@ -166,7 +190,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest — 3개 스위트, 테스트 38개
+pnpm test        # vitest — 5개 스위트, 테스트 60개
 pnpm build       # vite 프로덕션 번들
 ```
 
@@ -195,7 +219,7 @@ docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)
 - 생성된 문서는 사람이 시맨틱 패치를 승인하기 전까지 **초안**이다. 데모의 승인 버튼은 그 경계를 보여주는 것이며 인증된 승인이 아니다.
 - Gemini는 측정값, 비용, 일정, 물리적 실현 가능성, 안전 인증을 **발명할 수 없고**, 게이트를 진행시킬 수 없다.
 - 모델이 반환한 원문 인용은 아티팩트와 **정확히** 일치해야 하며 아니면 거부된다.
-- 공개 프로토타입은 **공개된 합성 픽스처만** 컴파일한다. 개수, 메타데이터, 내용의 어떤 변경도 모델 호출 전에 거부된다.
+- 공개 프로토타입은 **공개된 합성 픽스처만** 컴파일한다. 개수, 메타데이터, 내용의 어떤 변경도 모델 호출 전에 거부된다. 커스텀 모드는 로컬 전용 플래그이며 공개 데모에서는 절대 켜지 않는다.
 - 컴파일 토큰은 서명되지만 암호화되지 않는다. 레이트 리밋은 인메모리다. 지문은 `fnv1a32` 변경 감지기이며 무결성 해시가 아니다. [`SECURITY.md`](SECURITY.md)와 [`docs/04-quality/RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) 참고.
 - DeployAlign은 로봇을 제어하지 않으며 화학 물질 검출이나 시설 접근을 인증하지 않는다.
 
@@ -205,8 +229,8 @@ docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)
 자신의** 세 문서에 이 도구를 돌리고 그 결과로 행동할 수 있다는 뜻이다. 성공·중단
 기준이 붙은 다음 단계들은 [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md)에 있다:
 
-1. **0.3 — 자기 아티팩트 가져오기(로컬 모드).** 픽스처에 묶인 6개 진단을 Gemini가 추출한 원문 인용 그래프 위의 일반 감지기로 바꾸고, 타깃을 Markdown/JSON으로 내보낸다. 기본 꺼짐; 프라이버시 결정 D-016.
-2. **0.4 — CLI와 CI 모드.** `deployalign compile ./artifacts --fail-on blocker` — 근거를 앞지르는 SOW 수정이 문서 파이프라인을 실패시키게 한다.
+1. ~~**0.3 — 자기 아티팩트 가져오기(로컬 모드).**~~ 0.3.0에서 출시: 결정론적 일반 컴파일러, 감지기 6개, 근거 원문 기반 패치, Markdown/JSON 내보내기, 로컬 전용 플래그(D-016).
+2. **0.4 — CLI와 CI 모드.** `deployalign compile ./artifacts --fail-on blocker` — 근거를 앞지르는 SOW 수정이 문서 파이프라인을 실패시키게 한다. 이를 구동할 일반 컴파일러가 이제 존재한다.
 3. **0.5 — 실무자 파일럿.** 인터뷰 5건, 비식별화된 샘플, 측정된 정밀도와 결정 소요 시간 — 신원, 영속성, 감사 기능을 만들 가치가 있는지는 이것만이 결정한다.
 
 이슈와 풀 리퀘스트를 환영한다. [`CONTRIBUTING.md`](CONTRIBUTING.md) 참고.
@@ -219,8 +243,8 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 [`CHANGELOG.md`](CHANGELOG.md)에, 그 이유는
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)에 기록한다.
 
-0.2.0 기준의 정직한 범위: 결정론적 컴파일러, API, UI, 테스트는 구현되어 로컬에서
-검증됐다. 라이브 `gemini-2.5-flash` 호출은 배포된 0.1.0 리비전에서 검증됐다.
+0.3.0 기준의 정직한 범위: 결정론적 컴파일러(픽스처·일반), API, UI, 테스트 60개가 구현되어
+로컬에서 검증됐고, 커스텀 문서 흐름은 헤드리스 브라우저로도 확인했다. 라이브 `gemini-2.5-flash` 호출은 배포된 0.1.0 리비전에서 검증됐다.
 `gemini-3.7-flash` 기본값은 단위 테스트를 통과했고 첫 라이브 영수증을 기다린다.
 프로덕션 배포, 고객, 측정된 현장 결과는 없다. 여기 있는 어떤 것도 참가 자격, 수상,
 사업성을 입증하지 않는다.
@@ -231,11 +255,11 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | 현재 상태, 작업 보드, 소유자 결정 대기 항목 |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | "쓸모 있음"의 정의와 거기까지의 단계 |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 기능 요구사항 FR-01…FR-22와 인수 기준 |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 기능 요구사항 FR-01…FR-28와 인수 기준 |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | 컴포넌트, 데이터 흐름, 신뢰 경계, 실패 모드 |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 테스트 계획과 상태가 표시된 리스크 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 실행, 검증, 모델 마이그레이션, 문제 해결, 롤백 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-015와 소유자 결정 큐 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-016과 소유자 결정 큐 |
 | [`docs/submission/`](docs/submission/) | 데모 대본, YouTube 메타데이터, Devpost 증거의 역사 기록 |
 
 ## 라이선스

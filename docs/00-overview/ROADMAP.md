@@ -1,6 +1,6 @@
 # Roadmap — from submitted prototype to a tool people use
 
-> Status: Active · Date: 2026-08-26 · Owner: Project lead
+> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Project lead
 
 ## What "useful" has to mean here
 
@@ -13,11 +13,11 @@ that moment, not by feature count.
 
 | Signal we will measure | Today (0.2.0) | Target before calling it useful |
 | --- | --- | --- |
-| Artifacts the tool accepts | the 3 disclosed synthetic ones | any 3 redacted texts a user supplies (local mode) |
-| Diagnostics that generalise beyond the fixture | 0 of 6 (fixture-bound) | 6 of 6 as pattern/evidence detectors with tests |
+| Artifacts the tool accepts | any 3 role-tagged texts in local mode (0.3.0); the public demo stays fixture-only | any 3 redacted texts a user supplies (local mode) ✓ |
+| Diagnostics that generalise beyond the fixture | 6 of 6 as lexical/evidence detectors, tested on 3 synthetic corpora (0.3.0) | 6 of 6 with measured precision on redacted real documents |
 | Practitioners who recognise the problem | 0 interviewed | ≥ 3 of 5 identify a real analogue |
 | Reviewers who ask to run their own documents | 0 | ≥ 2 |
-| Time from paste to reviewable patch | n/a | < 2 minutes on a laptop, no cloud required |
+| Time from paste to reviewable patch | seconds, offline, in the browser QA run (0.3.0) | < 2 minutes on a laptop, no cloud required ✓ |
 
 ## Phases
 
@@ -28,7 +28,11 @@ that moment, not by feature count.
 - API contract tests, Gemini validator tests, CI, contributing/security policy.
 - README in English, Korean and Chinese; demo video v2 pipeline.
 
-### 0.3 — Bring your own artifacts (local mode) · *needs owner decision D-016*
+### 0.3 — Bring your own artifacts (local mode) · *shipped 2026-08-26 (D-016)*
+
+**What shipped vs. the plan below:** the deterministic path is the baseline (Gemini remains an optional, separately-shown candidate layer — extending it to classify every statement was not live-verifiable without credentials and would have made the gate depend on a model); the acceptance criterion was amended from "byte-for-byte" to "same six codes and severities, the three canonical patch categories with values taken from the engineering clauses, same gate behaviour" because the canonical nodes are hand-authored labels that do not occur in the source text. Export is done. Practitioner samples are still the missing input.
+
+Original plan:
 
 The public demo keeps its fixture-only guard (it is a security boundary for an
 unauthenticated endpoint). Locally, behind `ALLOW_CUSTOM_ARTIFACTS=true`, the tool
@@ -90,7 +94,7 @@ traction that is not evidenced.
 
 | ID | Decision | Default if silent |
 | --- | --- | --- |
-| D-016 | Approve the 0.3 custom-artifact design and its privacy posture | Not started |
+| D-016 | ~~Approve the 0.3 custom-artifact design~~ — approved and shipped 2026-08-26 | Done |
 | D-017 | Redeploy Cloud Run with 0.2.0 (`gemini-3.7-flash`) and verify a live receipt | Public demo stays on 0.1.0 |
 | D-018 | Upload demo video v2 and swap the README link | README keeps the 2026-08-17 video |
 | D-019 | Keep synthesized narration (edge-tts voice) or record a human voice | Synthesized, with the licence note kept in the demo script |

@@ -28,13 +28,17 @@ pnpm build          # production bundle
 
 Add or update tests with behaviour changes:
 
-- `src/domain/compiler.test.ts` — deterministic compiler contract (grounding, gate, patch, rebuild).
+- `src/domain/compiler.test.ts` — canonical fixture compiler contract (grounding, gate, patch, rebuild).
+- `src/domain/general/general.test.ts` — general path: extraction, typing, detectors, fixture reproduction, clean and unsupported corpora.
+- `src/lib/exportMarkdown.test.ts` — Markdown export.
 - `server/gemini.test.ts` — model configuration and the pure payload validator.
-- `server/app.test.ts` — HTTP contract (bounds, tokens, rate limit, startup guards).
+- `server/app.test.ts` — HTTP contract (bounds, tokens, rate limit, startup guards, custom mode).
+
+When a detector misfires on real phrasing, add the sentence to a corpus in `general.test.ts` first, then fix the lexicon or rule.
 
 ## Ground rules
 
-- **Synthetic data only.** The public prototype compiles the disclosed fixture and nothing else. Do not add real customer, site, or personal text anywhere in the repository, tests, screenshots, or videos.
+- **Synthetic data only in the repository.** The public prototype compiles the disclosed fixture and nothing else; custom mode is a local flag. Do not add real customer, site, or personal text anywhere in the repository, tests, screenshots, or videos — write synthetic corpora for tests.
 - **Deterministic rules own the gate.** Gemini may propose quote-grounded candidates and a rationale; it must never decide the gate, the patch, or the targets.
 - **No secrets in git.** Keys, tokens, project identifiers, and account details belong in the runtime environment or Secret Manager. `.gitignore` already excludes `.env*` except the example file.
 - **Say what is evidenced.** Follow the verb discipline in [`docs/appendix/CONVENTIONS.md`](docs/appendix/CONVENTIONS.md) (implemented / verified / configured / deployed) when you touch documentation.

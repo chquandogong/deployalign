@@ -16,7 +16,7 @@
 | A-10 | The current demo review action is sufficient to explain a human gate | UI/flow hypothesis | Usability test | Open; not a security control |
 | A-11 | `gemini-3.7-flash` on the Vertex `global` endpoint accepts the current structured-output request with `thinkingLevel: LOW` | GA announcement 2026-08-13; the same model runs in the owner's sibling project; SDK 1.52.0 types | First deploy with 0.2.0 must show a live receipt (D-017) | Open — unit-tested, not live-verified |
 | A-12 | Practitioners will share redacted artifacts once the tool accepts their own text (0.3) | Roadmap hypothesis | Five interviews; two redacted samples | Open |
-| A-13 | The six diagnostics can be generalised into text/graph detectors without a high false-positive rate | Rule design in `ROADMAP.md` | Fixture reproduces byte-for-byte through the general path; precision on redacted samples | Open |
+| A-13 | The six diagnostics can be generalised into text/graph detectors without a high false-positive rate | 0.3.0 detectors: fixture reproduces codes/severities/patch categories; bounded warehouse corpus → 0 findings; unsupported corpus → expected blockers | Precision/recall on consented redacted documents | Partially validated on three synthetic corpora only |
 
 ## Known facts, not assumptions
 

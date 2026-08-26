@@ -1,6 +1,6 @@
 # DeployAlign Runbook
 
-> Status: Local (0.2.0) and public synthetic-demo (0.1.0 revision) operations · Date: 2026-08-26 · Owner: Engineering
+> Status: Local (0.3.0) and public synthetic-demo (0.1.0 revision) operations · Date: 2026-08-26 · Owner: Engineering
 
 ## Supported operating mode
 
@@ -62,6 +62,40 @@ gcloud run services update deployalign --region asia-northeast3 --update-env-var
 
 Rollback: pin `GEMINI_MODEL=gemini-2.5-flash` (works until the retirement date) and redeploy the previous revision.
 
+## Custom-artifact mode (local only, 0.3.0)
+
+```text
+ALLOW_CUSTOM_ARTIFACTS=true pnpm dev        # or: ... pnpm start after pnpm build
+```
+
+- `/api/health` reports `customArtifacts: true`; the UI shows **Use your own documents**.
+- Input rules: exactly one `customer`, one `sales`, one `engineering` document; ≥ 20 characters each; ≤ 8,000 characters; unknown JSON keys are dropped.
+- The fixture still compiles through the canonical compiler (`mode: fixture`); anything else goes through `src/domain/general/` (`mode: custom`, `synthetic: false`).
+- Review: the compile token binds mode, patch id (`PATCH-001-A`) and a SHA-256 of the artifacts; the client resubmits the artifacts, and any difference returns `409 Artifacts do not match the compiled baseline.` — recompile and review again.
+- **Where the text goes:** only to the API process you started. It is sent to Gemini only when the same process also has `ALLOW_LIVE_GEMINI=true`. Never set `ALLOW_CUSTOM_ARTIFACTS=true` on the public Cloud Run demo (R-23).
+- Exports (Markdown/JSON) are built in the browser; nothing is uploaded.
+
+### Custom mode incidents
+
+- **The editor button is missing** — health does not report `customArtifacts: true`; the flag is not set on the process the browser is talking to (check the Vite proxy target).
+- **Every sales sentence raises DA-001/DA-002** — the detectors are English lexical heuristics; check the quantifier list in `src/domain/general/lexicon.ts` and add the misfiring sentence to a corpus in `general.test.ts` before changing a rule.
+- **No patch proposed** — no engineering clause carries a bounded count, area count or supervision statement; the rationale says so. Add measured evidence to the engineering text or narrow the promise by hand.
+- **Non-English documents yield few nodes** — expected in 0.3.0; cue lists are English-only.
+
+## Redeploy the public demo (D-017 — human-gated)
+
+The build machine has a user-space gcloud at `~/.local/opt/google-cloud-sdk/bin/gcloud` (SDK 582). Sequence:
+
+```text
+export PATH="$HOME/.local/opt/google-cloud-sdk/bin:$PATH"
+gcloud auth login --update-adc                      # interactive, owner only
+gcloud config set project project-55fbcfd2-0ad6-4c99-a25
+DRY_RUN=1 scripts/deploy_cloud_run.sh              # shows current env/secret binding, no changes
+scripts/deploy_cloud_run.sh                        # Cloud Build → Cloud Run, sets GEMINI_MODEL=gemini-3.7-flash, verifies a live receipt
+```
+
+The script exits non-zero if the verification compile comes back `deterministic-demo` (live Gemini did not run); roll back with `gcloud run services update-traffic deployalign --region asia-northeast3 --to-revisions <previous>=100`. Do **not** add `ALLOW_CUSTOM_ARTIFACTS` to the public service.
+
 ## Enable a live Gemini path
 
 This is an external data/quota action. Use only after human approval, with synthetic text, in a controlled environment.
@@ -105,7 +139,7 @@ Cloud Build successfully built the container that backs this revision. Official 
 ## Verification sequence
 
 ```text
-pnpm test        # 38 tests: domain, Gemini validation, API contract
+pnpm test        # 60 tests: domain, general path, export, Gemini validation, API contract
 pnpm typecheck
 pnpm lint
 pnpm build

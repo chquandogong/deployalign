@@ -86,6 +86,28 @@ Gemini 是一个**可选的、基于原文引用的抽取前端**。启用时，
 
 ![带有实时 Gemini 回执的已批准状态](submission-assets/deployalign-live-gemini-approved.png)
 
+## 在你自己的文档上运行（本地模式，0.3）
+
+公开演示只编译合成夹具——这是无认证端点的安全边界。在本地，一个标志即可为你自己的三份文档
+打开**通用编译路径**：
+
+```bash
+ALLOW_CUSTOM_ARTIFACTS=true pnpm dev
+```
+
+首屏会出现 **Use your own documents** 按钮。粘贴一份客户备忘、一份销售提案和一份工程评审；
+编译器把它们拆成逐字的子句，用角色感知的词法规则为每个子句定类型，把 `DA-001`–`DA-006` 作为
+检测器运行，并提出一个补丁——其中**每个替换值都复制自某条工程语句**；如果工程文本没有给出
+有界的数量，就不提出补丁，并在理由中说明。评审、批准，然后把结果导出为 Markdown 或 JSON。
+
+![自定义模式 —— 在本地编译用户提供的文档](docs/assets/custom-mode-0.3.0.png)
+
+诚实的预期：
+
+- 检测器是**英文词法启发式规则**。它们为评审者找出候选项并引用来源；它们不做决定，也会漏掉规则未覆盖的表述。韩文及其他语言在路线图上。
+- 即使没有任何发现，闸门在有人评审之前也保持 `HOLD`，并且永远不会变成无条件的 `PASS`。
+- 你的文本只留在你自己的 API 进程中。**只有**当该进程同时以 `ALLOW_LIVE_GEMINI=true` 运行时才会发送给 Gemini；切勿在公开部署上同时开启两者。
+
 ## 架构
 
 ```mermaid
@@ -104,10 +126,10 @@ flowchart LR
 
 | 层 | 位置 | 职责 |
 | --- | --- | --- |
-| 领域 | `src/domain/` | 类型、确定性编译器、合成夹具（frozen）、14 个测试 |
-| API | `server/app.ts`、`server/index.ts` | 输入边界、限流、HMAC 来源令牌、`/api/health`、`/api/compile`、`/api/approve`、静态构建；13 个契约测试 |
+| 领域 | `src/domain/` | 类型、规范夹具编译器（14 个测试）、frozen 合成夹具，以及 `general/`——子句抽取、词法定型、检测器、基于证据的补丁、通用目标文档（15 个测试） |
+| API | `server/app.ts`、`server/index.ts` | 输入边界、夹具守卫/自定义模式、限流、绑定模式+补丁+材料哈希的 HMAC 令牌、`/api/health`、`/api/compile`、`/api/approve`、静态构建；18 个契约测试 |
 | 模型适配器 | `server/gemini.ts` | 可选 Gemini 调用、提示词、`thinkingConfigFor`、纯函数 `validateGeminiPayload`；11 个测试 |
-| UI | `src/App.tsx` | 源材料、图 + 节点检视器、诊断、补丁 diff、批准边界、影响表、目标文档、源映射、回执 |
+| UI | `src/App.tsx`、`src/components/ArtifactEditor.tsx`、`src/lib/exportMarkdown.ts` | 源材料、文档编辑器（自定义模式）、图 + 节点检视器、诊断、补丁 diff、批准边界、影响表、带 Markdown/JSON 导出的目标文档、源映射、回执 |
 
 详见：[`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
 [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md)。
@@ -144,6 +166,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 | 变量 | 默认值 | 用途 |
 | --- | --- | --- |
 | `ALLOW_LIVE_GEMINI` | `false` | 显式启用模型调用；公开演示不能悄悄消耗配额 |
+| `ALLOW_CUSTOM_ARTIFACTS` | `false` | 本地模式：通过通用编译器接受你自己的三份文档。公开部署上保持关闭 |
 | `GEMINI_API_KEY` | — | 路径 A：Gemini Developer API |
 | `GOOGLE_CLOUD_PROJECT` / `GOOGLE_CLOUD_LOCATION` | — / `global` | 路径 B：使用 Application Default Credentials 的 Vertex AI。Gemini 3.x 请保持 `global` |
 | `GEMINI_MODEL` | `gemini-3.7-flash` | 固定任意模型。Gemini 2.5 Flash 已列入 Vertex AI 退役计划（2026-10-16） |
@@ -159,7 +182,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest —— 3 个套件、38 个测试
+pnpm test        # vitest —— 5 个套件、60 个测试
 pnpm build       # vite 生产构建
 ```
 
@@ -185,7 +208,7 @@ docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)
 - 生成的文档在人批准语义补丁之前都是**草稿**；演示中的批准按钮只是展示这个边界，不是经过身份验证的批准。
 - Gemini **不能臆造**测量值、成本、排期、物理可行性或安全认证，也不能推进闸门。
 - 模型返回的原文引用必须与材料**完全一致**，否则被拒绝。
-- 公开原型**只编译公开的合成夹具**；数量、元数据或内容的任何改动都会在调用模型之前被拒绝。
+- 公开原型**只编译公开的合成夹具**；数量、元数据或内容的任何改动都会在调用模型之前被拒绝。自定义模式是仅限本地的标志，公开演示从不启用。
 - 编译令牌是签名的而非加密的；限流在内存中；指纹是 `fnv1a32` 变更检测器而非完整性哈希。见 [`SECURITY.md`](SECURITY.md) 与 [`docs/04-quality/RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md)。
 - DeployAlign 不控制机器人，也不认证化学检测或设施准入。
 
@@ -194,8 +217,8 @@ docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)
 机制已在一个合成案例上得到证明。"有用"意味着一名部署工程师可以在**自己的**三份文档上运行它，
 并依据结果行动。带有成功与停止标准的后续步骤见 [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md)：
 
-1. **0.3 —— 使用自己的材料（本地模式）。** 把六项绑定于夹具的诊断变成作用于 Gemini 抽取的原文引用图之上的通用检测器；将目标文档导出为 Markdown/JSON。默认关闭；隐私决策 D-016。
-2. **0.4 —— CLI 与 CI 模式。** `deployalign compile ./artifacts --fail-on blocker`，让超出证据的 SOW 修改使文档流水线失败。
+1. ~~**0.3 —— 使用自己的材料（本地模式）。**~~ 已在 0.3.0 发布：确定性通用编译器、六个检测器、逐字证据补丁、Markdown/JSON 导出、仅限本地的标志（D-016）。
+2. **0.4 —— CLI 与 CI 模式。** `deployalign compile ./artifacts --fail-on blocker`，让超出证据的 SOW 修改使文档流水线失败——驱动它的通用编译器现已存在。
 3. **0.5 —— 从业者试点。** 五次访谈、脱敏样本、实测精度与决策耗时——只有这些才能决定身份、持久化与审计是否值得构建。
 
 欢迎 issue 与 pull request；见 [`CONTRIBUTING.md`](CONTRIBUTING.md)。
@@ -207,7 +230,7 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 不是终点。项目在公开环境中继续推进；变更记录在 [`CHANGELOG.md`](CHANGELOG.md)，背后的理由记录在
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)。
 
-截至 0.2.0 的诚实范围：确定性编译器、API、UI 与测试已实现并在本地验证；实时 `gemini-2.5-flash`
+截至 0.3.0 的诚实范围：确定性编译器（夹具与通用）、API、UI 与 60 个测试已实现并在本地验证，自定义文档流程也经过了无头浏览器验证；实时 `gemini-2.5-flash`
 调用已在已部署的 0.1.0 版本上验证；`gemini-3.7-flash` 默认值已通过单元测试，等待第一份实时回执；
 没有生产部署、没有客户、没有实测的现场结果。这里的一切都不构成参赛资格、奖项或商业可行性的证明。
 
@@ -217,11 +240,11 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | 当前状态、工作板、等待所有者决策的事项 |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | "有用"的定义及通往它的阶段 |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-22 与验收标准 |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-28 与验收标准 |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | 组件、数据流、信任边界、失效模式 |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 测试计划与带状态的风险 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 运行、验证、迁移模型、排障、回滚 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-015 与所有者决策队列 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-016 与所有者决策队列 |
 | [`docs/submission/`](docs/submission/) | 演示脚本、YouTube 元数据，以及 Devpost 证据的历史记录 |
 
 ## 许可证

@@ -1,6 +1,6 @@
 # DeployAlign Architecture
 
-> Status: Prototype architecture 0.2.0; not production-approved · Date: 2026-08-26 · Owner: Engineering
+> Status: Prototype architecture 0.3.0; not production-approved · Date: 2026-08-26 · Owner: Engineering
 
 ## Context and boundaries
 
@@ -16,7 +16,8 @@ External dependencies are the browser, Gemini Developer API or Vertex AI, and Cl
 | `compileClient` | Call compile/review endpoints with a 60-second timeout | Local fallback only for a network `TypeError`, exact fixture, and compatible review state; fallback results are labelled `executionOrigin: 'browser'` |
 | Express API (`createApp` in `server/app.ts`) | Validate inputs, rate-limit compile, issue/verify provenance tokens, expose health/compile/review, serve static build, label results `executionOrigin: 'server'` | In-memory, unauthenticated, single-process demo; factory takes secret/mode/dist/live-model/logger so tests run isolated instances; `server/index.ts` only listens |
 | Gemini adapter (`server/gemini.ts`) | Classify exact source quotes and propose a concise patch rationale | Opt-in; default model `gemini-3.7-flash` with `thinkingLevel: LOW` (Gemini 2.5 pins keep `thinkingBudget: 0`); pure `validateGeminiPayload` enforces quotes/types/confidence/coverage/rationale; deployed 0.1.0 path verified on `gemini-2.5-flash` — the 0.2.0 default is unit-tested, not yet live-verified; never builds the canonical graph/gates/targets |
-| Deterministic compiler | Build graph, diagnostics, patch, targets, impact, FNV-1a32 fingerprints, and receipts | Six `DEC-014`-linked sections rebuild; three unrelated baseline sections are reused within the approved compile; fingerprints detect change, not cryptographic integrity |
+| Deterministic compiler (fixture) | Build graph, diagnostics, patch, targets, impact, FNV-1a32 fingerprints, and receipts for the synthetic case | Six `DEC-014`-linked sections rebuild; three unrelated baseline sections are reused within the approved compile; fingerprints detect change, not cryptographic integrity |
+| General compiler (`src/domain/general/`, 0.3.0) | `extractStatements` → `classifyStatements` → `detect` → `compileGeneral`: verbatim clauses, role-aware lexical typing, DA-001–DA-006 as detectors, patch values copied from engineering clauses, generic targets | Local custom mode only; English lexical heuristics; same incremental-rebuild mechanics via the shared `fingerprint.ts` |
 | Automated tests | Protect grounding, strict fixture identity/schema, gates, AI candidates, patch size, response isolation, rebuild behavior, decision IDs, execution origin, Gemini payload validation and the HTTP contract | 38 cases in three suites (14 domain, 11 Gemini validation, 13 API); passed 38/38 on 2026-08-26 |
 
 ## Data flow
@@ -28,7 +29,7 @@ flowchart LR
   C -->|"POST /api/compile"| API["Express API"]
   API --> V["Input bounds"]
   V -->|"opt-in only"| G["Gemini API or Vertex AI"]
-  G -->|"validated quotes + rationale"| DC["Deterministic compiler"]
+  G -->|"validated quotes + rationale"| DC["Deterministic compiler<br/>fixture → canonical · custom → general"]
   V -->|"disabled/rejected"| DC
   DC --> R["Graph · diagnostics · patch · targets · receipts"]
   R --> T["HMAC-signed compile token · 1 hour"]
@@ -44,9 +45,9 @@ The deployed path uses Cloud Run with unauthenticated access, min instances 0/ma
 ## Trust boundaries and permissions
 
 - Browser to API is an untrusted boundary; there is no user identity or CSRF/session model.
-- API to Gemini is an external data boundary. Only synthetic data should cross it now.
+- API to Gemini is an external data boundary. Only synthetic data crosses it unless the operator sets **both** `ALLOW_LIVE_GEMINI=true` and `ALLOW_CUSTOM_ARTIFACTS=true` on the same process — a deliberate local-only combination (R-23). The prompt marks custom text as untrusted data.
 - Environment credentials are secret and must never enter the client, repository, logs, screenshots, or submission text.
-- The demo review endpoint checks a known version/patch and verifies an HMAC-SHA256 compile token. The token preserves validated AI provenance and expiry, but its base64url payload is signed rather than encrypted. It is not user authorization, organizational approval, or non-repudiation.
+- The review endpoint verifies an HMAC-SHA256 compile token that now binds mode, patch id and a SHA-256 of the artifacts; custom review must resubmit identical artifacts because the server keeps no state. The token preserves validated AI provenance and expiry, but its base64url payload is signed rather than encrypted. It is not user authorization, organizational approval, or non-repudiation.
 - Devpost submission and material video/deployment changes are external-write gates requiring human review. The 2026-08-17 submission was explicitly approved and completed; future material edits remain gated.
 
 ## State and storage
