@@ -1,118 +1,104 @@
 # DeployAlign Project Dashboard
 
-> Status: Public cloud demo verified; Devpost submission confirmed · Date: 2026-08-17 · Owner: DeployAlign orchestrator
+> Status: 0.2.0 built and verified locally; release to the public repository in progress; public demo unchanged · Date: 2026-08-26 · Owner: DeployAlign orchestrator
 
 ## Current state
 
-- Phase: Post-submission evidence preservation after Devpost reached `Submitted` and `5/5 steps done`.
-- Overall judgment: **Technical demo is live and submission is confirmed; do not claim eligibility, an award, business viability, or measured impact.**
-- Cloud demo verified: Cloud Run revision `deployalign-00004-wgb` serves 100% of traffic at [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`. `/api/health` returned `ok=true`, `service=deployalign`, and `liveGemini=true`.
-- Live model evidence: a deployed compile returned provider `gemini-vertex`; `gemini-2.5-flash` produced exactly three exact-quote `AI_DRAFT` classifications, and its successful receipt/provenance survived the signed review transition.
-- License notice verified: the deployed footer links to [`/third-party-licenses.txt`](https://deployalign-1007800160926.asia-northeast3.run.app/third-party-licenses.txt), which returned HTTP 200 and 3,462 bytes with full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC texts.
-- Entrant facts confirmed: individual entrant in the Republic of Korea; adult/eligible and rules agreement are entrant attestations; project start `06-01-26`; Professional Services Access selected; 1 actual user, 0 paying users; May–August and total revenue $0; related-party revenue $0; COGS, marketing, other, and total expenses $0; no entrant-owned pre-existing code/assets; corporate ID not applicable. Additional Info persisted the approved OSS-framework/library disclosure.
-- Devpost state: **Submitted; 5/5 steps done.** The management page showed `Submitted` after refresh and linked to [devpost.com/software/test-q0h69v](https://devpost.com/software/test-q0h69v). The observed banner was `Project submitted! Continue to edit your project until the hackathon deadline: August 17, 2026 at 04:00pm EDT.` Terms were checked and Submit was clicked after explicit user approval.
-- Residual posture: zero revenue and limited impact remain eligibility/competitiveness risks, not resolved facts. The entrant accepted the already-public Git author name/email exposure and Microsoft Mark voice redistribution uncertainty for this submission. No eligibility or award claim is made.
-- Source of truth: the public repository at [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign), deployed service, redacted evidence, and this documentation. The license-compliance deployment checkpoint is commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`.
+- Phase: **post-submission continuous improvement** (D-012). The 2026-08-17 Devpost state is `v0.1.0`; this cycle ships `v0.2.0`.
+- Overall judgment: **the prototype is honest, current and testable again; it is still a synthetic demo with no user validation.** Do not claim eligibility, an award, business viability, production readiness or measured impact.
+- What changed in 0.2.0 (see `CHANGELOG.md`): execution-origin labelling (`server`/`browser`) with UI disclosure; default model `gemini-3.7-flash` with automatic thinking configuration; `createApp()` factory; 25 new automated tests (11 Gemini validation, 13 API contract, 1 domain); GitHub Actions CI with SHA-pinned actions; `CONTRIBUTING.md`, `SECURITY.md` (private vulnerability reporting enabled), `.nvmrc`; README in English, Korean and Chinese; roadmap; demo video v0.2.0 rendered with a reproducible pipeline.
+- Verification 2026-08-26: `pnpm typecheck`, `pnpm lint`, `pnpm test` (38/38), `pnpm build` exited 0 on Node 24.19.0 / pnpm 11.19.0; production-mode HTTP smoke passed (health `version 0.2.0`, `model gemini-3.7-flash`; compile → approve labelled `server`; tampered token → 409; CSP; immutable assets; licence notice 3,462 bytes).
+- **Not verified:** a live `gemini-3.7-flash` call (no credentials in the build environment). The public Cloud Run revision `deployalign-00004-wgb` still serves the 0.1.0 build with `gemini-2.5-flash`, whose Vertex AI retirement date is listed as 2026-10-16 (R-19).
+- Demo video v0.2.0: 177 s render verified locally (`docs/submission/DEMO_SCRIPT.md`); **not uploaded** — the 0.1.0 video stays public until D-018.
+- Source of truth: the public repository at [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign); this dashboard is the coordination snapshot.
 
 ## Core goals
 
-1. Demonstrate evidence-linked conflict detection and a bounded, human-reviewed scope patch.
-2. Preserve source provenance and stable decision IDs across generated artifacts.
-3. Present the work honestly as a synthetic demonstration until real evidence exists.
+1. Make the tool usable on a practitioner's own documents (roadmap 0.3–0.4) without weakening the synthetic-only guard of the public demo.
+2. Keep every claim tied to evidence: origin, provider, gate state and test results visible in the product and the docs.
+3. Validate demand with five practitioners before building identity, persistence or audit.
 
 ## Progress
 
 | Phase | Status | Evidence | Next action |
 | --- | --- | --- | --- |
-| Office Hours | Done | `../01-discovery/OFFICE_HOURS.md` | Validate pain with real users |
-| Feasibility | Done with caveats | `../01-discovery/FEASIBILITY_REPORT.md` | Verify demand and deployed-model repeatability |
-| Domain/compiler | Implemented and locally verified | `src/domain/*`; final run 13/13 tests | Preserve final checkpoint evidence |
-| API/Gemini adapter | Implemented and live-verified on Vertex AI | Deployed `gemini-vertex` compile; success receipt; Cloud Run logs; Vertex request/token monitoring graphs | Add alerts and durable operational observability before real operation |
-| Browser experience | Implemented and live-browser verified | Desktop plus 320/360 px checks; sticky disclosure/header; source navigation; review, target, and receipt flows; public-safe screenshots | Preserve disclosure in public video |
-| Verification | Typecheck, lint, 13/13 tests, production build, server/token smoke, Cloud Build container build, deployed browser flow, and runtime-log checks passed on 2026-08-17 | Reviewer command results, Cloud Build/deployment records, redacted logs, and `submission-assets/` | Retain final checkpoint evidence |
-| Deployment | Public synthetic demo deployed | Cloud Run revision `deployalign-00004-wgb`; 100% traffic; health and license-notice smoke passed | Keep max instances 1; do not call it production-ready |
-| Devpost | Submitted; 5/5 steps done | Confirmation banner, refreshed management page, and [public entry](https://devpost.com/software/test-q0h69v) | Preserve evidence and avoid eligibility/award claims |
+| 0.1.0 submission | Done (2026-08-17) | `docs/submission/EVIDENCE_CHECKLIST.md` (historical record) | None; await organizer result |
+| 0.2.0 code | Done, verified locally | 38/38 tests, build, HTTP smoke | Tag `v0.2.0`, push, GitHub release |
+| 0.2.0 docs (EN/KO/ZH) | Done | `README*.md`, `CHANGELOG.md`, `ROADMAP.md`, updated `docs/**` | Keep all three READMEs in sync (R-21) |
+| CI | Authored | `.github/workflows/ci.yml` | First run happens on push; fix anything red |
+| Demo video v0.2.0 | Rendered and checked locally | `videos/build/…mp4` (2:57), EN/KO/ZH `.srt` | Owner upload (D-018) |
+| Public demo redeploy | Not started — gated | — | Owner decision D-017 before 2026-10-16 |
+| 0.3 custom artifacts | Designed only | `ROADMAP.md` | Owner decision D-016 |
+| Practitioner validation | Not started | — | Recruit five interviews (Office Hours plan) |
 
 ## Work board
 
 | Work item | Status | Owner | Dependency | Output |
 | --- | --- | --- | --- | --- |
-| Deterministic commitment compiler | Done | Builder | None | Domain code |
-| Gemini extraction adapter | Done and live-verified | Builder | Vertex AI runtime configuration | Three validated `AI_DRAFT` candidates and success receipt |
-| Product UI integration | Done | Builder | Domain/client helper | React app |
-| Documentation and evidence audit | Done | Documentarian | Final code scan | `docs/**` |
-| Automated and deployed verification | Done for bounded demo | QA | UI integration complete | Test/build/server-smoke, Cloud Build, deployed browser, and log results |
-| Live Gemini verification | Done for the public synthetic demo | Human + Builder | Vertex AI, runtime identity, deployed service | Redacted compile/log/receipt evidence |
-| Public demo deployment | Done | Human + Builder | Passing QA, least-privilege runtime, stable secret | Public Cloud Run URL and revision |
-| Demo video | Published and verified | Human + Media | Preserve public availability through judging | [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA); player 2:50; published 2026-08-17 |
-| Devpost final submission | Done after explicit approval | Human | Terms accepted; exact disclosures persisted | Confirmation banner and public entry |
+| Execution-origin field + UI | Done | Builder | — | `types.ts`, `compiler.ts`, `compileClient.ts`, `App.tsx`, tests |
+| Model default → 3.7 Flash + thinking config | Done (unit-tested) | Builder | Live verification (D-017) | `server/gemini.ts`, `gemini.test.ts` |
+| `createApp` factory + API tests | Done | Builder | — | `server/app.ts`, `app.test.ts` |
+| CI workflow | Authored | Builder | Push to GitHub | `.github/workflows/ci.yml` |
+| Tri-lingual README + repo hygiene | Done | Documentarian | — | `README*.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md` |
+| Docs refresh (spec, architecture, runbook, risks, tests, decisions) | Done | Documentarian | — | `docs/**` |
+| Demo video v0.2.0 | Rendered | Media | Upload gate D-018 | `scripts/demo-video/`, render + subtitles |
+| Release `v0.2.0` | In progress | Orchestrator | Gates green | Tag, push, GitHub release with notes |
+| Redeploy Cloud Run on 0.2.0 | Blocked (gate) | Owner | D-017 | New revision, live receipt |
+| 0.3 local custom-artifact mode | Blocked (gate) | Owner + Builder | D-016 | Design in `ROADMAP.md` |
 
 ## Resume point
 
-- Live-deployment code checkpoint: `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`; public repository and Cloud Run demo are available.
-- Next safe action: preserve the confirmation evidence, recheck public links, and monitor any deadline-period edits without changing claims silently.
-- Public video upload and Devpost submission were explicitly approved and completed. Future edits remain human-gated.
+- Last verified checkpoint: working tree with all 0.2.0 changes, gates green on 2026-08-26 13:40 KST; release commits and tag follow immediately.
+- Next safe action for a resuming agent: `git log --oneline -1`; if `v0.2.0` is not tagged, re-run the four gates and complete the release; do **not** redeploy, upload video or edit Devpost without owner approval.
+- Local demo server for recordings runs on port `8091` (`8080` is used by another project on this machine).
 
-## Decisions and completed external gates
+## Decisions waiting on the owner
 
-| Decision | Options | Recommendation | Human approval required |
-| --- | --- | --- | --- |
-| Challenge category | Professional Services Access / Small Business Services / do not submit | Professional Services Access selected by the entrant; impact evidence remains limited | Completed |
-| Live model credential path | Gemini API key / Vertex runtime identity | Vertex is configured for the demo; retain least privilege | Completed for demo |
-| Repository visibility | Public / private shared with judges | Public repository is available | Completed |
-| Hosting | Cloud Run / other / no deployment | Public Cloud Run demo is deployed; do not treat it as customer production | Completed for demo |
-| Submission posture | Final / draft / pause | Submitted truthfully with documented residual risks; this does not establish eligibility or an award | Completed |
+| ID | Decision | Default if silent |
+| --- | --- | --- |
+| D-016 | Approve the 0.3 "bring your own artifacts" local-mode design and privacy posture | Not started |
+| D-017 | Redeploy Cloud Run with 0.2.0 and verify a live `gemini-3.7-flash` receipt before 2026-10-16 | Public demo stays on 0.1.0 / 2.5 Flash |
+| D-018 | Upload demo video v0.2.0 and swap the links | README keeps the 2026-08-17 video |
+| D-019 | Synthesized narration voice vs. human recording | Synthesized, licence note kept |
 
 ## Open assumptions
 
-- Deployment teams experience meaningful cross-document commitment drift.
-- A source-linked review interface reduces review time or catches material errors.
-- Professional Services Access is the selected category; whether one user and no measured outcome make a competitive category case remains open.
-- Users will accept a hybrid AI-extraction/deterministic-policy workflow.
-
-See `../01-discovery/ASSUMPTIONS.md` for validation status.
+- A-11: `gemini-3.7-flash` on Vertex `global` accepts the structured-output request with `thinkingLevel: LOW` — unit-tested, not live-verified.
+- A-12 / A-13: practitioners will share redacted artifacts, and the six diagnostics generalise without excessive false positives.
+- A-01 … A-04, A-07, A-09, A-10 remain open from 0.1.0 (`../01-discovery/ASSUMPTIONS.md`).
 
 ## Top risks
 
 | Risk | Likelihood | Impact | Response | State |
 | --- | ---: | ---: | --- | --- |
-| One user, zero paying users, and $0 revenue do not satisfy or compete well against the stated real-business requirement | High | Critical | Disclose exact values; never relabel zero revenue as traction; complete the final rule review | Open blocker |
-| Synthetic data is mistaken for a real customer case | Medium | High | Persistent synthetic labels in UI, video, and narrative | Mitigating |
-| Live Gemini evidence is mistaken for AI control of safety decisions | Medium | High | State that Gemini only proposes exact-quote candidates/rationale; deterministic TypeScript owns graph, gates, and targets | Mitigating |
-| Client-local and server deterministic paths share a provider value | Medium | High | Add execution-origin metadata; never imply a live model from `deterministic-demo` | Open |
-| Demo approval is mistaken for a secure workflow | Medium | High | Document no auth/persistence and never use real decisions | Open |
+| R-19 Public demo still on `gemini-2.5-flash`, retiring on Vertex AI 2026-10-16 | High | Medium | Redeploy 0.2.0 (D-017) | Open |
+| R-20 New default model not live-verified | Medium | Medium | Verify one live compile at deploy time; `GEMINI_MODEL` pin is the rollback | Open |
+| R-11 Diagnostics overfit to the bundled sample | High | High | 0.3 general detectors + redacted corpus | Open |
+| R-13 Public demo lacks auth/persistence/rollback | High | Critical | Keep synthetic-only, single instance, clear labels | Accepted for demo |
+| R-01 Zero revenue / one user for the competition | High | Critical | Truthful record; await organizer | Accepted submission risk |
 
 ## Quality indicators
 
-- Unit tests: final run passed 13/13.
-- Typecheck and targeted lint: passed in the current reviewer run.
-- Production build: passed after frontend completion.
-- Direct server smoke: root 200 with no-store/CSP; hashed asset 200 with one-year immutable cache; token valid/tamper/extra-segment/expiry behaviors passed.
-- Container image build: passed through Cloud Build and was deployed to Cloud Run.
-- Deployed browser evidence: `gemini-vertex`, three exact-quote `AI_DRAFT` candidates, successful AI receipt, HMAC-preserved provenance, `HOLD` → `CONDITIONAL PILOT`, six rebuilt and three unchanged sections.
-- Known critical product gaps: no production auth, persistence, tenant isolation, durable audit, or real user/business evidence.
-- Cross-validation: same-model role-based review only; **not** an actual Claude–GPT cross-model review.
-
-## Cost and resources
-
-- Entrant-confirmed challenge accounting is revenue $0, COGS $0, marketing $0, other expenses $0, total expenses $0, and net $0. The one-page A4 zero-revenue and P&L PDFs are saved in Devpost.
-- Live model calls are opt-in to avoid silent quota use.
-- Active free-trial/billing status is verified. The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but the same screen warns that costs can take hours or more than 24 hours to appear.
-- Cloud Run hosting, Vertex execution, redacted runtime logs, and official Vertex Model Garden request/token-count graphs for `gemini-2.5-flash` are evidenced. The entrant's challenge P&L is confirmed at $0 revenue/$0 expense/$0 net; delayed billing remains a caveat to monitor after submission.
+- Tests: 38/38 (14 domain · 11 Gemini validation · 13 API contract).
+- Typecheck, lint, production build: passed 2026-08-26.
+- Production HTTP smoke: passed 2026-08-26 (local).
+- CI: authored; first run pending push.
+- Live model: not exercised this cycle.
 
 ## Next actions
 
-1. Preserve the exact confirmation banner, `Submitted`/`5/5 steps done` state, and public Devpost URL.
-2. Recheck the public Devpost, Cloud Run, repository, video, and license-notice links during the edit window.
-3. Preserve the exact OSS disclosure and the accepted Git-identity/voice residual-risk record.
-4. Recheck billing after its lag window without rewriting the entrant-confirmed $0 challenge accounting.
-5. Require new human approval for any material post-submission edit.
+1. Finish the `v0.2.0` release (commit series, annotated tag, push, GitHub release with CHANGELOG notes and the demo video as an asset).
+2. Owner: decide D-017 and redeploy before 2026-10-16; verify the live receipt and update `RUNBOOK.md` / `ASSUMPTIONS.md`.
+3. Owner: decide D-018/D-019 and upload the v0.2.0 video; swap links in all three READMEs.
+4. Owner: decide D-016; then implement 0.3 behind `ALLOW_CUSTOM_ARTIFACTS` with the fixture-reproduction test as the first acceptance criterion.
+5. Recruit five practitioners for the validation experiment described in `../01-discovery/OFFICE_HOURS.md`.
 
 ## Links
 
-- [Project brief](PROJECT_BRIEF.md)
-- [Feasibility report](../01-discovery/FEASIBILITY_REPORT.md)
-- [Specification](../03-spec/SPEC.md)
-- [Risk register](../04-quality/RISK_REGISTER.md)
-- [Ship checklist](../05-ops/SHIP_CHECKLIST.md)
-- [Submission evidence checklist](../submission/EVIDENCE_CHECKLIST.md)
+- [Project brief](PROJECT_BRIEF.md) · [Roadmap](ROADMAP.md)
+- [Feasibility report](../01-discovery/FEASIBILITY_REPORT.md) · [Assumptions](../01-discovery/ASSUMPTIONS.md)
+- [Decision log](../02-decisions/DECISION_LOG.md)
+- [Specification](../03-spec/SPEC.md) · [Architecture](../03-spec/ARCHITECTURE.md)
+- [Test plan](../04-quality/TEST_PLAN.md) · [Risk register](../04-quality/RISK_REGISTER.md)
+- [Runbook](../05-ops/RUNBOOK.md) · [Ship checklist](../05-ops/SHIP_CHECKLIST.md) · [Retro](../05-ops/RETRO.md)
+- [Demo script](../submission/DEMO_SCRIPT.md) · [YouTube metadata](../submission/YOUTUBE_METADATA.md) · [Submission evidence (historical)](../submission/EVIDENCE_CHECKLIST.md)

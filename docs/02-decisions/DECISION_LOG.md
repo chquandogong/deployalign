@@ -1,6 +1,6 @@
 # Decision Log
 
-> Status: Active · Date: 2026-08-17 · Owner: Project lead
+> Status: Active · Date: 2026-08-26 · Owner: Project lead
 
 ## D-001 — Use a hybrid evidence compiler
 
@@ -122,3 +122,60 @@
 - Residual risk: Organizers may determine the entry ineligible or noncompetitive; billing lag, public Git identity exposure, and Microsoft Mark redistribution uncertainty remain documented.
 - Approval: Terms acceptance and Submit were explicitly approved immediately before execution.
 - Revisit when: The entrant requests a material edit before the deadline or receives an official result.
+
+## D-012 — Continue the project after submission as an open-source tool
+
+- Date: 2026-08-26
+- Context: The Devpost submission closed on 2026-08-17. The owner wants the repository to keep improving toward a tool practitioners actually use, independent of the competition outcome.
+- Options: archive the repository as a submission record; keep it frozen until an organizer result; continue development in the open with an explicit roadmap.
+- Decision: Continue in the open. Treat the 2026-08-17 state as release `0.1.0`, ship `0.2.0` as a hygiene-and-honesty cycle, and publish `docs/00-overview/ROADMAP.md` with measurable "useful" criteria.
+- Rationale: The mechanism is proven on a synthetic case; the value question can only be answered by putting it in front of practitioners, which requires a runnable, documented, current codebase.
+- Rejected: Archiving — it would waste the deterministic core; freezing — Gemini 2.5 Flash is on a retirement track and the repo would stop working.
+- Residual risk: Effort spent before demand is validated. Mitigation: the roadmap gates 0.3+ on practitioner signals and owner decisions D-016–D-019.
+- Approval: Owner instruction to "keep updating and make it a truly useful tool" (2026-08-26).
+- Revisit when: Five practitioner interviews are done or an organizer result arrives.
+
+## D-013 — Move the default extraction model to `gemini-3.7-flash`
+
+- Date: 2026-08-26
+- Context: `gemini-2.5-flash` was the 0.1.0 default. Google's Vertex AI release notes list 2026-10-16 as its retirement date; `gemini-3.7-flash` reached general availability on 2026-08-13 and is already used in the owner's sibling project on Vertex AI (`global` location).
+- Options: keep 2.5 Flash until retirement; move to `gemini-3.5-flash` (GA May 2026); move to `gemini-3.7-flash`; make the model mandatory configuration with no default.
+- Decision: Default `GEMINI_MODEL` to `gemini-3.7-flash`; select `thinkingLevel: LOW` for Gemini 3 models and `thinkingBudget: 0` for 2.5 models (`thinkingConfigFor`); add `GEMINI_THINKING_LEVEL` for overrides; keep `GEMINI_MODEL` as the pin.
+- Rationale: A default that stops working in seven weeks is a defect. 3.7 Flash is GA, current, and the thinking-level switch is required because Gemini 3 rejects a zero budget.
+- Rejected: No default — it makes the local quick-start fail; 3.5 Flash — no advantage over the newer GA model.
+- Residual risk: **Not live-verified in this cycle** (no credentials in the build environment); the public Cloud Run revision still runs 2.5 Flash until D-017. The first deploy with the new default must confirm a live receipt.
+- Approval: Reversible code change within the owner's update instruction.
+- Revisit when: A live receipt exists, or Google changes 3.7 Flash availability on the `global` endpoint.
+
+## D-014 — Label execution origin on every compile result
+
+- Date: 2026-08-26
+- Context: Risk R-05 (open since 0.1.0): a browser-side exact-fixture fallback returned the same `deterministic-demo` provider as a healthy server-side deterministic run, so the UI could not tell them apart.
+- Options: remove the browser fallback; add a separate provider value; add an orthogonal `executionOrigin` field.
+- Decision: Add `executionOrigin: 'server' | 'browser'` to `CompileResult`. Only `server/app.ts` labels results `server`; `compileDemo` defaults to `browser`. The UI shows an origin chip, origin-aware notices, receipts context and footer.
+- Rationale: Provider (which engine) and origin (which process) are different facts; conflating them is what caused the ambiguity. The fallback stays because it keeps the demo usable offline, and it is now visibly labelled.
+- Rejected: Removing the fallback — loses offline demo value; overloading `provider` — muddles the model-attribution contract that the receipts depend on.
+- Residual risk: A malicious client can still fabricate any label locally; the field is disclosure, not integrity. Server results remain the only authoritative ones (token-bearing).
+- Approval: Reversible code change; covered by domain and API tests.
+- Revisit when: Real users report confusion, or the fallback is removed in a production design.
+
+## D-015 — Rebuild the demo video with a narration-first pipeline and publish docs in three languages
+
+- Date: 2026-08-26
+- Context: The 2026-08-17 video predates 0.2.0 and its source render is not available. The owner asked for a refreshed video and for English, Korean and Chinese documentation.
+- Options: keep the old video; re-record manually; rebuild with the narration-first Playwright + edge-tts pipeline already proven in the owner's sibling project.
+- Decision: Rebuild with the narration-first pipeline (`docs/submission/DEMO_SCRIPT.md`), synthesized `en-US-AndrewMultilingualNeural` narration, burned-in English captions and EN/KO/ZH subtitle files; write `README.md`, `README.ko.md`, `README.zh.md` as full translations with English as the source of truth.
+- Rationale: Reproducible builds beat manual recording for a project that will keep changing; three READMEs match the owner's other repositories.
+- Rejected: Keeping the old video — it shows the pre-0.2 UI and the old model; manual recording — not reproducible.
+- Residual risk: Synthesized-voice redistribution terms remain uncertain (carried from R-12); translations can drift — CONTRIBUTING requires changing all three READMEs together.
+- Approval: Local render is reversible. **Uploading to YouTube and swapping the README link is a publication gate (D-018) and was not performed autonomously.**
+- Revisit when: The owner uploads v2 or chooses a human voice (D-019).
+
+## Owner decision queue
+
+| ID | Decision | Default if silent | Gate type |
+| --- | --- | --- | --- |
+| D-016 | Approve the 0.3 "bring your own artifacts" local-mode design (`ROADMAP.md`) | Not started | Privacy — non-synthetic text to a model |
+| D-017 | Redeploy Cloud Run with 0.2.0 and verify a live `gemini-3.7-flash` receipt | Public demo stays on 0.1.0 / 2.5 Flash | Production deployment |
+| D-018 | Upload demo video v2 and swap the README/YouTube links | README keeps the 2026-08-17 video | Public publication |
+| D-019 | Synthesized narration voice vs. human recording | Synthesized, licence note kept | Brand / rights |

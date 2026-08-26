@@ -1,6 +1,6 @@
 # Test Plan
 
-> Status: Local automated, container, deployed-Vertex, and live-browser QA passed · Date: 2026-08-17 · Owner: QA
+> Status: 0.2.0 local automated QA passed (38 tests); 0.1.0 deployed-Vertex and live-browser evidence retained · Date: 2026-08-26 · Owner: QA
 
 ## Objectives
 
@@ -10,7 +10,7 @@
 - Verify accessible, honest presentation of synthetic and unverified states.
 - Keep challenge claims tied to external evidence, not code behavior.
 
-## Existing domain tests
+## Domain tests (`src/domain/compiler.test.ts`, 14 cases)
 
 | Case | Input | Expected result | Pass criterion |
 | --- | --- | --- | --- |
@@ -27,10 +27,43 @@
 | Metadata rejection | Change one fixture title | Compile rejects before any Gemini prompt | Existing Vitest case passes |
 | Strict fixture identity | Add an unknown key or submit a whitespace-normalized lookalike | Compile rejects before any Gemini prompt | Existing Vitest case passes |
 | AI candidate separation | Valid synthetic `AiExtractionEvidence` | Provider retained, three `AI_DRAFT` candidates exposed, deterministic gate remains `HOLD` | Existing Vitest case passes |
+| Execution origin (0.2.0) | `compileDemo()` with and without `executionOrigin` | Defaults to `browser`; `server` only when passed explicitly | Vitest case passes |
 
 Final updated evidence on 2026-08-17 after the response-isolation, strict-fixture, and responsive containment fixes: `pnpm typecheck`, `pnpm lint`, 13/13 tests, and `pnpm build` all exited 0; the production audit reported zero vulnerabilities. The build used Vite 8.2.1, processed 1,570 modules, and emitted 38.83 kB CSS and 241.07 kB JS. A direct production server smoke also passed root 200/no-store/CSP, hashed asset 200/one-year immutable caching, valid/tampered/extra-segment/expired token behavior, and missing-secret production startup failure. The later license-compliance commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` was built and deployed as current Cloud Run revision `deployalign-00004-wgb`; post-deploy smoke verified 100% traffic, health `ok=true`/`service=deployalign`/`liveGemini=true`, and the footer notice at HTTP 200/3,462 bytes. Retain redacted command and cloud evidence with the release checkpoint.
 
-## API contract tests to add
+## Gemini validator tests (`server/gemini.test.ts`, 11 cases — 0.2.0)
+
+| Case | Input | Expected result |
+| --- | --- | --- |
+| Default model | `DEFAULT_GEMINI_MODEL` | `gemini-3.7-flash` |
+| Thinking config, Gemini 3 | `gemini-3.7-flash`, `gemini-3-flash-preview` | `{ thinkingLevel: LOW }`; override `high`/`medium` honoured; unknown override falls back to `LOW` |
+| Thinking config, Gemini 2.5 | `gemini-2.5-flash` with or without override | `{ thinkingBudget: 0 }` |
+| Valid payload | Three grounded, typed, bounded statements + rationale | Statements kept in order; rationale trimmed |
+| Ungrounded quote | Quote not a substring of its artifact | Throws `failed source-map validation` |
+| Disallowed type / confidence out of range | `PricingPromise`; `1.2` | Statement dropped → coverage fails → throws |
+| Coverage after de-duplication | Duplicate statement replaces the third artifact's | Throws |
+| Rationale bounds | Whitespace-only or > 1,000 characters | Throws `rationale failed validation` |
+| Empty payload | `{}` | Throws |
+
+## API contract tests (`server/app.test.ts`, 13 cases — implemented in 0.2.0)
+
+| Case | Request | Expected result | Status |
+| --- | --- | --- | --- |
+| Health | `GET /api/health` | `ok`, `service`, SemVer `version`, `liveGemini: false`, `model` `gemini-*` | Passing |
+| Default compile | `POST /api/compile` with `{}` and with the fixture | HTTP 200; version 1, `HOLD`, `deterministic-demo`, `executionOrigin: server`, two-part token, `RUN-<uuid>` receipt IDs, CSP header | Passing |
+| Wrong count | Two artifacts | HTTP 400 `Exactly three source artifacts are required.` | Passing |
+| Non-fixture content | One body replaced | HTTP 400, fixture-only message; no model call | Passing |
+| Malformed JSON | Truncated body | HTTP 400 `Malformed JSON request body.` | Passing |
+| Review without token | version/patch only | HTTP 409 | Passing |
+| Token tamper | Signature altered | HTTP 409 `signature is invalid`; no state advance | Passing |
+| Review round trip | Compile → approve with its token | HTTP 200; version 2, `CONDITIONAL PILOT`, `APPROVED`, six recompiled, `CDM-3`/`SOW-7.1`/`SYS-009` unchanged, fresh token | Passing |
+| Unknown API route | `GET /api/nope` | HTTP 404 JSON | Passing |
+| Rate limit | Seventh compile in one window on an isolated instance | HTTP 429, `Retry-After: 600` | Passing |
+| Production secret guard | `nodeEnv: production` without secret; short secret in any mode | `createApp` throws | Passing |
+
+Still not automated (tracked): oversize artifact (> 8,000 chars), body > 64 KB, expired-token path (needs clock injection), Gemini malformed/ungrounded responses through the HTTP path (validator is unit-tested), multi-instance routing.
+
+## API contract tests originally planned (2026-08-17 list, retained for traceability)
 
 | Case | Request | Expected result | Pass criterion |
 | --- | --- | --- | --- |
@@ -104,13 +137,15 @@ No such user experiment has been run yet.
 ## Regression commands
 
 ```text
-pnpm test
+pnpm test        # 38 tests: 14 domain · 11 Gemini validation · 13 API contract
 pnpm typecheck
 pnpm lint
 pnpm build
 ```
 
 Archive date, commit (when one exists), exit status, and redacted output. A command listed here is not proof that it passed.
+
+Evidence 2026-08-26 (0.2.0, Node 24.19.0, pnpm 11.19.0): all four commands exited 0; Vitest reported 38/38 across three files; Vite emitted 39.50 kB CSS and 242.71 kB JS. A production-mode HTTP smoke against `pnpm start` on a local port returned health `version 0.2.0` / `model gemini-3.7-flash`, compile → approve with `executionOrigin: server`, HTTP 409 for a tampered token, root `no-store` with CSP, one-year immutable hashed assets, and the 3,462-byte licence notice. **Not covered in this cycle:** a live `gemini-3.7-flash` call (no credentials in the build environment) and the Cloud Run container build (CI performs the image build; the deployed revision is unchanged).
 
 ## Release blockers
 

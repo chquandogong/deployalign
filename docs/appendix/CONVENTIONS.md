@@ -1,6 +1,6 @@
 # Documentation and Evidence Conventions
 
-> Status: Active · Date: 2026-08-17 · Owner: Documentarian
+> Status: Active · Date: 2026-08-26 · Owner: Documentarian
 
 ## Document format
 
@@ -72,7 +72,9 @@ Deadline pressure does not remove a gate.
 - Source artifacts: `SRC-CUSTOMER-01`, `SRC-SALES-02`, `SRC-ENGINEERING-03`.
 - Gate values: `HOLD`, `CONDITIONAL PILOT`.
 - Provider values: `gemini-vertex`, `gemini-api`, `deterministic-demo`.
+- Execution-origin values: `server`, `browser` (0.2.0+).
+- Default model: `gemini-3.7-flash` (0.2.0+); pin with `GEMINI_MODEL`.
 
 ## Git/release convention
 
-Use Conventional Commits when a repository history is established. A commit, push, tag, remote creation, or release is outside this documentation task; push/tag/public remote actions require the appropriate human authorization.
+Use Conventional Commits. Versions follow SemVer with annotated tags `vX.Y.Z` and a matching `CHANGELOG.md` section; the 2026-08-17 submission state is `v0.1.0`. Pushing to the existing public remote, tagging and publishing a GitHub release are authorised by the owner's standing update instruction; creating new public remotes, deploying to Cloud Run, uploading videos and editing the Devpost entry remain human gates.

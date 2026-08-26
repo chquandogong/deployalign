@@ -1,6 +1,6 @@
 # Risk Register
 
-> Status: Active · Date: 2026-08-17 · Owner: Red team and project lead
+> Status: Active · Date: 2026-08-26 · Owner: Red team and project lead
 
 Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means reduced, not eliminated.
 
@@ -10,7 +10,7 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 | R-02 | Synthetic Raman/facility case is perceived as a real customer or deployment | Medium | High | Viewers ask which customer/site was used | Persistent `SYNTHETIC DEMO` labels and explicit narrative disclosure | Product | Mitigating |
 | R-03 | Verified demo deployment is overstated as customer production or as Gemini-owned safety logic | Medium | Critical | Narrative omits synthetic/architecture boundary | Cite deployed call/log evidence; state Gemini only proposes three quote-grounded `AI_DRAFT` candidates while deterministic TypeScript owns graph/gates/targets | Engineering + human | Mitigating claim gate |
 | R-04 | Cloud cost or operational readiness is inferred from deployment evidence | Medium | High | Capture-time ₩0 is reused as a final total, or graphs are called full monitoring | Recheck billing after the explicit warning that reporting can take hours or more than 24 hours; separate request/token evidence from production alerts/controls | Human + Ops | Open evidence gate |
-| R-05 | Client network fallback is indistinguishable from healthy server-side deterministic execution | Medium | High | API is offline but provider still reads `deterministic-demo` | Add execution-origin metadata/banner and network-failure telemetry | Frontend | Open |
+| R-05 | Client network fallback is indistinguishable from healthy server-side deterministic execution | Low | High | API is offline but provider still reads `deterministic-demo` | `executionOrigin` field + `API`/`IN-BROWSER` chip, origin-aware notices, receipts and footer (0.2.0, D-014); covered by domain and API tests | Frontend | Mitigated in 0.2.0 — label is disclosure, not integrity |
 | R-06 | Demo review is mistaken for secure approval | Medium | High | Screenshots say “approved” without caveat | Label as local demo review; never accept real decisions; design auth/signatures later | Product/security | Open |
 | R-07 | Missing/inconsistent `COMPILE_TOKEN_SECRET` invalidates review tokens across restarts or instances | Low in current demo | High | Review receives HTTP 409 or production refuses to start | Current Cloud Run demo uses a stable Secret Manager value; retain max instances 1 while rate/state are process-local | Backend/Ops | Mitigated for current revision |
 | R-08 | In-memory IP rate limit is bypassed, shared incorrectly, or lost on restart | Medium | Medium | Abuse or inconsistent 429 behavior across replicas | Managed rate limit and identity in production | Backend | Accepted for local demo |
@@ -24,6 +24,9 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 | R-16 | Generated scope is used as safety guidance | Low in labeled demo | Critical | A user uploads a real deployment case | Disable/avoid real ingestion; prominent non-authorization disclaimer; domain governance | Product/security | Open |
 | R-17 | Demo receipt IDs repeat by version and deterministic durations are zero, so they are not a durable audit trail | High | Medium | Multiple runs share `DEMO-V1`/`DEMO-V2` IDs | Label receipts as illustrative; use unique persisted events before production claims | Backend/QA | Accepted for demo; blocks audit claim |
 | R-18 | Signed compile token is readable base64url data, replayable within one hour, and not tied to a user | Medium | High for real data | Token is copied/reused or mistaken for authorization | Synthetic data only; short expiry; add identity, nonce, encryption/minimization, and durable audit before real use | Security | Accepted for demo only |
+| R-19 | Default model retirement breaks the live path: Vertex AI lists 2026-10-16 for `gemini-2.5-flash`, which the deployed 0.1.0 revision still uses | High | Medium | Live compiles start failing validation or return provider errors; health still says `liveGemini=true` | Default moved to `gemini-3.7-flash` in 0.2.0 (D-013); redeploy and verify a live receipt before 2026-10-16 (D-017) | Engineering + owner | Open until redeploy |
+| R-20 | New default model is not live-verified: `thinkingLevel` and structured output on `gemini-3.7-flash` are covered by unit tests only | Medium | Medium | First deploy logs `gemini_extraction_rejected` or an SDK error | Verify one live compile on Vertex `global` at deploy time; `GEMINI_MODEL` pin is the rollback | Engineering | Open |
+| R-21 | Translated READMEs drift from the English source of truth | Medium | Low | A change lands in `README.md` only | CONTRIBUTING requires all three or an `i18n` issue; CI does not enforce it | Documentarian | Accepted |
 
 ## Highest-priority controls before any public action
 
@@ -33,3 +36,4 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 4. Preserve the verified license notice, exact OSS disclosure, and the entrant's accepted Git-identity/Microsoft Mark residual-risk record.
 5. Public video and Devpost submission are complete. Require human review for any material deadline-period edit and do not claim eligibility or an award.
 6. Receipt and execution-origin disclosure verified so illustrative demo records cannot be presented as production audit evidence.
+7. Before 2026-10-16: redeploy with the 0.2.0 default model and confirm a live receipt, or the public demo's live path will stop working when Gemini 2.5 Flash retires on Vertex AI (R-19).

@@ -1,6 +1,6 @@
 # DeployAlign Specification
 
-> Status: Prototype implemented; local and deployed technical QA passed · Date: 2026-08-17 · Owner: Product and engineering
+> Status: Prototype 0.2.0 implemented; local QA passed; deployed 0.1.0 revision unchanged · Date: 2026-08-26 · Owner: Product and engineering
 
 ## Problem definition
 
@@ -35,6 +35,8 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 - Execution receipts identifying Gemini, rules, human review, and build stages.
 - Opt-in live Gemini extraction with exact-quote validation; verified on the public Cloud Run demo with `gemini-2.5-flash` through Vertex AI.
 - Deterministic fallback that is visible to the user.
+- Execution-origin disclosure (`server` vs `browser`) on every compile result (0.2.0).
+- Automated API contract coverage for bounds, tokens, rate limit and startup guards (0.2.0).
 
 ### Excluded
 
@@ -66,6 +68,10 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 | FR-16 | Keep all node/diagnostic/edge references valid after review | Must | Unit tests find no dangling references |
 | FR-17 | Keep Gemini classifications separate from the deterministic decision graph | Must | Live classifications appear as `AI_DRAFT` candidates and cannot advance the gate |
 | FR-18 | Preserve validated AI provenance through review | Must | HMAC token round-trip retains provider, candidates, rationale, and relevant receipt data |
+| FR-19 | Label where every compile result was computed | Must | `executionOrigin` is `server` only for API responses; browser preview and network-failure fallback are `browser`; UI shows chip, notice, receipts context and footer (domain + API tests) |
+| FR-20 | Report service version and configured model on `/api/health` | Should | API test asserts `version` (SemVer) and `model` (`gemini-*`) |
+| FR-21 | Default to a generally available Gemini model with a compatible thinking configuration | Must | `DEFAULT_GEMINI_MODEL` is `gemini-3.7-flash`; `thinkingConfigFor` returns `thinkingLevel` for Gemini 3 and `thinkingBudget: 0` for Gemini 2.5 (unit tests) |
+| FR-22 | Cover the HTTP contract automatically | Must | `server/app.test.ts` exercises health, compile bounds, malformed JSON, token tamper, review round trip, 404, rate limit and startup guards |
 
 ## Non-functional requirements
 
@@ -104,13 +110,13 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 - Review baseline mismatch returns 409.
 - Invalid or expired compile provenance token returns 409.
 - Gemini extraction rejection is logged and deterministic compilation continues.
-- A network `TypeError` returns a local deterministic result only for the exact fixture; HTTP errors and other failures are surfaced. The current provider value does not distinguish client-local from server-side deterministic execution.
+- A network `TypeError` returns a local deterministic result only for the exact fixture; HTTP errors and other failures are surfaced. Since 0.2.0 that result is labelled `executionOrigin: 'browser'`, and the UI says so; only API responses carry `server`.
 
 ## Test acceptance
 
-- All thirteen existing domain tests pass.
-- Typecheck, lint, and production build pass.
-- API contract and failure cases receive automated coverage.
+- All 38 automated tests pass: 14 domain, 11 Gemini validation, 13 API contract (verified 2026-08-26 on Node 24.19.0).
+- Typecheck, lint, and production build pass (verified 2026-08-26).
+- API contract and failure cases receive automated coverage (`server/app.test.ts`, 0.2.0).
 - Visual QA confirms synthetic/fallback/human-gate disclosures.
 - A deployed live Gemini test is archived with the Cloud Run revision, provider/model receipt, signed-provenance review result, and redacted logs. The verified path produced exactly three `AI_DRAFT` candidates while deterministic TypeScript retained graph/gate/target ownership.
 
@@ -128,3 +134,5 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 - How should source documents be redacted and deleted?
 - What production topology, monitoring, and regional/data controls would meet real-user constraints beyond the current Cloud Run `asia-northeast3` demo?
 - What measurable user or business outcome justifies the product?
+- When is the first live `gemini-3.7-flash` receipt verified on the deployed service (D-017), given Gemini 2.5 Flash retires on Vertex AI on 2026-10-16?
+- Which of the six diagnostics survive as general detectors on real, redacted text (roadmap 0.3, D-016)?

@@ -1,6 +1,6 @@
 # DeployAlign Project Brief
 
-> Status: Working draft · Date: 2026-08-17 · Owner: DeployAlign team (Codex-assisted)
+> Status: Active · Date: 2026-08-26 · Owner: DeployAlign team (Codex- and Claude-assisted)
 
 ## One-line summary
 
@@ -44,7 +44,10 @@ This fallback is intentional for a stable demonstration, but it is not evidence 
 - Express endpoints for health, compile, and demo approval.
 - Opt-in Gemini Developer API or Vertex AI path, source-quote/schema validated; the deployed demo uses Vertex AI.
 - Browser client helper with a 60-second timeout and a network-failure fallback restricted to the exact synthetic fixture.
-- Thirteen unit-test cases in `src/domain/compiler.test.ts`.
+- 38 automated tests across three suites: `src/domain/compiler.test.ts` (14), `server/gemini.test.ts` (11), `server/app.test.ts` (13).
+- Execution-origin labelling on every compile result (`server` vs `browser`) with matching UI disclosure (0.2.0).
+- Default extraction model `gemini-3.7-flash` with automatic thinking configuration; `GEMINI_MODEL` pins any model (0.2.0).
+- GitHub Actions CI on Node 24 (typecheck, lint, test, build, container build), `CONTRIBUTING.md`, `SECURITY.md`, README in English, Korean and Chinese (0.2.0).
 - A one-hour HMAC-SHA256 compile-provenance token that carries validated AI evidence through the demo review transition.
 - Docker packaging for a Node 24 runtime.
 
@@ -57,6 +60,10 @@ The license-compliance release at commit `d5f9f33180a1edbdfeb8e5d4b8775a98643fd2
 The deployed browser flow and redacted logs evidence a successful `gemini-vertex` compile, three exact-quote `AI_DRAFT` statements, a `SUCCESS` AI receipt, preserved signed provenance through review, `HOLD` → `CONDITIONAL PILOT`, and six rebuilt/three unchanged target sections. Logs include `compile_completed` for version 1 with six unresolved diagnostics and `patch_approved` for version 2. This is a public synthetic demo, not an evidenced customer production system. Separately, the entrant confirms 1 actual user, 0 paying users, $0 total/monthly/related-party revenue, and $0 COGS/marketing/other/total expenses. The 2:50 public demo video is verified at [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA). The [Devpost entry](https://devpost.com/software/test-q0h69v) is submitted, but no customer, testimonial, measured impact, eligibility determination, or award is established.
 
 Official Vertex AI Model Garden Monitoring evidence shows a `gemini-2.5-flash` row plus model-request and token-count graphs in the last-hour window. A separate private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, alongside an explicit warning that costs can take hours or more than 24 hours to appear. The entrant confirms the current challenge P&L as $0 revenue, $0 expenses, and $0 net; the billing screen still warrants a lag-aware recheck after submission.
+
+## Post-submission direction (0.2.0, 2026-08-26)
+
+The submission is a checkpoint, not the goal. The owner's direction is to keep improving DeployAlign into a tool practitioners actually use. `docs/00-overview/ROADMAP.md` defines what "useful" must mean here — a deployment engineer runs it on their **own** three documents and acts on the result — and the measurable signals for it. The 0.2.0 cycle fixed the two things that would have made further work dishonest or short-lived: results now say where they were computed, and the default model is one that will still exist after 2026-10-16. The public Cloud Run revision is unchanged until the owner approves a redeploy (D-017).
 
 ## Scale envelope
 

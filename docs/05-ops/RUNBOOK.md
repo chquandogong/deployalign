@@ -1,6 +1,6 @@
 # DeployAlign Runbook
 
-> Status: Local and public synthetic-demo operations · Date: 2026-08-17 · Owner: Engineering
+> Status: Local (0.2.0) and public synthetic-demo (0.1.0 revision) operations · Date: 2026-08-26 · Owner: Engineering
 
 ## Supported operating mode
 
@@ -8,8 +8,8 @@ This runbook starts and troubleshoots the local synthetic demo and records the v
 
 ## Prerequisites
 
-- Node.js 24 (matches the Dockerfile).
-- Corepack with pnpm 11.19.0.
+- Node.js 24 (`.nvmrc`; matches the Dockerfile). Anything ≥ 22.13 works — pnpm 11 needs `node:sqlite`, so Node 20 fails with `ERR_UNKNOWN_BUILTIN_MODULE`.
+- Corepack with pnpm 11.19.0 (`corepack enable` reads `package.json#packageManager`).
 - Free local ports for Vite and the Express API (API default: 8080).
 - Optional live model: a human-approved Gemini API key or Google Cloud project with valid Application Default Credentials.
 - Production only: stable `COMPILE_TOKEN_SECRET` of at least 32 UTF-8 bytes, supplied through approved secret management.
@@ -32,11 +32,35 @@ Keep the default environment:
 ALLOW_LIVE_GEMINI=false
 ```
 
-Health should report `liveGemini: false`. Compile should return `provider: deterministic-demo`, `synthetic: true`, version 1, and gate `HOLD`.
+Health should report `liveGemini: false`, `version` (from `package.json`) and `model` (default `gemini-3.7-flash`). Compile should return `provider: deterministic-demo`, `executionOrigin: server`, `synthetic: true`, version 1, and gate `HOLD`.
 
 In non-production local mode, the server generates an ephemeral compile-token secret if none is configured. A restart invalidates outstanding one-hour review tokens. Production startup intentionally fails if `COMPILE_TOKEN_SECRET` is absent or shorter than 32 bytes.
 
-The browser client has a 60-second request timeout. It falls back locally only for a network `TypeError` and only for the exact synthetic fixture; HTTP errors are surfaced, and abort/timeout errors are not intentionally converted to fallback. A compatible review can fall back only when the current provider is already deterministic. Because local and server-side deterministic results share the same provider value, treat execution origin as ambiguous unless the UI supplies separate evidence.
+The browser client has a 60-second request timeout. It falls back locally only for a network `TypeError` and only for the exact synthetic fixture; HTTP errors are surfaced, and abort/timeout errors are not intentionally converted to fallback. A compatible review can fall back only when the current provider is already deterministic. Since 0.2.0 every result carries `executionOrigin`; a browser-computed result shows an amber `IN-BROWSER` chip and an explicit notice, a server result shows a green `API` chip.
+
+## Model configuration
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `GEMINI_MODEL` | `gemini-3.7-flash` | Any Gemini model ID. Gemini 3.x Flash models are served from the Vertex `global` location only. |
+| `GEMINI_THINKING_LEVEL` | `low` | Gemini 3 models only: `low` / `medium` / `high` (`minimal` is accepted only by Flash-Lite models). Ignored for Gemini 2.5 pins, which keep `thinkingBudget: 0`. |
+| `GOOGLE_CLOUD_LOCATION` | `global` | Keep `global` for Gemini 3.x. |
+
+**Why the default moved.** Vertex AI release notes list 2026-10-16 as the retirement date for `gemini-2.5-flash`, the 0.1.0 default. `gemini-3.7-flash` became generally available on 2026-08-13. Gemini 3 rejects a zero thinking budget, so `thinkingConfigFor` picks `thinkingLevel` for 3.x and a numeric budget for 2.5.
+
+**Migrating the public demo (gated — D-017).** Typical sequence; confirm flags against current gcloud documentation before running:
+
+```text
+# 1. Build and deploy the 0.2.0 image (Cloud Build → Cloud Run, region asia-northeast3)
+# 2. Remove the old pin so the code default applies, or set the new one explicitly
+gcloud run services update deployalign --region asia-northeast3 --update-env-vars GEMINI_MODEL=gemini-3.7-flash
+# 3. Verify
+#    GET  /api/health   → model=gemini-3.7-flash, version=0.2.0, liveGemini=true
+#    POST /api/compile  → provider=gemini-vertex, receipt "gemini-3.7-flash classified 3 source statements"
+#    logs               → no gemini_extraction_rejected for the verification compile
+```
+
+Rollback: pin `GEMINI_MODEL=gemini-2.5-flash` (works until the retirement date) and redeploy the previous revision.
 
 ## Enable a live Gemini path
 
@@ -81,7 +105,7 @@ Cloud Build successfully built the container that backs this revision. Official 
 ## Verification sequence
 
 ```text
-pnpm test
+pnpm test        # 38 tests: domain, Gemini validation, API contract
 pnpm typecheck
 pnpm lint
 pnpm build
@@ -99,6 +123,8 @@ Check `/api/health`, compile the default synthetic project, review the patch onc
 - Post-review: version 2, `CONDITIONAL PILOT`, two unresolved evidence items.
 - Impact: six `DEC-014`-linked sections rebuilt; three unrelated canonical sections reused from that compile's fresh baseline without reconstruction, retaining their non-cryptographic FNV-1a32 change fingerprints.
 - Provider: accurately matches live or deterministic execution.
+- Origin: `executionOrigin` is `server` for every API response; the UI chip reads `API`.
+- Health: `version` matches `package.json`; `model` matches the configured `GEMINI_MODEL`.
 - Review: an unexpired HMAC token preserves compile provider/candidate provenance; invalid context returns 409.
 
 ## Container build
@@ -114,6 +140,18 @@ The Dockerfile builds the Vite bundle and runs Express on port 8080. The product
 3. For Vertex, verify project/location, required APIs, IAM/service identity, ADC or runtime credentials, and quota. Account reauthentication is already cleared.
 4. Inspect redacted structured logs for `gemini_extraction_rejected`.
 5. Do not expose credentials while troubleshooting.
+
+### Origin chip reads IN-BROWSER
+
+- The compiler API was unreachable (network `TypeError`) and the browser compiled the exact fixture locally. Nothing left the page.
+- Check the API process, the Vite proxy (`/api` → `:8080`), and browser network errors; recompile once the API answers.
+- A browser-origin result never carries a compile token, so server review is not possible from it.
+
+### Live compile rejected after a model change
+
+- `gemini_extraction_rejected` with an SDK/validation message right after changing `GEMINI_MODEL`: check that Gemini 3 models get `thinkingLevel` (automatic) and that `GEMINI_THINKING_LEVEL` is `low`/`medium`/`high`; `minimal` fails on non-Lite models.
+- For Vertex, Gemini 3.x Flash requires `GOOGLE_CLOUD_LOCATION=global`.
+- Roll back by pinning the previous model; the deterministic path keeps serving meanwhile.
 
 ### Compile returns deterministic output unexpectedly
 
@@ -151,6 +189,7 @@ The Dockerfile builds the Vite bundle and runs Express on port 8080. The product
 
 - Local code: return to the last known-good public commit; the current license-compliance deployment checkpoint is `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`.
 - Live model: set `ALLOW_LIVE_GEMINI=false` and restart; verify provider shows deterministic demo.
+- Model: pin `GEMINI_MODEL` to the previously verified model (`gemini-2.5-flash` until 2026-10-16) and redeploy.
 - Token secret: rotate only through approved secret management and expect all outstanding review tokens to become invalid.
 - Public deployment: route traffic back to a known-good Cloud Run revision or redeploy a known-good image; this remains to be rehearsed before any real use.
 - External submission/video/repository: do not assume changes are reversible; use a human pre-flight review before publishing.

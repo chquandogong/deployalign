@@ -31,7 +31,7 @@ Key limitations:
 
 - Only the three disclosed synthetic artifacts are accepted; metadata or content changes are rejected.
 - There is no authentication, persistence, tenant isolation, job queue, or durable audit log.
-- A network-failure fallback returns the same `deterministic-demo` provider as a healthy server-side fallback, so the UI cannot currently distinguish those two paths.
+- A network-failure fallback returned the same `deterministic-demo` provider as a healthy server-side fallback in 0.1.0; since 0.2.0 the `executionOrigin` field and UI chip distinguish them (D-014).
 - A one-hour HMAC-signed compile token now carries validated Gemini provider/candidate evidence through review. Without a configured shared `COMPILE_TOKEN_SECRET`, a restart or another instance cannot verify an earlier token.
 - The public synthetic demo is deployed to Cloud Run revision `deployalign-00004-wgb`, serving 100% of traffic in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`, with a dedicated Vertex-capable runtime service account and stable HMAC secret from Secret Manager. Current health returned `ok=true`, `service=deployalign`, and `liveGemini=true`.
 - A deployed `gemini-vertex` compile using `gemini-2.5-flash` returned exactly three validated exact-quote `AI_DRAFT` candidates and a successful receipt; provenance persisted through the HMAC-signed review token. Redacted logs recorded `compile_completed` for version 1 and `patch_approved` for version 2.
