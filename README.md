@@ -1,122 +1,249 @@
 # DeployAlign
 
-> Compile scattered promises into testable deployment commitments.
+**Compile scattered deployment promises into testable commitments.**
 
-![DeployAlign synthetic decision compiler](submission-assets/deployalign-hero.png)
+[![CI](https://github.com/chquandogong/deployalign/actions/workflows/ci.yml/badge.svg)](https://github.com/chquandogong/deployalign/actions/workflows/ci.yml)
+[![Live demo](https://img.shields.io/badge/demo-Cloud%20Run-4285F4)](https://deployalign-1007800160926.asia-northeast3.run.app)
+[![Model](https://img.shields.io/badge/Gemini%203.7%20Flash-Vertex%20AI%20%7C%20Gemini%20API-06b6d4)](https://ai.google.dev/gemini-api/docs/models)
+[![Node](https://img.shields.io/badge/node-24-339933)](.nvmrc)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-**Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) · **Demo video:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) · **Source:** [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign)
+🌐 **[English](README.md)** · [한국어](README.ko.md) · [中文](README.zh.md)
 
-**Submission status:** **Submitted — 5/5 steps done** to Build with Gemini XPRIZE on 2026-08-17 after explicit user approval, terms acceptance, and the Submit action. The public entry is [devpost.com/software/test-q0h69v](https://devpost.com/software/test-q0h69v). Submission does not establish eligibility, an award, business viability, or measured impact; public Git author metadata and Microsoft Mark voice redistribution remain accepted residual risks.
+---
 
-DeployAlign is an evidence-gated, typed decision compiler for bespoke robotics deployments. It turns a customer email, a draft sales proposal, and an engineering review into a source-mapped `Deployment Commitment Graph`, applies deterministic domain checks, proposes the smallest reviewable scope patch, and recompiles only the affected deliverable sections after human approval.
+![DeployAlign control room — synthetic Raman inspection case, gate on HOLD](docs/assets/hero-0.2.0.png)
 
-The included scenario is synthetic: a sub-fab Raman inspection pilot. It contains no customer records, confidential company data, real revenue, or measured field outcomes.
+## The problem
 
-## Why this is different
+A bespoke robotics deployment lives in at least three documents that never agree.
+The customer writes *"identify all chemical leaks in every area, fully autonomously."*
+Sales turns that into *"Phase 1 will cover the entire facility."* Engineering, later
+and in a separate review, writes *"current evidence covers five named analytes; twelve
+critical areas are mapped; the 800 mm aisle is customer-reported, not surveyed;
+recommend supervised Phase 1 and a blind test before any pilot gate."*
 
-Generic AI document tools can summarize or rewrite a proposal. DeployAlign keeps pre-agreement statements semantically distinct:
+Nobody lied. But by the time the statement of work is signed, *all materials* has
+become a contractual promise, a customer's *preference* for a quadruped platform has
+become a *mandatory configuration*, and an unsurveyed aisle width has become a design
+constraint. The deployment engineer discovers the drift in the field, where an hour
+costs more than the whole review would have.
 
-- `CustomerPreference` is not silently promoted to `EngineeringConstraint`.
-- `SalesCommitment` cannot outrun accepted `Evidence` without a blocker.
-- a verbal `SiteClaim` is not treated as a surveyed fact.
-- an open `VerificationTest` prevents an unconditional deployment gate.
-- all affected outputs share a stable Decision ID and source map.
+## What DeployAlign does
 
-Gemini is an optional, exact-quote candidate extractor. Its validated statements remain separate `AI_DRAFT` nodes. The fixed demo's canonical graph, TypeScript checks, gate transition, patch, and non-cryptographic FNV-1a32 section fingerprints are deterministic. A human must approve every scope-changing patch.
+DeployAlign treats those documents the way a compiler treats source code. It builds a
+**typed commitment graph** from the statements, runs **deterministic diagnostics** with
+exact source quotes, proposes the **smallest evidence-supported scope patch**, stops at
+a **human review boundary**, and then **recompiles only the downstream sections** the
+decision actually touches — a customer decision memo, a sales SOW, an engineering test
+manifest — all carrying the same decision ID.
 
-## Demo flow
+```text
+ 3 source artifacts ──▶ typed graph ──▶ 6 diagnostics ──▶ 3-field patch ──▶ HUMAN ──▶ 3 targets
+ customer · sales ·      11 node types    DA-001…DA-006     no invented       review    memo · SOW ·
+ engineering             7 edge types     exact quotes      price/date/value  gate      test manifest
+```
 
-1. Ingest three synthetic artifacts.
-2. Compile atomic statements into typed nodes with source quotes.
-3. Emit six domain diagnostics (`DA-001`–`DA-006`).
-4. Review a three-field minimum scope patch:
-   - all materials → five named analytes
-   - every area → 12 mapped critical AOIs
-   - fully autonomous → supervised Phase 1
-5. Approve the patch as a human reviewer.
-6. Advance `HOLD` → `CONDITIONAL PILOT` while critical tests remain open.
-7. Recompile six affected sections and preserve three unrelated FNV-1a32 fingerprints.
+The bundled scenario is **synthetic**: a fictional sub-fab Raman inspection pilot. It
+contains no customer records, no confidential data, no revenue and no measured field
+outcome, and the UI says so on every screen.
+
+### Why a *type system* and not a summary
+
+Generic AI document tools summarise or rewrite. DeployAlign keeps pre-agreement
+statements **semantically distinct** so that one cannot silently become another:
+
+| In the documents | What usually happens | How DeployAlign types it |
+| --- | --- | --- |
+| "We'd like a four-legged robot" | becomes a hard requirement in the SOW | `CustomerPreference` — a warning (`DA-003`) if sales makes it mandatory |
+| "Cover the entire facility, any material" | becomes the acceptance criterion | `SalesCommitment` that `CONFLICTS_WITH` the `EngineeringConstraint` — blocker `DA-001`, `DA-002` |
+| "The narrowest aisle is about 800 mm" | becomes a design constraint | `SiteClaim`, status `OPEN` until surveyed — warning `DA-004` |
+| "Acceptance is successful autonomous coverage" | signed as-is | blocker `DA-005` — not an objective, repeatable criterion |
+| "Blind five-analyte test before any pilot gate" | forgotten after kickoff | `VerificationTest` that `REQUIRES_TEST`-links the `DeploymentGate` — blocker `DA-006` keeps the gate conditional |
+
+The patch DeployAlign proposes is deliberately boring: *all materials → five named
+analytes*, *every area → 12 mapped critical AOIs*, *fully autonomous → supervised
+Phase 1*. Every value is copied from the engineering evidence. Nothing is invented — no
+price, no schedule, no threshold.
+
+### Where the AI is, and where it is not
+
+Gemini is an **optional, exact-quote extraction front end**. When enabled, it returns
+schema-validated candidate statements that must quote the source verbatim; anything
+ungrounded, mistyped or out of range is rejected and the compiler continues without
+it. The candidates appear as separate `AI_DRAFT` nodes. **The graph, the six
+diagnostics, the gate, the patch and the target documents are deterministic
+TypeScript**, and a person must approve every scope-changing patch. Receipts record
+which actor did what — Gemini, the rule engine, the human reviewer, the build engine.
+
+Since 0.2.0 every result also carries an **execution origin**: `API` when the compiler
+service produced it, `IN-BROWSER` when the page computed it locally because the API was
+unreachable. A fallback can no longer pass for a server run.
+
+## See it in three minutes
+
+- 🎬 **Demo video:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) — the 2026-08-17 walkthrough (0.1.0). A 0.2.0 walkthrough is scripted in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md) and built with the reproducible pipeline described there.
+- 🌐 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — public Cloud Run deployment of the **0.1.0 build** with live Gemini extraction through Vertex AI (one instance, six compiles per ten minutes per client). Redeploying 0.2.0 is tracked as decision D-017.
+
+Click **Run the synthetic case**, read the six diagnostics, open the patch, press
+**Simulate approval & recompile**, and compare the impact table: six sections rebuilt,
+three untouched with their change fingerprints intact.
+
+![Incremental build — six sections recompiled, three unchanged with fingerprints intact](docs/assets/impact-0.2.0.png)
+
+![Receipts separating Gemini, deterministic rules, human review and the build engine](docs/assets/receipts-0.2.0.png)
+
+The live 0.1.0 deployment with real Gemini receipts, as verified on 2026-08-17:
+
+![Approved state with live Gemini receipts](submission-assets/deployalign-live-gemini-approved.png)
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  A["Customer · Sales · Engineering sources"] --> B["Optional Gemini extraction"]
-  B --> C["Exact-quote validator"]
-  C --> K["Separate AI_DRAFT candidates"]
-  A --> D["Deterministic typed demo graph"]
-  D --> E["Deterministic rules + gate"]
-  E --> F["Candidate semantic patch"]
-  F --> G["Human approval"]
-  G --> H["Incremental target compiler"]
-  H --> I["Customer memo · Sales SOW · Test manifest"]
-  E --> J["Structured execution receipts"]
+  A["Customer · Sales · Engineering<br/>3 synthetic artifacts"] --> API["Express API<br/>createApp()"]
+  API -->|"opt-in"| G["Gemini 3.7 Flash<br/>Vertex AI or Gemini API"]
+  G -->|"JSON schema + exact-quote validation"| K["AI_DRAFT candidates"]
+  API --> D["Deterministic compiler<br/>typed graph · DA-001…006 · patch"]
+  K -.->|"never decides"| D
+  D --> T["HMAC compile token<br/>(1 h, carries AI provenance)"]
+  T --> UI["React control room<br/>provider · origin · gate badges"]
+  UI -->|"human review"| AP["POST /api/approve"]
+  AP --> D
+  D --> OUT["Customer memo · Sales SOW · Test manifest<br/>+ impact set + receipts"]
 ```
 
-The current public demo is Cloud Run revision `deployalign-00004-wgb` in `asia-northeast3`, serving 100% of traffic with Vertex AI enabled and a one-instance ceiling. Its health endpoint returned `ok=true`, `service=deployalign`, and `liveGemini=true`. A prior deployed compile—not the health response alone—verified live `gemini-2.5-flash` extraction, approval-token provenance, and Cloud Logging receipts. Gemini contributes only validated exact-quote `AI_DRAFT` candidates and a rationale sidecar; deterministic TypeScript rules remain authoritative for the canonical graph, diagnostics, gate, patch, and target outputs. When model access is unavailable, the UI reports the failure instead of presenting it as a successful live call.
+| Layer | Where | What it owns |
+| --- | --- | --- |
+| Domain | `src/domain/` | Types, the deterministic compiler, the synthetic fixture (frozen), 14 tests |
+| API | `server/app.ts`, `server/index.ts` | Input bounds, rate limit, HMAC provenance tokens, `/api/health`, `/api/compile`, `/api/approve`, static build; 13 contract tests |
+| Model adapter | `server/gemini.ts` | Opt-in Gemini call, prompt, `thinkingConfigFor`, pure `validateGeminiPayload`; 11 tests |
+| UI | `src/App.tsx` | Sources, graph + node inspector, diagnostics, patch diff, approval boundary, impact table, targets, source map, receipts |
 
-The deployed footer links to [the 3,462-byte third-party license notice](https://deployalign-1007800160926.asia-northeast3.run.app/third-party-licenses.txt), verified HTTP 200. It includes the full React/React DOM/Scheduler MIT, Vite browser-bundle MIT, and Lucide ISC license texts.
+Details: [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
+[`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md).
 
-![Approved live Vertex AI compile](submission-assets/deployalign-live-gemini-approved.png)
+## Quick start
 
-![Live Vertex AI and deterministic execution receipts](submission-assets/deployalign-live-gemini-receipts.png)
-
-## Run locally
-
-Requirements: Node.js 24+, pnpm 11+.
+Requirements: Node.js 24 ([`.nvmrc`](.nvmrc); ≥ 22.13 works) and pnpm 11 via Corepack.
 
 ```bash
-pnpm install
+git clone https://github.com/chquandogong/deployalign.git
+cd deployalign
+corepack enable
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open `http://localhost:5173`. The API listens on port `8080`.
+Open <http://localhost:5173>. Vite proxies `/api` to the Express server on `:8080`.
+No credentials are needed: without a model key the compiler runs the deterministic path
+and the UI labels it `Deterministic fixture fallback · API`.
+
+Production-style run of the built bundle:
+
+```bash
+pnpm build
+COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
+# → http://localhost:8080  ·  GET /api/health → {"ok":true,"version":"0.2.0","model":"gemini-3.7-flash",…}
+```
 
 ### Enable a live Gemini call
 
-Copy `.env.example` to `.env`, set `ALLOW_LIVE_GEMINI=true`, then choose one server-side authentication path:
+Copy `.env.example` to `.env`, set `ALLOW_LIVE_GEMINI=true`, and choose **one**
+server-side credential path. Never put a key in a client-side `VITE_*` variable.
 
-- Gemini Developer API: set `GEMINI_API_KEY`.
-- Vertex AI: set `GOOGLE_CLOUD_PROJECT` and `GOOGLE_CLOUD_LOCATION`, and provide Application Default Credentials.
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `ALLOW_LIVE_GEMINI` | `false` | Opt in to model calls; the public demo cannot spend quota silently |
+| `GEMINI_API_KEY` | — | Path A: Gemini Developer API |
+| `GOOGLE_CLOUD_PROJECT` / `GOOGLE_CLOUD_LOCATION` | — / `global` | Path B: Vertex AI with Application Default Credentials. Keep `global` for Gemini 3.x |
+| `GEMINI_MODEL` | `gemini-3.7-flash` | Pin any model. Gemini 2.5 Flash is on a Vertex AI retirement track (2026-10-16) |
+| `GEMINI_THINKING_LEVEL` | `low` | Gemini 3 only: `low` / `medium` / `high`; 2.5 pins keep thinking off |
+| `COMPILE_TOKEN_SECRET` | random per process (dev) | ≥ 32 bytes, **required in production**, shared across instances |
+| `PORT` | `8080` | API/static port |
 
-Never expose the key in client-side `VITE_*` variables.
+> `.env.example` still shows `GEMINI_MODEL=gemini-2.5-flash` from 0.1.0 — delete or
+> update that line, or the pin overrides the new default.
 
 ## Quality gates
 
 ```bash
-pnpm typecheck
-pnpm lint
-pnpm test
-pnpm build
+pnpm typecheck   # tsc -b
+pnpm lint        # oxlint
+pnpm test        # vitest — 38 tests in 3 suites
+pnpm build       # vite production bundle
 ```
 
-The 13 deterministic tests verify blocker determinism, source-map grounding, strict fixture isolation, patch minimality, the human approval boundary, conditional gate safety, selective recompilation, preserved FNV-1a32 fingerprints, and stable Decision IDs.
+CI runs the same four steps on Node 24 plus a container-image build on every push and
+pull request ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), actions pinned by
+SHA). The tests protect the contract that makes the tool trustworthy: every quote is a
+substring of its artifact, the gate never reaches an unconditional pass, the patch has
+exactly three fields, unrelated sections keep their fingerprints, tampered tokens are
+refused, and non-fixture input never reaches the model.
 
-## Container
+## Container and deployment
 
 ```bash
 docker build -t deployalign .
-docker run --rm -p 8080:8080 deployalign
+docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" deployalign
 ```
 
-The current public prototype was built by Cloud Build and deployed to Cloud Run with `ALLOW_LIVE_GEMINI=true`, a dedicated runtime service account, and a shared `COMPILE_TOKEN_SECRET` of at least 32 bytes supplied through Secret Manager. It is capped at one instance because the demo request limiter is process-local. The service intentionally refuses to start in production without the stable secret. The live URL, Vertex model call, approval flow, and structured Cloud Logging entries are verified; current billing totals are not claimed because usage reporting can lag.
+The public demo runs this image on Cloud Run (`asia-northeast3`, 1 CPU / 512 MiB,
+min 0 / max 1 instance) with a dedicated runtime service account, the token secret in
+Secret Manager and Vertex AI enabled. It is capped at one instance because the rate
+limiter and review state are process-local — a deliberate prototype boundary, not a
+scalability claim. Operations, verification steps and the model-migration procedure are
+in [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md).
 
 ## Safety boundaries
 
-- Generated SOWs are drafts until a human approves the semantic patch.
-- Gemini cannot invent measurements, cost, schedule, physical feasibility, or safety certification.
-- The demo does not control a robot and does not certify chemical detection or facility access.
-- Source quotes returned by Gemini must match the supplied artifact exactly or are rejected.
-- Live model calls are disabled unless `ALLOW_LIVE_GEMINI=true`.
+- Generated documents are **drafts** until a person approves the semantic patch; the demo's approve button illustrates that boundary and is not authenticated approval.
+- Gemini **cannot invent** measurements, cost, schedule, physical feasibility or safety certification, and cannot advance the gate.
+- Source quotes returned by the model must match the artifact **exactly** or are rejected.
+- The public prototype compiles **only the disclosed synthetic fixture**; any change to count, metadata or content is refused before the model is called.
+- The compile token is signed, not encrypted; the rate limit is in-memory; fingerprints are `fnv1a32` change detectors, not integrity hashes. See [`SECURITY.md`](SECURITY.md) and [`docs/04-quality/RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md).
+- DeployAlign does not control a robot and does not certify chemical detection or facility access.
+
+## Roadmap — toward a tool people actually use
+
+The mechanism is proven on one synthetic case. "Useful" means a deployment engineer
+can run it on **their own** three documents and act on the result. The next steps, each
+with success and stop criteria, are in [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md):
+
+1. **0.3 — Bring your own artifacts (local mode).** Turn the six fixture-bound diagnostics into general detectors over a Gemini-extracted, exact-quote graph; export targets as Markdown/JSON. Default off; privacy decision D-016.
+2. **0.4 — CLI and CI mode.** `deployalign compile ./artifacts --fail-on blocker` so a SOW edit that outruns evidence fails the docs pipeline.
+3. **0.5 — Practitioner pilot.** Five interviews, redacted samples, measured precision and time-to-decision — the only thing that decides whether identity, persistence and audit are worth building.
+
+Issues and pull requests are welcome; see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Project status and origin
+
+DeployAlign was built for **Build with Gemini XPRIZE** and submitted on 2026-08-17
+([Devpost entry](https://devpost.com/software/test-q0h69v)). That submission is a
+checkpoint (`v0.1.0`), not the finish line. The project continues in the open; changes
+are recorded in [`CHANGELOG.md`](CHANGELOG.md) and the reasoning behind them in
+[`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md).
+
+Honest scope, as of 0.2.0: the deterministic compiler, API, UI and tests are
+implemented and verified locally; a live `gemini-2.5-flash` call was verified on the
+deployed 0.1.0 revision; the `gemini-3.7-flash` default is unit-tested and awaits its
+first live receipt; there is no production deployment, no customer, and no measured
+field outcome. Nothing here establishes eligibility, an award or business viability.
 
 ## Documentation
 
-- Project status: [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md)
-- Product specification: [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md)
-- Architecture: [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md)
-- Test plan: [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md)
-- Submission evidence status: [`docs/submission/EVIDENCE_CHECKLIST.md`](docs/submission/EVIDENCE_CHECKLIST.md)
+| Document | Purpose |
+| --- | --- |
+| [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | Current state, work board, decisions waiting on the owner |
+| [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | What "useful" means and the phases to get there |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | Functional requirements FR-01…FR-22 and acceptance criteria |
+| [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | Components, data flow, trust boundaries, failure modes |
+| [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | Test plan and risks with state |
+| [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | Run, verify, migrate the model, troubleshoot, roll back |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-015 and the owner decision queue |
+| [`docs/submission/`](docs/submission/) | Demo script, YouTube metadata, and the historical Devpost evidence record |
 
 ## License
 
-DeployAlign is MIT-licensed; see [`LICENSE`](LICENSE). Browser-bundle third-party notices are published at [`/third-party-licenses.txt`](https://deployalign-1007800160926.asia-northeast3.run.app/third-party-licenses.txt).
+MIT — see [`LICENSE`](LICENSE). Browser-bundle third-party notices are served at
+[`/third-party-licenses.txt`](https://deployalign-1007800160926.asia-northeast3.run.app/third-party-licenses.txt).
