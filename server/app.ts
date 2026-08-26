@@ -1,14 +1,16 @@
 import express, { type ErrorRequestHandler, type Express } from 'express'
-import { createHmac, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto'
+import { createHash, createHmac, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { compileDemo, isDemoFixture } from '../src/domain/compiler'
 import { DEMO_ARTIFACTS } from '../src/domain/demo'
+import { compileGeneral } from '../src/domain/general/compile'
 import type {
   AiExtractionEvidence,
   ApprovalRequest,
   CompileRequest,
+  CompileResult,
   SourceArtifact,
 } from '../src/domain/types'
 import { extractWithGemini, GEMINI_MODEL } from './gemini'
@@ -41,7 +43,20 @@ interface CompileTokenPayload {
   version: 1
   expiresAt: number
   aiEvidence?: AiExtractionEvidence
+  /** `fixture` or `custom`; custom review must resubmit the same artifacts. */
+  mode: 'fixture' | 'custom'
+  patchId: string
+  artifactsHash: string
 }
+
+const FIXTURE_PATCH_ID = 'PATCH-014-A'
+const CUSTOM_PATCH_ID = 'PATCH-001-A'
+const ROLES = ['customer', 'sales', 'engineering'] as const
+
+const artifactsHash = (artifacts: SourceArtifact[]) =>
+  createHash('sha256')
+    .update(JSON.stringify(artifacts.map((a) => [a.id, a.role, a.title, a.owner, a.updatedAt, a.content])))
+    .digest('base64url')
 
 export interface AppOptions {
   /** HMAC secret for compile provenance tokens; defaults to COMPILE_TOKEN_SECRET. */
@@ -54,9 +69,15 @@ export interface AppOptions {
   liveGemini?: boolean
   /** Structured event sink; defaults to JSON lines on stdout. */
   logger?: Logger
+  /**
+   * Accept user-supplied artifacts through the general compiler; defaults to
+   * ALLOW_CUSTOM_ARTIFACTS === 'true'. Keep this off on any public deployment:
+   * with live Gemini enabled it sends the submitted text to the model.
+   */
+  allowCustomArtifacts?: boolean
 }
 
-const boundedArtifacts = (body: unknown): SourceArtifact[] => {
+const boundedArtifacts = (body: unknown, allowCustom: boolean): SourceArtifact[] => {
   if (body !== undefined && (typeof body !== 'object' || body === null || Array.isArray(body))) {
     throw new Error('Request body must be a JSON object.')
   }
@@ -83,11 +104,41 @@ const boundedArtifacts = (body: unknown): SourceArtifact[] => {
   if (artifacts.some((artifact) => artifact.content.length > 8_000)) {
     throw new Error('Each artifact must be 8,000 characters or fewer.')
   }
-  const normalized = artifacts.map((artifact) => ({ ...artifact }))
-  if (!isDemoFixture(normalized)) {
+  const normalized = artifacts.map((artifact) => ({
+    id: artifact.id,
+    role: artifact.role,
+    title: artifact.title,
+    owner: artifact.owner,
+    updatedAt: artifact.updatedAt,
+    content: artifact.content,
+  }))
+  if (isDemoFixture(normalized)) return normalized
+  if (!allowCustom) {
     throw new Error('This public prototype only accepts the disclosed synthetic Raman fixture.')
   }
+  validateCustomArtifacts(normalized)
   return normalized
+}
+
+const validateCustomArtifacts = (artifacts: SourceArtifact[]) => {
+  const roles = artifacts.map((artifact) => artifact.role)
+  if (ROLES.some((role) => roles.filter((candidate) => candidate === role).length !== 1)) {
+    throw new Error('Custom artifacts must include exactly one customer, one sales, and one engineering document.')
+  }
+  if (new Set(artifacts.map((artifact) => artifact.id)).size !== artifacts.length) {
+    throw new Error('Artifact ids must be unique.')
+  }
+  for (const artifact of artifacts) {
+    if (artifact.content.trim().length < 20) {
+      throw new Error(`Artifact ${artifact.id} needs at least 20 characters of text.`)
+    }
+    if (
+      [artifact.id, artifact.updatedAt].some((field) => field.length > 64) ||
+      [artifact.title, artifact.owner].some((field) => field.length > 200)
+    ) {
+      throw new Error('Artifact metadata fields are too long.')
+    }
+  }
 }
 
 /**
@@ -108,22 +159,30 @@ export const createApp = (options: AppOptions = {}): Express => {
   }
   const compileTokenSecret = configuredSecret ?? randomBytes(32).toString('base64url')
   const liveGemini = options.liveGemini ?? process.env.ALLOW_LIVE_GEMINI === 'true'
+  const allowCustom = options.allowCustomArtifacts ?? process.env.ALLOW_CUSTOM_ARTIFACTS === 'true'
   const dist = options.distDir ?? path.join(root, 'dist')
   const emit = options.logger ?? log
   const compileAttempts = new Map<string, number[]>()
 
-  const issueCompileToken = (aiEvidence?: AiExtractionEvidence) => {
+  const issueCompileToken = (
+    mode: CompileTokenPayload['mode'],
+    artifacts: SourceArtifact[],
+    aiEvidence?: AiExtractionEvidence,
+  ) => {
     const payload: CompileTokenPayload = {
       version: 1,
       expiresAt: Date.now() + COMPILE_TOKEN_TTL_MS,
       aiEvidence,
+      mode,
+      patchId: mode === 'fixture' ? FIXTURE_PATCH_ID : CUSTOM_PATCH_ID,
+      artifactsHash: artifactsHash(artifacts),
     }
     const encoded = Buffer.from(JSON.stringify(payload)).toString('base64url')
     const signature = createHmac('sha256', compileTokenSecret).update(encoded).digest('base64url')
     return `${encoded}.${signature}`
   }
 
-  const verifyCompileToken = (token: string): AiExtractionEvidence | undefined => {
+  const verifyCompileToken = (token: string): CompileTokenPayload => {
     const parts = token.split('.')
     if (parts.length !== 2) throw new Error('Compile provenance token is missing or malformed.')
     const [encoded, suppliedSignature] = parts
@@ -148,7 +207,10 @@ export const createApp = (options: AppOptions = {}): Express => {
     ) {
       throw new Error('Compile provenance token has expired.')
     }
-    return payload.aiEvidence
+    if ((payload.mode !== 'fixture' && payload.mode !== 'custom') || typeof payload.artifactsHash !== 'string') {
+      throw new Error('Compile provenance token is missing or malformed.')
+    }
+    return payload
   }
 
   const consumeCompileAllowance = (key: string) => {
@@ -199,6 +261,7 @@ export const createApp = (options: AppOptions = {}): Express => {
       version: serviceVersion,
       liveGemini,
       model: GEMINI_MODEL,
+      customArtifacts: allowCustom,
     })
   })
 
@@ -211,11 +274,12 @@ export const createApp = (options: AppOptions = {}): Express => {
     }
 
     try {
-      const artifacts = boundedArtifacts(request.body)
+      const artifacts = boundedArtifacts(request.body, allowCustom)
+      const fixture = isDemoFixture(artifacts)
       let aiEvidence: AiExtractionEvidence | undefined
       if (liveGemini) {
         try {
-          aiEvidence = await extractWithGemini(artifacts)
+          aiEvidence = await extractWithGemini(artifacts, { synthetic: fixture })
         } catch (error) {
           emit('gemini_extraction_rejected', {
             reason: error instanceof Error ? error.message : 'unknown',
@@ -223,14 +287,11 @@ export const createApp = (options: AppOptions = {}): Express => {
         }
       }
 
-      const result = compileDemo({
-        artifacts,
-        aiEvidence,
-        runId: `RUN-${randomUUID()}`,
-        executionOrigin: 'server',
-      })
-      result.compileToken = issueCompileToken(aiEvidence)
+      const shared = { artifacts, aiEvidence, runId: `RUN-${randomUUID()}`, executionOrigin: 'server' as const }
+      const result = fixture ? compileDemo(shared) : compileGeneral(shared)
+      result.compileToken = issueCompileToken(fixture ? 'fixture' : 'custom', artifacts, aiEvidence)
       emit('compile_completed', {
+        mode: result.mode,
         traceId: result.receipts[0]?.id,
         version: result.version,
         provider: result.provider,
@@ -246,33 +307,58 @@ export const createApp = (options: AppOptions = {}): Express => {
 
   app.post('/api/approve', (request, response) => {
     const payload = request.body as Partial<ApprovalRequest> | undefined
-    if (
-      payload?.version !== 1 ||
-      payload?.patchId !== 'PATCH-014-A' ||
-      typeof payload.compileToken !== 'string'
-    ) {
+    if (payload?.version !== 1 || typeof payload.patchId !== 'string' || typeof payload.compileToken !== 'string') {
       response.status(409).json({ error: 'Patch or baseline version does not match.' })
       return
     }
 
-    let aiEvidence: AiExtractionEvidence | undefined
+    let token: CompileTokenPayload
     try {
-      aiEvidence = verifyCompileToken(payload.compileToken)
+      token = verifyCompileToken(payload.compileToken)
     } catch (error) {
       response.status(409).json({
         error: error instanceof Error ? error.message : 'Compile provenance token is invalid.',
       })
       return
     }
+    if (payload.patchId !== token.patchId) {
+      response.status(409).json({ error: 'Patch or baseline version does not match.' })
+      return
+    }
 
-    const result = compileDemo({
-      approved: true,
-      aiEvidence,
-      runId: `RUN-${randomUUID()}`,
-      executionOrigin: 'server',
-    })
-    result.compileToken = issueCompileToken(aiEvidence)
+    let result: CompileResult
+    if (token.mode === 'custom') {
+      let artifacts: SourceArtifact[]
+      try {
+        if (!Array.isArray(payload.artifacts)) throw new Error('Custom review must resubmit the compiled artifacts.')
+        artifacts = boundedArtifacts({ artifacts: payload.artifacts }, allowCustom)
+      } catch (error) {
+        response.status(409).json({ error: error instanceof Error ? error.message : 'Artifacts are invalid.' })
+        return
+      }
+      if (artifactsHash(artifacts) !== token.artifactsHash) {
+        response.status(409).json({ error: 'Artifacts do not match the compiled baseline.' })
+        return
+      }
+      result = compileGeneral({
+        artifacts,
+        approved: true,
+        aiEvidence: token.aiEvidence,
+        runId: `RUN-${randomUUID()}`,
+        executionOrigin: 'server',
+      })
+      result.compileToken = issueCompileToken('custom', artifacts, token.aiEvidence)
+    } else {
+      result = compileDemo({
+        approved: true,
+        aiEvidence: token.aiEvidence,
+        runId: `RUN-${randomUUID()}`,
+        executionOrigin: 'server',
+      })
+      result.compileToken = issueCompileToken('fixture', DEMO_ARTIFACTS, token.aiEvidence)
+    }
     emit('patch_approved', {
+      mode: result.mode,
       decisionId: result.decisionId,
       version: result.version,
       recompiledSections: result.impact.recompiled.length,

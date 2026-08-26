@@ -8,11 +8,12 @@ import { createApp, MAX_COMPILES_PER_WINDOW } from './app'
 
 const testSecret = 'deployalign-test-secret-with-at-least-32-bytes'
 
-const startServer = async () => {
+const startServer = async (options: { allowCustomArtifacts?: boolean } = {}) => {
   const server = createApp({
     compileTokenSecret: testSecret,
     liveGemini: false,
     logger: () => {},
+    ...options,
   }).listen(0)
   await once(server, 'listening')
   const { port } = server.address() as AddressInfo
@@ -51,6 +52,7 @@ describe('DeployAlign API contract', () => {
     expect(body.liveGemini).toBe(false)
     expect(body.version).toMatch(/^\d+\.\d+\.\d+/)
     expect(body.model).toMatch(/^gemini-/)
+    expect(body.customArtifacts).toBe(false)
   })
 
   it('compiles the synthetic fixture server-side with a signed provenance token', async () => {
@@ -184,5 +186,117 @@ describe('DeployAlign API limits and startup guards', () => {
     expect(() => createApp({ nodeEnv: 'development', compileTokenSecret: 'too-short' })).toThrow(
       'at least 32 bytes',
     )
+  })
+})
+
+const customArtifacts = [
+  {
+    id: 'CUS-A',
+    role: 'customer',
+    title: 'Customer note',
+    owner: 'Plant manager',
+    updatedAt: '2026-08-20T00:00:00.000Z',
+    content: 'We need leak detection across the plant. The main corridor is about 900 mm wide.',
+  },
+  {
+    id: 'SAL-B',
+    role: 'sales',
+    title: 'Proposal',
+    owner: 'Account executive',
+    updatedAt: '2026-08-21T00:00:00.000Z',
+    content: 'The system will detect any leaked material in every zone of the plant autonomously. Acceptance is full coverage.',
+  },
+  {
+    id: 'ENG-C',
+    role: 'engineering',
+    title: 'Engineering review',
+    owner: 'Application engineer',
+    updatedAt: '2026-08-22T00:00:00.000Z',
+    content: 'Lab evidence covers three named analytes. Eight critical zones are mapped. Recommend supervised operation and a blind analyte test before any gate.',
+  },
+]
+
+describe('DeployAlign API custom-artifact mode', () => {
+  let server: Server
+  let baseUrl: string
+
+  beforeAll(async () => {
+    ;({ server, baseUrl } = await startServer({ allowCustomArtifacts: true }))
+  })
+
+  afterAll(async () => {
+    await stopServer(server)
+  })
+
+  it('advertises custom mode on health and still compiles the fixture canonically', async () => {
+    const health = (await (await fetch(`${baseUrl}/api/health`)).json()) as Record<string, unknown>
+    expect(health.customArtifacts).toBe(true)
+
+    const fixture = (await (await postJson(baseUrl, '/api/compile', { artifacts: DEMO_ARTIFACTS })).json()) as CompileResult
+    expect(fixture.mode).toBe('fixture')
+    expect(fixture.decisionId).toBe('DEC-014')
+  })
+
+  it('compiles user-supplied artifacts through the general path with a bound token', async () => {
+    const response = await postJson(baseUrl, '/api/compile', { artifacts: customArtifacts })
+    const result = (await response.json()) as CompileResult
+
+    expect(response.status).toBe(200)
+    expect(result.mode).toBe('custom')
+    expect(result.synthetic).toBe(false)
+    expect(result.executionOrigin).toBe('server')
+    expect(result.gate).toBe('HOLD')
+    expect(result.diagnostics.map((d) => d.code)).toEqual(['DA-001', 'DA-002', 'DA-004', 'DA-005', 'DA-006'])
+    expect(result.patch.changes.map((c) => c.field)).toEqual(['analyte scope', 'coverage', 'operating mode'])
+    expect(result.patch.changes.map((c) => c.after)).toEqual(['three named analytes', 'Eight critical zones', 'supervised operation'])
+    expect(result.compileToken?.split('.')).toHaveLength(2)
+  })
+
+  it('reviews custom artifacts only when the same artifacts are resubmitted', async () => {
+    const compile = (await (await postJson(baseUrl, '/api/compile', { artifacts: customArtifacts })).json()) as CompileResult
+
+    const missing = await postJson(baseUrl, '/api/approve', { version: 1, patchId: compile.patch.id, compileToken: compile.compileToken })
+    expect(missing.status).toBe(409)
+    expect(await missing.json()).toEqual({ error: 'Custom review must resubmit the compiled artifacts.' })
+
+    const altered = customArtifacts.map((artifact, index) =>
+      index === 1 ? { ...artifact, content: `${artifact.content} Also every valve.` } : artifact,
+    )
+    const mismatch = await postJson(baseUrl, '/api/approve', { version: 1, patchId: compile.patch.id, compileToken: compile.compileToken, artifacts: altered })
+    expect(mismatch.status).toBe(409)
+    expect(await mismatch.json()).toEqual({ error: 'Artifacts do not match the compiled baseline.' })
+
+    const wrongPatch = await postJson(baseUrl, '/api/approve', { version: 1, patchId: 'PATCH-014-A', compileToken: compile.compileToken, artifacts: customArtifacts })
+    expect(wrongPatch.status).toBe(409)
+
+    const approved = await postJson(baseUrl, '/api/approve', { version: 1, patchId: compile.patch.id, compileToken: compile.compileToken, artifacts: customArtifacts })
+    const result = (await approved.json()) as CompileResult
+    expect(approved.status).toBe(200)
+    expect(result.mode).toBe('custom')
+    expect(result.version).toBe(2)
+    expect(result.gate).toBe('CONDITIONAL PILOT')
+    expect(result.diagnostics.find((d) => d.code === 'DA-001')?.resolved).toBe(true)
+    expect(result.diagnostics.find((d) => d.code === 'DA-006')?.resolved).toBe(false)
+    expect(result.nodes.find((n) => n.id === 'SCOPE-001')).toBeDefined()
+  })
+
+  it('rejects custom artifact sets that are not one document per role or are too short', async () => {
+    const twoCustomers = customArtifacts.map((artifact, index) => (index === 1 ? { ...artifact, role: 'customer' } : artifact))
+    const roles = await postJson(baseUrl, '/api/compile', { artifacts: twoCustomers })
+    expect(roles.status).toBe(400)
+    expect(((await roles.json()) as { error: string }).error).toContain('exactly one customer, one sales, and one engineering')
+
+    const short = customArtifacts.map((artifact, index) => (index === 2 ? { ...artifact, content: 'n/a' } : artifact))
+    const tooShort = await postJson(baseUrl, '/api/compile', { artifacts: short })
+    expect(tooShort.status).toBe(400)
+    expect(((await tooShort.json()) as { error: string }).error).toContain('at least 20 characters')
+  })
+
+  it('drops unknown artifact keys before compiling', async () => {
+    const withExtra = customArtifacts.map((artifact) => ({ ...artifact, hidden: 'ignore me' }))
+    const response = await postJson(baseUrl, '/api/compile', { artifacts: withExtra })
+    const result = (await response.json()) as CompileResult
+    expect(response.status).toBe(200)
+    expect(Object.keys(result.artifacts[0]!)).toEqual(['id', 'role', 'title', 'owner', 'updatedAt', 'content'])
   })
 })
