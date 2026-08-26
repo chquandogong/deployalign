@@ -1,0 +1,1 @@
+Phase 1 covers dock 3 and two staging lanes with three AMRs in supervised operation. Acceptance is 40 pallets per hour sustained for 2 hours with zero safety stops. Pricing follows the attached schedule.

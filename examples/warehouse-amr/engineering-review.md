@@ -1,0 +1,1 @@
+Fleet tests achieved 42 pallets per hour over 3 hours on the same route. Door width was measured at 2400 mm. Supervised operation is recommended for the first two weeks. The route survey was completed on 2026-05-02.

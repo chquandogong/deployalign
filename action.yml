@@ -1,0 +1,96 @@
+name: 'DeployAlign compile'
+description: 'Compile a customer note, a sales proposal and an engineering review into evidence-gated diagnostics, and fail the job when a proposal outruns its evidence.'
+author: 'chquandogong'
+branding:
+  icon: 'check-square'
+  color: 'green'
+
+inputs:
+  path:
+    description: 'Directory holding the three documents (customer*/sales*/engineering* or 고객*/영업*/엔지니어링*), or a JSON manifest when it ends with .json'
+    required: true
+  fail-on:
+    description: 'blocker | warning | none — fail the step when unresolved diagnostics remain at or above this level'
+    required: false
+    default: 'blocker'
+  out:
+    description: 'Directory for result.json, report.md and the three target documents'
+    required: false
+    default: 'deployalign-out'
+  approved:
+    description: 'Render the reviewed baseline (v2) instead of the draft; records nothing'
+    required: false
+    default: 'false'
+  node-version:
+    description: 'Node.js version used to run the compiler (>= 22.13)'
+    required: false
+    default: '24'
+  summary:
+    description: 'Append report.md to the GitHub job summary'
+    required: false
+    default: 'true'
+
+outputs:
+  verdict:
+    description: 'PASS or FAIL for the requested fail-on level'
+    value: ${{ steps.compile.outputs.verdict }}
+  gate:
+    description: 'HOLD or CONDITIONAL PILOT'
+    value: ${{ steps.compile.outputs.gate }}
+  blockers:
+    description: 'Number of unresolved BLOCKER diagnostics'
+    value: ${{ steps.compile.outputs.blockers }}
+  warnings:
+    description: 'Number of unresolved WARNING diagnostics'
+    value: ${{ steps.compile.outputs.warnings }}
+  decision-id:
+    description: 'Decision ID carried by every recompiled section'
+    value: ${{ steps.compile.outputs.decision_id }}
+  report:
+    description: 'Path to report.md'
+    value: ${{ steps.compile.outputs.report }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      with:
+        node-version: ${{ inputs.node-version }}
+        package-manager-cache: false
+
+    - name: Install the compiler's runtime dependencies
+      shell: bash
+      env:
+        COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+      run: |
+        corepack enable
+        cd "${{ github.action_path }}"
+        pnpm install --frozen-lockfile --prod
+
+    - name: Compile
+      id: compile
+      shell: bash
+      run: |
+        set +e
+        ARGS=(compile)
+        if [[ "${{ inputs.path }}" == *.json ]]; then ARGS+=(--artifacts "${{ inputs.path }}"); else ARGS+=("${{ inputs.path }}"); fi
+        ARGS+=(--out "${{ inputs.out }}" --fail-on "${{ inputs.fail-on }}")
+        if [[ "${{ inputs.approved }}" == "true" ]]; then ARGS+=(--approved); fi
+        node "${{ github.action_path }}/bin/deployalign.mjs" "${ARGS[@]}"
+        code=$?
+        set -e
+        if [[ -f "${{ inputs.out }}/result.json" ]]; then
+          node -e '
+            const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
+            const open = r.diagnostics.filter((d) => !d.resolved);
+            const blockers = open.filter((d) => d.severity === "BLOCKER").length;
+            const warnings = open.filter((d) => d.severity === "WARNING").length;
+            const out = [`gate=${r.gate}`, `blockers=${blockers}`, `warnings=${warnings}`, `decision_id=${r.decisionId}`];
+            require("fs").appendFileSync(process.env.GITHUB_OUTPUT, out.join("\n") + "\n");
+          ' "${{ inputs.out }}/result.json"
+          echo "report=${{ inputs.out }}/report.md" >> "$GITHUB_OUTPUT"
+          if [[ "${{ inputs.summary }}" == "true" ]]; then cat "${{ inputs.out }}/report.md" >> "$GITHUB_STEP_SUMMARY"; fi
+        fi
+        if [[ $code -eq 2 ]]; then echo "verdict=FAIL" >> "$GITHUB_OUTPUT"; elif [[ $code -eq 0 ]]; then echo "verdict=PASS" >> "$GITHUB_OUTPUT"; else echo "verdict=ERROR" >> "$GITHUB_OUTPUT"; fi
+        exit $code
