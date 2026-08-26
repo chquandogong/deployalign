@@ -2076,3 +2076,38 @@ footer {
   .editor-grid { grid-template-columns: minmax(0, 1fr); }
   .aside-stack { align-items: flex-start; }
 }
+
+.editor-presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.editor-presets > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.editor-cli-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.editor-cli-hint code {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-soft);
+}

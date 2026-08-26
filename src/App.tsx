@@ -39,6 +39,7 @@ import './App.css'
 import { ArtifactEditor } from './components/ArtifactEditor'
 import { changedSectionCount, compileDemo, unresolvedBlockerCount } from './domain/compiler'
 import { DEMO_ARTIFACTS } from './domain/demo'
+import { EXAMPLE_PRESETS } from './domain/examples'
 import { compileGeneral } from './domain/general/compile'
 import type {
   CommitmentNode,
@@ -640,9 +641,14 @@ function App() {
           <ArtifactEditor
             drafts={drafts}
             busy={busy !== null}
+            presets={EXAMPLE_PRESETS}
             onChange={updateDraft}
             onCompile={() => runCompile(drafts)}
             onReset={() => setDrafts(cloneArtifacts(DEMO_ARTIFACTS))}
+            onLoadPreset={(preset) => {
+              setDrafts(cloneArtifacts(preset.artifacts))
+              setNotice(`Loaded the example set “${preset.label}” into the editor. Nothing was compiled yet.`)
+            }}
           />
         ) : null}
 
