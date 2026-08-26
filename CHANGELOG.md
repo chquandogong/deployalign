@@ -62,7 +62,8 @@ improving.
 ### Verification
 
 `pnpm typecheck`, `pnpm lint`, `pnpm test` (38 tests across 3 files) and
-`pnpm build` passed on Node 24.19.0 / pnpm 11.19.0 on 2026-08-26.
+`pnpm build` passed on Node 24.19.0 / pnpm 11.19.0 on 2026-08-26, locally and in
+GitHub Actions (quality and container-image jobs green).
 
 ## [0.1.0] — 2026-08-17
 

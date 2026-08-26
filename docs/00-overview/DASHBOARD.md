@@ -25,7 +25,7 @@
 | 0.1.0 submission | Done (2026-08-17) | `docs/submission/EVIDENCE_CHECKLIST.md` (historical record) | None; await organizer result |
 | 0.2.0 code | Done, verified locally | 38/38 tests, build, HTTP smoke | Tag `v0.2.0`, push, GitHub release |
 | 0.2.0 docs (EN/KO/ZH) | Done | `README*.md`, `CHANGELOG.md`, `ROADMAP.md`, updated `docs/**` | Keep all three READMEs in sync (R-21) |
-| CI | Authored | `.github/workflows/ci.yml` | First run happens on push; fix anything red |
+| CI | Green | `.github/workflows/ci.yml`; run `32931382972` | Keep the four gates + container build required for merges |
 | Demo video v0.2.0 | Rendered and checked locally | `videos/build/…mp4` (2:57), EN/KO/ZH `.srt` | Owner upload (D-018) |
 | Public demo redeploy | Not started — gated | — | Owner decision D-017 before 2026-10-16 |
 | 0.3 custom artifacts | Designed only | `ROADMAP.md` | Owner decision D-016 |
@@ -38,18 +38,18 @@
 | Execution-origin field + UI | Done | Builder | — | `types.ts`, `compiler.ts`, `compileClient.ts`, `App.tsx`, tests |
 | Model default → 3.7 Flash + thinking config | Done (unit-tested) | Builder | Live verification (D-017) | `server/gemini.ts`, `gemini.test.ts` |
 | `createApp` factory + API tests | Done | Builder | — | `server/app.ts`, `app.test.ts` |
-| CI workflow | Authored | Builder | Push to GitHub | `.github/workflows/ci.yml` |
+| CI workflow | Done — green | Builder | — | `.github/workflows/ci.yml`, run `32931382972` |
 | Tri-lingual README + repo hygiene | Done | Documentarian | — | `README*.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md` |
 | Docs refresh (spec, architecture, runbook, risks, tests, decisions) | Done | Documentarian | — | `docs/**` |
 | Demo video v0.2.0 | Rendered | Media | Upload gate D-018 | `scripts/demo-video/`, render + subtitles |
-| Release `v0.2.0` | In progress | Orchestrator | Gates green | Tag, push, GitHub release with notes |
+| Release `v0.2.0` | Done | Orchestrator | — | Tags `v0.1.0` (historical) and `v0.2.0`; [GitHub release](https://github.com/chquandogong/deployalign/releases/tag/v0.2.0) with notes, demo mp4 and EN/KO/ZH subtitles |
 | Redeploy Cloud Run on 0.2.0 | Blocked (gate) | Owner | D-017 | New revision, live receipt |
 | 0.3 local custom-artifact mode | Blocked (gate) | Owner + Builder | D-016 | Design in `ROADMAP.md` |
 
 ## Resume point
 
-- Last verified checkpoint: working tree with all 0.2.0 changes, gates green on 2026-08-26 13:40 KST; release commits and tag follow immediately.
-- Next safe action for a resuming agent: `git log --oneline -1`; if `v0.2.0` is not tagged, re-run the four gates and complete the release; do **not** redeploy, upload video or edit Devpost without owner approval.
+- Last verified checkpoint: tag `v0.2.0` (commit `6c150dd`) plus CI fix `cb6e32e` on `main`; CI green; GitHub release published 2026-08-26.
+- Next safe action for a resuming agent: read the owner decision queue below; do **not** redeploy, upload video or edit Devpost without owner approval. Code work can start on the un-automated API cases listed in `TEST_PLAN.md` or, once D-016 is approved, on the 0.3 fixture-reproduction test.
 - Local demo server for recordings runs on port `8091` (`8080` is used by another project on this machine).
 
 ## Decisions waiting on the owner
@@ -82,12 +82,12 @@
 - Tests: 38/38 (14 domain · 11 Gemini validation · 13 API contract).
 - Typecheck, lint, production build: passed 2026-08-26.
 - Production HTTP smoke: passed 2026-08-26 (local).
-- CI: authored; first run pending push.
+- CI: green on the first post-fix run (`32931382972`, 2026-08-26) — quality job and container-image job both succeeded; the very first run failed on setup-node's package-manager cache probing for pnpm before Corepack, fixed in `cb6e32e`.
 - Live model: not exercised this cycle.
 
 ## Next actions
 
-1. Finish the `v0.2.0` release (commit series, annotated tag, push, GitHub release with CHANGELOG notes and the demo video as an asset).
+1. ~~Finish the `v0.2.0` release~~ — done 2026-08-26.
 2. Owner: decide D-017 and redeploy before 2026-10-16; verify the live receipt and update `RUNBOOK.md` / `ASSUMPTIONS.md`.
 3. Owner: decide D-018/D-019 and upload the v0.2.0 video; swap links in all three READMEs.
 4. Owner: decide D-016; then implement 0.3 behind `ALLOW_CUSTOM_ARTIFACTS` with the fixture-reproduction test as the first acceptance criterion.

@@ -10,11 +10,11 @@ Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable
 - [x] Production-mode HTTP smoke on a local port: health (`version`, `model`), compile → approve (`executionOrigin: server`), tampered token → 409, `no-store` root with CSP, immutable hashed assets, 3,462-byte licence notice.
 - [x] `CHANGELOG.md` section written; version bumped in `package.json`; `engines.node >= 22.13`.
 - [x] README (EN/KO/ZH), CONTRIBUTING, SECURITY, ROADMAP present; decision log D-012–D-015 recorded; risk register R-19–R-21 added; spec FR-19–FR-22 added.
-- [x] CI workflow authored with SHA-pinned actions; first run occurs on push.
+- [x] CI workflow with SHA-pinned actions is green (run `32931382972`): typecheck, lint, test, build and the container-image build all succeeded.
 - [x] Demo video v0.2.0 rendered (2:57) and frame-checked; subtitles EN/KO/ZH generated; pipeline committed under `scripts/demo-video/`.
 - [x] No secrets, account identifiers or personal data added to the repository (grep for `AIza`, `gho_`, `secret`, e-mail addresses in new files).
 - [ ] Live `gemini-3.7-flash` receipt — **not part of this release**; tracked as D-017 / R-20.
-- [ ] Container image built locally — not possible in the build environment (no Docker socket); CI builds it.
+- [x] Container image built in CI (`docker/build-push-action`, push disabled) — the local build environment has no Docker socket.
 - [-] Cloud Run redeploy, YouTube upload, Devpost edit — owner gates D-017 / D-018, intentionally not performed.
 
 Judgment: **GO** to tag `v0.2.0`, push to the existing public remote and publish a GitHub release with the CHANGELOG notes and the demo video as a release asset. Everything below records the 2026-08-17 submission state.
