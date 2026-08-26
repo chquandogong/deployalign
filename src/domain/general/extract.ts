@@ -18,7 +18,7 @@ export interface Statement {
 // digit / quote / bracket start. Semicolons and line breaks split clauses too — a
 // clause is the unit a reviewer can accept or dispute on its own. Hard-wrapped
 // prose therefore yields one clause per line; every clause stays a verbatim quote.
-const SPLIT_PATTERN = /(?<=[.!?])\s+(?=[A-Z0-9"“([])|\s*;\s+|\s*\n+\s*/
+const SPLIT_PATTERN = /(?<=[.!?。])\s+(?=[A-Z0-9"“([가-힣一-鿿])|\s*;\s+|\s*\n+\s*/
 
 const ROLE_PREFIX: Record<ArtifactRole, string> = {
   customer: 'CUS',
@@ -39,7 +39,7 @@ export const extractStatements = (artifacts: SourceArtifact[]): Statement[] => {
     let ordinal = 0
     for (const piece of content.split(SPLIT_PATTERN)) {
       const trimmed = piece.trim().replace(/[;]+$/, '').trim()
-      if (trimmed.length < 3 || !/[A-Za-z]/.test(trimmed)) {
+      if (trimmed.length < 3 || !/[A-Za-z가-힣一-鿿]/.test(trimmed)) {
         cursor += piece.length
         continue
       }

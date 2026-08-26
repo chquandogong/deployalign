@@ -1,8 +1,10 @@
 /**
- * English lexical cues for the general (user-supplied artifact) compile path.
- * These are heuristics: they find candidate statements for a human to review,
- * they do not decide anything on their own. Korean/other-language cues are a
- * roadmap item; documents in other languages will currently yield few nodes.
+ * Lexical cues for the general (user-supplied artifact) compile path — English
+ * plus a first-pass Korean layer (0.4.0). These are heuristics: they find
+ * candidate statements for a human to review, they do not decide anything on
+ * their own. Hangul cues match as substrings anchored at a word start (particles
+ * attach to the right); a trailing space in a cue means "followed by whitespace
+ * or a digit" (used for 약 = "about", which otherwise matches 계약/약속).
  */
 
 export const UNIVERSAL_QUANTIFIERS = [
@@ -21,9 +23,20 @@ export const UNIVERSAL_QUANTIFIERS = [
   'unlimited',
   'unrestricted',
   '100%',
+  // Korean
+  '모든',
+  '전체',
+  '전부',
+  '일체',
+  '완전',
+  '완전히',
+  '항상',
+  '무제한',
+  '전 구역',
+  '전 영역',
 ] as const
 
-export const HEDGES = ['about', 'approximately', 'approx', 'around', 'roughly', 'estimated', 'nearly', 'circa', '~']
+export const HEDGES = ['about', 'approximately', 'approx', 'around', 'roughly', 'estimated', 'nearly', 'circa', '~', '약 ', '대략', '정도', '쯤', '추정', '어림']
 
 export const UNVERIFIED_CUES = [
   'customer-reported',
@@ -42,6 +55,22 @@ export const UNVERIFIED_CUES = [
   'tbc',
   'tbd',
   'unknown',
+  // Korean
+  '고객 진술',
+  '고객이 보고',
+  '고객 보고',
+  '실측되지 않',
+  '미실측',
+  '측량되지 않',
+  '미측량',
+  '미검증',
+  '검증되지 않',
+  '확인되지 않',
+  '미확인',
+  '가정',
+  '추정치',
+  '확인 필요',
+  '미정',
 ]
 
 export const PREFERENCE_CUES = [
@@ -59,6 +88,17 @@ export const PREFERENCE_CUES = [
   'we are looking for',
   'looking for a',
   'would love',
+  // Korean
+  '원합니다',
+  '원함',
+  '원해',
+  '희망',
+  '선호',
+  '바랍니다',
+  '좋겠',
+  '필요합니다',
+  '필요해',
+  '있으면',
 ]
 
 export const MANDATORY_CUES = [
@@ -71,6 +111,14 @@ export const MANDATORY_CUES = [
   'is required',
   'are required',
   'fixed configuration',
+  // Korean
+  '필수',
+  '반드시',
+  '의무',
+  '해야 한다',
+  '해야 합니다',
+  '고정 구성',
+  '필수 구성',
 ]
 
 export const ACCEPTANCE_CUES = [
@@ -84,6 +132,15 @@ export const ACCEPTANCE_CUES = [
   'signoff',
   'acceptance test',
   'considered complete when',
+  // Korean
+  '인수 기준',
+  '인수는',
+  '인수 조건',
+  '검수 기준',
+  '합격 기준',
+  '성공 기준',
+  '완료 조건',
+  '승인 조건',
 ]
 
 export const THRESHOLD_CUES = [
@@ -106,6 +163,20 @@ export const THRESHOLD_CUES = [
   'precision',
   'false positive',
   'false negative',
+  // Korean
+  '이상',
+  '이하',
+  '미만',
+  '초과',
+  '이내',
+  '최소',
+  '최대',
+  '당 ',
+  '회수율',
+  '정밀도',
+  '재현율',
+  '오탐',
+  '미탐',
 ]
 
 export const TEST_CUES = [
@@ -123,6 +194,19 @@ export const TEST_CUES = [
   'dry run',
   'acceptance run',
   'calibration check',
+  // Korean
+  '테스트',
+  '시험',
+  '검증을',
+  '검증이',
+  '검증 전',
+  '검증 후',
+  '실측 전',
+  '측량',
+  '블라인드',
+  '벤치마크',
+  '시범 운행',
+  '시운전',
 ]
 
 export const TEST_COMPLETED_CUES = [
@@ -141,6 +225,15 @@ export const TEST_COMPLETED_CUES = [
   'signed off',
   'closed',
   'done on',
+  // Korean
+  '완료',
+  '통과',
+  '확인됨',
+  '검증됨',
+  '검증된',
+  '마쳤',
+  '끝났',
+  '합격',
 ]
 
 export const EVIDENCE_CUES = [
@@ -165,6 +258,20 @@ export const EVIDENCE_CUES = [
   'showed',
   'observed',
   'recorded',
+  // Korean
+  '근거',
+  '증거',
+  '측정',
+  '실측',
+  '검증된',
+  '입증',
+  '데이터',
+  '결과',
+  '매핑',
+  '확인된',
+  '커버',
+  '측정됨',
+  '실측값',
 ]
 
 export const RECOMMENDATION_CUES = [
@@ -192,6 +299,17 @@ export const RECOMMENDATION_CUES = [
   'min',
   'rated',
   'spec',
+  // Korean
+  '권고',
+  '권장',
+  '제한',
+  '제약',
+  '불가',
+  '요구',
+  '사양',
+  '작동 거리',
+  '만 가능',
+  '해야',
 ]
 
 export const AUTONOMY_CUES = [
@@ -206,6 +324,12 @@ export const AUTONOMY_CUES = [
   'self-driving',
   'lights-out',
   'hands-off',
+  // Korean
+  '자율',
+  '자율적으로',
+  '완전 자율',
+  '무인',
+  '자동으로',
 ]
 
 export const SUPERVISED_CUES = [
@@ -219,6 +343,13 @@ export const SUPERVISED_CUES = [
   'with an operator',
   'remote-controlled',
   'manual',
+  // Korean
+  '감독',
+  '유인',
+  '원격 조종',
+  '운영자 입회',
+  '감독 하',
+  '수동',
 ]
 
 export const AREA_NOUNS = [
@@ -264,9 +395,50 @@ export const AREA_NOUNS = [
   'routes',
   'corridor',
   'corridors',
+  'ward',
+  'wards',
+  'wing',
+  'wings',
+  'department',
+  'departments',
+  'dock',
+  'docks',
+  'lane',
+  'lanes',
+  'yard',
+  'yards',
+  'hall',
+  'halls',
+  'deck',
+  'decks',
+  'tunnel',
+  'tunnels',
   'sub-fab',
   'subfab',
   'fab',
+  // Korean (matched by word prefix; particles attach)
+  '구역',
+  '전역',
+  '시설',
+  '현장',
+  '건물',
+  '존',
+  '룸',
+  '통로',
+  '위치',
+  '라인',
+  '셀',
+  '서브팹',
+  '팹',
+  '곳',
+  '지점',
+  '개소',
+  '공장',
+  '창고',
+  '부지',
+  '구간',
+  '경로',
+  '층',
 ]
 
 export const GATE_CUES = [
@@ -279,6 +451,11 @@ export const GATE_CUES = [
   'field authorization',
   'field authorisation',
   'release to field',
+  // Korean
+  '게이트',
+  '배포 결정',
+  '현장 투입',
+  '투입 승인',
 ]
 
 export const UNITS = [
@@ -335,7 +512,29 @@ export const UNITS = [
   'year',
   'years',
   'x',
+  // Korean
+  '미터',
+  '밀리미터',
+  '센티미터',
+  '킬로미터',
+  '시간',
+  '분',
+  '초',
+  '일',
+  '주',
+  '개월',
+  '년',
+  '퍼센트',
+  '도',
+  '킬로그램',
+  '그램',
 ]
+
+/** Korean stage labels follow the number: "1단계", "2차". */
+export const LABEL_SUFFIXES = ['단계', '차', '회차', '레벨', '티어', '버전', '호', '번', '층', '학년', '기']
+
+/** Korean counters that count places (coverage) versus things (scope). */
+export const AREA_COUNTERS = ['곳', '구역', '지점', '개소', '존', '현장', '층']
 
 /** Numbers that name a stage rather than count things: "Phase 1", "Tier 2". */
 export const LABEL_HEADS = [
@@ -391,7 +590,52 @@ export const NUMBER_WORDS: Record<string, number> = {
   hundred: 100,
   thousand: 1000,
   dozen: 12,
+  // Korean native numerals (the forms used before counters)
+  하나: 1,
+  한: 1,
+  둘: 2,
+  두: 2,
+  셋: 3,
+  세: 3,
+  넷: 4,
+  네: 4,
+  다섯: 5,
+  여섯: 6,
+  일곱: 7,
+  여덟: 8,
+  아홉: 9,
+  열: 10,
+  열하나: 11,
+  열한: 11,
+  열둘: 12,
+  열두: 12,
+  스물: 20,
+  스무: 20,
+  서른: 30,
+  마흔: 40,
+  쉰: 50,
+  백: 100,
+  천: 1000,
 }
+
+/** Korean particles stripped from the end of a word when stemming/linking (longest first). */
+export const KO_PARTICLES = [
+  '에서는', '으로는', '에게는', '까지는', '부터는', '에서', '으로', '에게', '까지', '부터', '이라', '처럼',
+  '보다', '마다', '조차', '라도', '에는', '로는', '은', '는', '이', '가', '을', '를', '의', '에', '로', '와', '과',
+  '도', '만',
+]
+
+/** Korean verb/adjective endings that close a phrase ("커버합니다", "권고함"). */
+export const KO_PREDICATE_ENDINGS = [
+  '이었습니다', '되었습니다', '않았습니다', '였습니다', '습니다', '입니다', '합니다', '됩니다', '니다', '했다', '된다', '한다',
+  '다', '요', '함', '됨', '임', '음',
+]
+
+export const KO_STOPWORDS = new Set([
+  '그리고', '및', '또는', '이후', '전에', '위해', '위하여', '대한', '대해', '통해', '하여', '경우', '있다', '없다',
+  '한다', '합니다', '됩니다', '것', '수', '등', '더', '매우', '현재', '해당', '이', '그', '저', '것을', '것이',
+  '있는', '없는', '하는', '되는', '된', '할', '및', '또', '즉', '따라', '함께',
+])
 
 export const STOPWORDS = new Set([
   'a',

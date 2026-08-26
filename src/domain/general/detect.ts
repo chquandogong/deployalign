@@ -6,13 +6,17 @@ import type {
   SourceReference,
 } from '../types'
 import type { TypedStatement } from './classify'
-import { AREA_NOUNS, MANDATORY_CUES } from './lexicon'
+import { KO_STOPWORDS, MANDATORY_CUES, STOPWORDS, SUPERVISED_CUES } from './lexicon'
 import {
   enumerationPhrase,
+  endsPredicate,
+  isAreaWord,
   isEnumeration,
+  isHangul,
   matchAnyCue,
   sharedKeywords,
-  stem,
+  stripParticle,
+  wordTokens,
   type Quantity,
   type ScopeCategory,
 } from './text'
@@ -52,15 +56,13 @@ export const refOf = (g: GraphNode): SourceReference => ({
   line: g.typed.statement.line,
 })
 
-const isArea = (noun: string | undefined) =>
-  noun !== undefined && (AREA_NOUNS.includes(noun) || AREA_NOUNS.includes(stem(noun)))
 
 /** "Twelve critical AOIs" is coverage because its head noun is an area noun. */
 const enumerationCategory = (text: string, quantity: Quantity): ScopeCategory =>
   enumerationPhrase(text, quantity)
     .split(/\s+/)
     .slice(1)
-    .some((word) => isArea(word.toLowerCase().replace(/[^a-z-]/g, '')))
+    .some((word) => isAreaWord(word.toLowerCase()))
     ? 'coverage'
     : 'scope'
 
@@ -81,9 +83,37 @@ const intersects = <T>(a: Set<T>, b: Set<T>) => [...a].some((item) => b.has(item
 const quoteList = (nodes: GraphNode[]) => nodes.map((g) => `“${g.typed.quote}”`).join(', ')
 
 const SUPERVISED_PHRASE =
-  /(supervised|attended|teleoperated|assisted|human-in-the-loop|operator-supervised|manual)(?:\s+[A-Za-z0-9-]+){0,3}?(?=\s+(?:and|with|before|or|until)\b|[,.;]|$)/i
+  /(supervised|attended|teleoperated|assisted|human-in-the-loop|operator-supervised|manual)(?:\s+[A-Za-z0-9-]+){0,3}?(?=\s+(?:and|with|before|or|until|for|during|in|on|to|of|while|after)\b|[,.;]|$)/i
 
-const singular = (noun: string) => (noun.endsWith('s') && !noun.endsWith('ss') ? noun.slice(0, -1) : noun)
+const singular = (noun: string) =>
+  isHangul(noun) ? stripParticle(noun) : noun.endsWith('s') && !noun.endsWith('ss') ? noun.slice(0, -1) : noun
+
+/** English regex first; for Korean, the supervised cue plus up to three following words. */
+const supervisedPhrase = (text: string): string | undefined => {
+  const english = SUPERVISED_PHRASE.exec(text)
+  if (english) return english[0].trim()
+  const cue = matchAnyCue(text, SUPERVISED_CUES)
+  if (!cue) return undefined
+  const tokens = wordTokens(text)
+  const startIndex = tokens.findIndex((token) => token.start <= cue.start && token.end >= cue.start)
+  if (startIndex < 0) return text.slice(cue.start, cue.end)
+  let end = tokens[startIndex]!.end
+  for (let cursor = startIndex + 1; cursor <= Math.min(tokens.length - 1, startIndex + 3); cursor += 1) {
+    const token = tokens[cursor]!
+    if (
+      /[,.;:]/.test(text.slice(tokens[cursor - 1]!.end, token.start)) ||
+      endsPredicate(token.word) ||
+      STOPWORDS.has(token.word) ||
+      KO_STOPWORDS.has(token.word)
+    ) {
+      break
+    }
+    end = token.end
+  }
+  const slice = text.slice(tokens[startIndex]!.start, end)
+  const lastWord = slice.split(/\s+/).pop() ?? ''
+  return slice.slice(0, slice.length - (lastWord.length - stripParticle(lastWord).length))
+}
 
 /**
  * Runs the six diagnostics as detectors over the typed graph, derives the
@@ -132,7 +162,7 @@ export const detect = (graph: GraphNode[], approved: boolean): Detection => {
     }
     for (const assumption of assumptions) {
       const assumptionCategories = new Set<ScopeCategory>()
-      if ([...assumption.typed.keywords].some((keyword) => AREA_NOUNS.includes(keyword) || keyword === 'access' || keyword === 'coverage')) {
+      if ([...assumption.typed.keywords].some((keyword) => isAreaWord(keyword) || keyword === 'access' || keyword === 'coverage' || keyword === '접근')) {
         assumptionCategories.add('coverage')
       }
       if (relatedBy(commitment, assumption).length > 0 || intersects(categories, assumptionCategories)) {
@@ -207,9 +237,16 @@ export const detect = (graph: GraphNode[], approved: boolean): Detection => {
     const key = measurement ? `${measurement.value}${measurement.unit ?? '%'}` : site.node.id
     clusters.set(key, [...(clusters.get(key) ?? []), site])
   }
-  const flaggedClusters = [...clusters.values()].filter((cluster) =>
-    cluster.some((g) => g.typed.flags.hedged || g.typed.flags.unverified),
-  )
+  const flaggedClusters = [...clusters.values()]
+    .filter((cluster) => cluster.some((g) => g.typed.flags.hedged || g.typed.flags.unverified))
+    .map((cluster) => {
+      // "Lift door width is customer-reported, not measured." carries no number, so it
+      // was typed as an assumption; it still belongs to the door-width claim.
+      const related = assumptions.filter(
+        (assumption) => assumption.typed.flags.unverified && cluster.some((site) => relatedBy(site, assumption).length > 0),
+      )
+      return [...cluster, ...related]
+    })
   const flaggedSites = flaggedClusters.flat()
   if (flaggedSites.length > 0) {
     const unverifiedRefs = flaggedSites.filter((g) => g.typed.flags.unverified).map(refOf)
@@ -263,13 +300,13 @@ export const detect = (graph: GraphNode[], approved: boolean): Detection => {
       if (replacements.some((r) => r.category === phrase.category)) continue
       if (phrase.category === 'autonomy') {
         const source = [...pool, ...evidence].find((g) => g.typed.flags.supervised)
-        const match = source ? SUPERVISED_PHRASE.exec(source.typed.statement.text) : null
+        const match = source ? supervisedPhrase(source.typed.statement.text) : undefined
         if (source && match) {
           replacements.push({
             category: 'autonomy',
             field: 'operating mode',
             before: phrase.phrase,
-            after: match[0].trim(),
+            after: match,
             commitmentId: commitment.node.id,
             evidenceId: source.node.id,
           })

@@ -142,7 +142,7 @@ export const classifyStatement = (statement: Statement): TypedStatement[] => {
     }
     case 'engineering': {
       if (flags.acceptance) return [build(statement, 'EngineeringConstraint', 0.8, flags, quantities)]
-      if (flags.openTest || flags.completedTest) {
+      if (flags.openTest || (flags.completedTest && !flags.evidence)) {
         const nodes = [build(statement, 'VerificationTest', 0.85, flags, quantities)]
         if (flags.recommendation || flags.supervised) {
           nodes.push(build(statement, 'EngineeringConstraint', 0.75, flags, quantities))
@@ -152,7 +152,8 @@ export const classifyStatement = (statement: Statement): TypedStatement[] => {
       if (flags.unverified) {
         return [build(statement, measurement ? 'SiteClaim' : 'Assumption', 0.85, flags, quantities)]
       }
-      if (flags.evidence) return [build(statement, 'Evidence', 0.85, flags, quantities)]
+      // "Verified data covers…" / "검증된 데이터는…" is evidence, not an open test.
+      if (flags.evidence || flags.completedTest) return [build(statement, 'Evidence', 0.85, flags, quantities)]
       return [build(statement, 'EngineeringConstraint', flags.recommendation || measurement ? 0.8 : 0.65, flags, quantities)]
     }
     default:
