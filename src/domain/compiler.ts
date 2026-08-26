@@ -1,4 +1,5 @@
 import { DEMO_ARTIFACTS, DEMO_PROJECT } from './demo'
+import { section } from './fingerprint'
 import type {
   AiExtractionEvidence,
   CommitmentNode,
@@ -21,31 +22,6 @@ const source = (artifactId: string, quote: string, line = 1): SourceReference =>
   line,
 })
 
-const compactHash = (value: string) => {
-  let hash = 2166136261
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index)
-    hash = Math.imul(hash, 16777619)
-  }
-  return `fnv1a32-${(hash >>> 0).toString(16).padStart(8, '0')}`
-}
-
-const section = (
-  id: string,
-  heading: string,
-  body: string,
-  decisionIds: string[],
-  sourceNodeIds: string[],
-  changed: boolean,
-): CompiledSection => ({
-  id,
-  heading,
-  body,
-  decisionIds,
-  sourceNodeIds,
-  hash: compactHash(`${id}:${body}`),
-  changed,
-})
 
 const baseNodes = (): CommitmentNode[] => [
   {
@@ -592,6 +568,7 @@ export const compileDemo = (options?: {
     provider,
     // Default to the conservative label; only the API process opts into `server`.
     executionOrigin: options?.executionOrigin ?? 'browser',
+    mode: 'fixture',
     synthetic: true,
     artifacts: (options?.artifacts ?? DEMO_ARTIFACTS).map((artifact) => ({ ...artifact })),
     aiCandidates,

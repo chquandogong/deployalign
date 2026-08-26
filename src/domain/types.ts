@@ -142,6 +142,9 @@ export interface ExecutionReceipt {
  */
 export type ExecutionOrigin = 'server' | 'browser'
 
+/** Which compile path produced a result. */
+export type CompileMode = 'fixture' | 'custom'
+
 export interface CompileResult {
   projectId: string
   projectName: string
@@ -150,7 +153,9 @@ export interface CompileResult {
   gate: 'HOLD' | 'CONDITIONAL PILOT'
   provider: 'gemini-vertex' | 'gemini-api' | 'deterministic-demo'
   executionOrigin: ExecutionOrigin
-  synthetic: true
+  /** `fixture`: the bundled synthetic case through the canonical compiler; `custom`: user-supplied artifacts through the general compiler. */
+  mode: CompileMode
+  synthetic: boolean
   artifacts: SourceArtifact[]
   aiCandidates: CommitmentNode[]
   nodes: CommitmentNode[]
@@ -172,6 +177,8 @@ export interface ApprovalRequest {
   version: number
   patchId: string
   compileToken?: string
+  /** Required for custom-mode review: the server is stateless and recompiles the same artifacts. */
+  artifacts?: SourceArtifact[]
 }
 
 export interface AiExtractionEvidence {
