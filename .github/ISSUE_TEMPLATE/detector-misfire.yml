@@ -1,0 +1,60 @@
+name: Detector misfire
+description: A diagnostic fired when it should not have, or stayed silent when it should have fired.
+title: "[misfire] <DA code or 'missed'>: <one line>"
+labels: ["detector", "corpus"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks — every misfire becomes a sentence in `src/domain/general/corpora.test.ts` before the rule changes.
+        **Please paste synthetic or redacted text only.** No customer, site, vendor or personal identifiers.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What happened
+      options:
+        - False positive — a diagnostic fired on text that is actually bounded/evidenced
+        - False negative — an unbounded or unsupported statement was not flagged
+        - Wrong type — a clause was typed as the wrong node kind
+        - Wrong patch value — the patch copied the wrong evidence phrase
+        - Extraction — a clause was split or dropped incorrectly
+    validations:
+      required: true
+  - type: input
+    id: code
+    attributes:
+      label: Diagnostic code (if any)
+      placeholder: DA-002
+  - type: dropdown
+    id: language
+    attributes:
+      label: Document language
+      options: [English, Korean, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: clause
+    attributes:
+      label: The exact clause (synthetic or redacted)
+      description: One or two sentences, verbatim, with the role (customer / sales / engineering).
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What a careful reviewer would conclude
+      placeholder: "Bounded: 'all five stacks' enumerates the scope; DA-001 should not fire."
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: CLI or UI output
+      description: Paste the relevant lines from `deployalign compile … ` or the diagnostic card text.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "0.5.0 (from `deployalign --version` or /api/health)"
