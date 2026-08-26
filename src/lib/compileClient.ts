@@ -88,6 +88,8 @@ export const approveProject = async (
       version: current.version,
       patchId: current.patch.id,
       compileToken: current.compileToken,
+      // The API is stateless: custom-mode review recompiles the same artifacts.
+      artifacts: current.mode === 'custom' ? current.artifacts : undefined,
     })
   } catch (error) {
     if (
@@ -98,5 +100,25 @@ export const approveProject = async (
       return compileDemo({ approved: true, artifacts: current.artifacts, executionOrigin: 'browser' })
     }
     throw error
+  }
+}
+
+export interface HealthInfo {
+  ok: boolean
+  service: string
+  version: string
+  liveGemini: boolean
+  model: string
+  customArtifacts: boolean
+}
+
+/** Reads the API's capabilities; `undefined` when the API is unreachable. */
+export const fetchHealth = async (): Promise<HealthInfo | undefined> => {
+  try {
+    const response = await fetch('/api/health')
+    if (!response.ok) return undefined
+    return (await response.json()) as HealthInfo
+  } catch {
+    return undefined
   }
 }

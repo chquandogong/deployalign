@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Activity,
   AlertTriangle,
@@ -10,6 +10,7 @@ import {
   ChevronRight,
   CircleDot,
   Clock3,
+  Download,
   FileCheck2,
   FileText,
   Fingerprint,
@@ -22,6 +23,7 @@ import {
   LockKeyhole,
   Monitor,
   Network,
+  PencilLine,
   Play,
   Server,
   ShieldAlert,
@@ -34,8 +36,10 @@ import {
   XCircle,
 } from 'lucide-react'
 import './App.css'
+import { ArtifactEditor } from './components/ArtifactEditor'
 import { changedSectionCount, compileDemo, unresolvedBlockerCount } from './domain/compiler'
-import { DEMO_ARTIFACTS, DEMO_PROJECT } from './domain/demo'
+import { DEMO_ARTIFACTS } from './domain/demo'
+import { compileGeneral } from './domain/general/compile'
 import type {
   CommitmentNode,
   CompileResult,
@@ -44,7 +48,8 @@ import type {
   ExecutionReceipt,
   SourceArtifact,
 } from './domain/types'
-import { ApiError, approveProject, compileProject } from './lib/compileClient'
+import { ApiError, approveProject, compileProject, fetchHealth } from './lib/compileClient'
+import { resultToMarkdown, safeFilename } from './lib/exportMarkdown'
 
 type BusyAction = 'compile' | 'approve' | null
 type ReviewState = 'pending' | 'approved' | 'rejected'
@@ -72,13 +77,23 @@ const formatTimestamp = (value: string) =>
   }).format(new Date(value))
 
 const providerLabel = (result: CompileResult) => {
-  if (result.provider === 'deterministic-demo') return 'Deterministic fixture fallback'
+  if (result.provider === 'deterministic-demo') {
+    return result.mode === 'custom' ? 'Deterministic rules · no model' : 'Deterministic fixture fallback'
+  }
   if (result.provider === 'gemini-vertex') return 'Gemini via Vertex AI'
   return 'Gemini API'
 }
 
 const originLabel = (result: CompileResult) =>
   result.executionOrigin === 'server' ? 'Compiled by the compiler API' : 'Computed in this browser'
+
+/** Browser-side preview of the other baseline (never labelled as a server result). */
+const previewCompile = (current: CompileResult, approved: boolean): CompileResult =>
+  current.mode === 'custom'
+    ? compileGeneral({ artifacts: current.artifacts, approved, executionOrigin: 'browser' })
+    : compileDemo({ approved, artifacts: current.artifacts, executionOrigin: 'browser' })
+
+const cloneArtifacts = (artifacts: SourceArtifact[]) => artifacts.map((artifact) => ({ ...artifact }))
 
 const errorMessage = (error: unknown) => {
   if (error instanceof ApiError) return `Compiler API ${error.status}: ${error.message}`
@@ -140,7 +155,7 @@ function SectionHeading({
   )
 }
 
-function SourceCard({ artifact }: { artifact: SourceArtifact }) {
+function SourceCard({ artifact, synthetic }: { artifact: SourceArtifact; synthetic: boolean }) {
   const meta = roleMeta[artifact.role]
   return (
     <article className="source-card" data-tone={meta.tone}>
@@ -149,7 +164,7 @@ function SourceCard({ artifact }: { artifact: SourceArtifact }) {
           <FileText size={17} />
         </div>
         <div>
-          <span className="micro-label">{meta.short} / SYNTHETIC</span>
+          <span className="micro-label">{meta.short} / {synthetic ? 'SYNTHETIC' : 'USER TEXT'}</span>
           <h3>{meta.label}</h3>
         </div>
         <CheckCircle2 className="source-check" size={17} aria-label="Loaded" />
@@ -323,6 +338,19 @@ function App() {
   const [activeTargetId, setActiveTargetId] = useState('TARGET-SALES')
   const [traceTab, setTraceTab] = useState<TraceTab>('sources')
   const [notice, setNotice] = useState<string | null>(null)
+  const [customAllowed, setCustomAllowed] = useState(false)
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [drafts, setDrafts] = useState<SourceArtifact[]>(() => cloneArtifacts(DEMO_ARTIFACTS))
+
+  useEffect(() => {
+    let active = true
+    fetchHealth().then((health) => {
+      if (active) setCustomAllowed(Boolean(health?.customArtifacts))
+    })
+    return () => {
+      active = false
+    }
+  }, [])
 
   const selectedNode =
     result.nodes.find((node) => node.id === selectedNodeId) ?? result.nodes[0]
@@ -365,14 +393,8 @@ function App() {
   )
 
   const impactRows = useMemo(() => {
-    const baseline =
-      result.version === 1
-        ? result
-        : compileDemo({ artifacts: result.artifacts, executionOrigin: 'browser' })
-    const approved =
-      result.version > 1
-        ? result
-        : compileDemo({ approved: true, artifacts: result.artifacts, executionOrigin: 'browser' })
+    const baseline = result.version === 1 ? result : previewCompile(result, false)
+    const approved = result.version > 1 ? result : previewCompile(result, true)
     const rows = approved.targets.flatMap((target) =>
       target.sections.map((section) => {
         const before = baseline.targets
@@ -413,20 +435,27 @@ function App() {
     ]
   }, [result])
 
-  const runCompile = async () => {
+  const runCompile = async (artifacts: SourceArtifact[] = DEMO_ARTIFACTS) => {
     setBusy('compile')
     setNotice(null)
     try {
-      const [next] = await Promise.all([compileProject(DEMO_ARTIFACTS), pause(650)])
+      const [next] = await Promise.all([compileProject(artifacts), pause(650)])
       setResult(next)
       setReview(next.patch.status === 'APPROVED' ? 'approved' : 'pending')
-      setSelectedNodeId(next.nodes.find((node) => node.type === 'SalesCommitment')?.id ?? next.nodes[0]?.id ?? '')
+      const blocked = next.diagnostics.find((item) => item.severity === 'BLOCKER' && !item.resolved)?.nodeIds[0]
+      setSelectedNodeId(
+        blocked ?? next.nodes.find((node) => node.type === 'SalesCommitment')?.id ?? next.nodes[0]?.id ?? '',
+      )
       setSelectedDiagnostic(next.diagnostics[0]?.code ?? '')
+      setActiveTargetId('TARGET-SALES')
+      if (next.mode === 'custom') setEditorOpen(false)
       setNotice(
         next.executionOrigin === 'browser'
           ? 'The compiler API was unreachable, so this result was computed in the browser from the exact synthetic fixture. Nothing left this page.'
           : next.provider === 'deterministic-demo'
-            ? 'Compiled by the compiler API on the deterministic fixed-fixture path (live Gemini disabled or rejected). No external data or systems changed.'
+            ? next.mode === 'custom'
+              ? 'Compiled by the compiler API with deterministic rules only (live Gemini disabled or rejected). Your text stayed with that process; nothing was published.'
+              : 'Compiled by the compiler API on the deterministic fixed-fixture path (live Gemini disabled or rejected). No external data or systems changed.'
             : `Compile complete: the compiler API used ${providerLabel(next)}.`,
       )
     } catch (error) {
@@ -461,13 +490,39 @@ function App() {
     setNotice('Patch rejected in this demo session. The canonical graph and target baseline remain unchanged.')
   }
 
+  const updateDraft = (index: number, field: 'title' | 'content', value: string) => {
+    setDrafts((current) =>
+      current.map((draft, position) =>
+        position === index ? { ...draft, [field]: value, updatedAt: new Date().toISOString() } : draft,
+      ),
+    )
+  }
+
+  const exportResult = (format: 'md' | 'json') => {
+    const text = format === 'md' ? resultToMarkdown(result) : JSON.stringify(result, null, 2)
+    const blob = new Blob([text], { type: format === 'md' ? 'text/markdown;charset=utf-8' : 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = safeFilename(`${result.projectName}-v${result.version}`, format)
+    document.body.appendChild(anchor)
+    anchor.click()
+    anchor.remove()
+    window.setTimeout(() => URL.revokeObjectURL(url), 1_000)
+    setNotice(`Exported ${anchor.download}. The file was built in this browser; nothing was uploaded.`)
+  }
+
+  const custom = result.mode === 'custom'
+
   return (
     <div className="app-shell">
       <div className="honesty-strip" role="note">
         <Info size={14} />
-        <strong>SYNTHETIC DEMO</strong>
+        <strong>{custom ? 'USER-SUPPLIED DOCUMENTS' : 'SYNTHETIC DEMO'}</strong>
         <span>
-          Fictional sub-fab Raman case. No real customer, revenue, production deployment, or field-performance claim.
+          {custom
+            ? 'Heuristic review of your text. Every finding quotes its source; none is a safety, legal or contractual conclusion.'
+            : 'Fictional sub-fab Raman case. No real customer, revenue, production deployment, or field-performance claim.'}
         </span>
       </div>
 
@@ -479,15 +534,15 @@ function App() {
         </a>
         <div className="topbar-project">
           <span className="status-light" />
-          <span>{DEMO_PROJECT.name}</span>
+          <span>{result.projectName}</span>
           <span className="topbar-divider" />
           <span>BASELINE V{result.version}</span>
         </div>
         <div className="topbar-actions">
-          <span className="synthetic-chip">
+          <span className="synthetic-chip" data-mode={result.mode}>
             <ShieldCheck size={12} />
-            <span className="synthetic-label">SYNTHETIC</span>
-            <span className="synthetic-short" aria-hidden="true">SYN</span>
+            <span className="synthetic-label">{custom ? 'CUSTOM' : 'SYNTHETIC'}</span>
+            <span className="synthetic-short" aria-hidden="true">{custom ? 'USR' : 'SYN'}</span>
           </span>
           <span className="provider-badge" title={providerLabel(result)}>
             <TerminalSquare size={13} />
@@ -503,7 +558,7 @@ function App() {
             {result.executionOrigin === 'server' ? <Server size={12} /> : <Monitor size={12} />}
             <span className="origin-label">{result.executionOrigin === 'server' ? 'API' : 'IN-BROWSER'}</span>
           </span>
-          <button className="button button-primary button-compact" type="button" onClick={runCompile} disabled={busy !== null}>
+          <button className="button button-primary button-compact" type="button" onClick={() => runCompile()} disabled={busy !== null}>
             {busy === 'compile' ? <LoaderCircle className="spin" size={15} /> : <Play size={15} fill="currentColor" />}
             {busy === 'compile' ? 'Compiling…' : 'Compile sources'}
           </button>
@@ -522,11 +577,17 @@ function App() {
               DeployAlign type-checks customer intent, sales promises, and engineering constraints—then proposes the smallest evidence-gated scope patch for a person to approve.
             </p>
             <div className="hero-actions">
-              <button className="button button-primary button-large" type="button" onClick={runCompile} disabled={busy !== null}>
+              <button className="button button-primary button-large" type="button" onClick={() => runCompile()} disabled={busy !== null}>
                 {busy === 'compile' ? <LoaderCircle className="spin" size={17} /> : <Play size={17} fill="currentColor" />}
                 {busy === 'compile' ? 'Running compiler…' : 'Run the synthetic case'}
               </button>
-              <span><Clock3 size={14} /> Fixed fixture · no upload required</span>
+              {customAllowed ? (
+                <button className="button button-ghost button-large" type="button" onClick={() => setEditorOpen((open) => !open)} disabled={busy !== null} aria-expanded={editorOpen}>
+                  <PencilLine size={17} />
+                  {editorOpen ? 'Hide document editor' : 'Use your own documents'}
+                </button>
+              ) : null}
+              <span><Clock3 size={14} /> {customAllowed ? 'Local mode · your text stays with your API process' : 'Fixed fixture · no upload required'}</span>
             </div>
           </div>
 
@@ -575,16 +636,26 @@ function App() {
           </div>
         ) : null}
 
+        {editorOpen && customAllowed ? (
+          <ArtifactEditor
+            drafts={drafts}
+            busy={busy !== null}
+            onChange={updateDraft}
+            onCompile={() => runCompile(drafts)}
+            onReset={() => setDrafts(cloneArtifacts(DEMO_ARTIFACTS))}
+          />
+        ) : null}
+
         <section className="content-section sources-section">
           <SectionHeading
             index="01"
             eyebrow="Source stack"
             title="Three truths enter the compiler."
-            description="The demo fixture preserves each artifact verbatim, with role and provenance intact."
-            aside={<span className="section-badge"><ShieldCheck size={14} /> FIXED SYNTHETIC INPUT</span>}
+            description={custom ? 'Your three documents, kept verbatim with role and provenance intact; every quote below points back into them.' : 'The demo fixture preserves each artifact verbatim, with role and provenance intact.'}
+            aside={<span className="section-badge"><ShieldCheck size={14} /> {custom ? 'USER-SUPPLIED INPUT' : 'FIXED SYNTHETIC INPUT'}</span>}
           />
           <div className="source-grid">
-            {result.artifacts.map((artifact) => <SourceCard artifact={artifact} key={artifact.id} />)}
+            {result.artifacts.map((artifact) => <SourceCard artifact={artifact} synthetic={result.synthetic} key={artifact.id} />)}
           </div>
         </section>
 
@@ -804,7 +875,15 @@ function App() {
             eyebrow="Synchronized targets"
             title="One decision. Three audience-specific views."
             description="Every compiled target carries the same stable Decision ID and traces back to typed source nodes."
-            aside={<span className="decision-badge"><Fingerprint size={14} /> {result.decisionId}</span>}
+            aside={
+              <div className="aside-stack">
+                <span className="decision-badge"><Fingerprint size={14} /> {result.decisionId}</span>
+                <div className="export-actions" role="group" aria-label="Export compiled result">
+                  <button type="button" className="button button-ghost button-compact" onClick={() => exportResult('md')}><Download size={14} /> Markdown</button>
+                  <button type="button" className="button button-ghost button-compact" onClick={() => exportResult('json')}><Download size={14} /> JSON</button>
+                </div>
+              </div>
+            }
           />
           <div className="target-tabs" role="group" aria-label="Compiled target documents">
             {result.targets.map((target) => (
@@ -874,7 +953,7 @@ function App() {
               <div className="receipts-list">
                 <div className="receipt-context">
                   <Bot size={16} />
-                  <div><strong>{providerLabel(result)} · {originLabel(result)}</strong><span>{result.provider === 'deterministic-demo' ? 'AI extraction was not called for this run. Displayed records are the compiler’s synthetic fixture receipts.' : 'AI-assisted extraction completed; deterministic rules and the human boundary remain separate.'}</span></div>
+                  <div><strong>{providerLabel(result)} · {originLabel(result)}</strong><span>{result.provider === 'deterministic-demo' ? (custom ? 'AI extraction was not called for this run. Records come from the deterministic general path over your documents.' : 'AI extraction was not called for this run. Displayed records are the compiler’s synthetic fixture receipts.') : 'AI-assisted extraction completed; deterministic rules and the human boundary remain separate.'}</span></div>
                 </div>
                 {result.receipts.map((receipt) => <ReceiptRow key={receipt.id} receipt={receipt} synthetic={result.provider === 'deterministic-demo'} />)}
               </div>
@@ -885,12 +964,13 @@ function App() {
 
       <footer>
         <div className="footer-brand"><BrandMark /><strong>DEPLOY//ALIGN</strong><span>Evidence-gated presales compiler</span></div>
-        <div className="footer-note"><ShieldCheck size={14} /> Synthetic run · local demo data · no external systems changed</div>
+        <div className="footer-note"><ShieldCheck size={14} /> {custom ? 'User-supplied documents · local heuristic review · no external systems changed' : 'Synthetic run · local demo data · no external systems changed'}</div>
         <div className="footer-meta">
           <span>{result.decisionId}</span>
           <span>BASELINE V{result.version}</span>
           <span>{result.provider}</span>
           <span>{result.executionOrigin === 'server' ? 'origin: api' : 'origin: browser'}</span>
+          <span>mode: {result.mode}</span>
           <a href="/third-party-licenses.txt">THIRD-PARTY LICENSES</a>
         </div>
       </footer>
