@@ -155,6 +155,36 @@
 
 .provider-short { display: none; }
 
+.origin-chip {
+  display: flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.origin-chip > svg { flex: 0 0 auto; }
+
+.origin-chip[data-origin='server'] {
+  border-color: #485a2f;
+  color: var(--signal);
+  background: var(--signal-dim);
+}
+
+.origin-chip[data-origin='browser'] {
+  border-color: #5c4b25;
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+
 .provider-badge,
 .section-badge,
 .decision-badge {
@@ -1770,6 +1800,7 @@ footer {
   .provider-badge { min-height: 26px; padding-inline: 6px; font-size: 7px; }
   .provider-label { display: none; }
   .provider-short { display: inline; }
+  .origin-label { display: none; }
   .button-compact { width: 34px; padding: 0; font-size: 0; }
   .hero-section { padding-inline: 20px; }
   .hero-copy h1 { font-size: 43px; }
@@ -1900,6 +1931,7 @@ footer {
   .brand-full,
   .synthetic-label,
   .provider-short { display: none; }
+  .origin-chip { display: none; }
 
   .brand-short,
   .synthetic-short,

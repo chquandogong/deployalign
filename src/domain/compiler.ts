@@ -7,6 +7,7 @@ import type {
   CompiledSection,
   CompiledTarget,
   CompilerDiagnostic,
+  ExecutionOrigin,
   ExecutionReceipt,
   GraphEdge,
   SemanticPatch,
@@ -562,6 +563,7 @@ export const compileDemo = (options?: {
   aiEvidence?: AiExtractionEvidence
   now?: string
   runId?: string
+  executionOrigin?: ExecutionOrigin
 }): CompileResult => {
   if (options?.artifacts && !isDemoFixture(options.artifacts)) {
     throw new Error('This prototype only compiles the disclosed synthetic Raman fixture.')
@@ -588,6 +590,8 @@ export const compileDemo = (options?: {
     decisionId: DEMO_PROJECT.decisionId,
     gate: approved ? 'CONDITIONAL PILOT' : 'HOLD',
     provider,
+    // Default to the conservative label; only the API process opts into `server`.
+    executionOrigin: options?.executionOrigin ?? 'browser',
     synthetic: true,
     artifacts: (options?.artifacts ?? DEMO_ARTIFACTS).map((artifact) => ({ ...artifact })),
     aiCandidates,

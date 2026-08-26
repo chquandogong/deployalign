@@ -135,6 +135,13 @@ export interface ExecutionReceipt {
   evidence?: string
 }
 
+/**
+ * Where a CompileResult object was computed. Only the compiler API process may
+ * label a result `server`; anything built inside the browser (initial preview or
+ * the exact-fixture network-failure fallback) is `browser`.
+ */
+export type ExecutionOrigin = 'server' | 'browser'
+
 export interface CompileResult {
   projectId: string
   projectName: string
@@ -142,6 +149,7 @@ export interface CompileResult {
   decisionId: string
   gate: 'HOLD' | 'CONDITIONAL PILOT'
   provider: 'gemini-vertex' | 'gemini-api' | 'deterministic-demo'
+  executionOrigin: ExecutionOrigin
   synthetic: true
   artifacts: SourceArtifact[]
   aiCandidates: CommitmentNode[]

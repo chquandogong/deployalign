@@ -74,7 +74,7 @@ export const compileProject = async (
     })
   } catch (error) {
     if (isNetworkFailure(error) && isExactDemoFixture(sourceArtifacts)) {
-      return compileDemo({ artifacts: sourceArtifacts })
+      return compileDemo({ artifacts: sourceArtifacts, executionOrigin: 'browser' })
     }
     throw error
   }
@@ -95,7 +95,7 @@ export const approveProject = async (
       current.provider === 'deterministic-demo' &&
       isExactDemoFixture(current.artifacts)
     ) {
-      return compileDemo({ approved: true, artifacts: current.artifacts })
+      return compileDemo({ approved: true, artifacts: current.artifacts, executionOrigin: 'browser' })
     }
     throw error
   }

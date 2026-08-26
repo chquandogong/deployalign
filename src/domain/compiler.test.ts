@@ -180,11 +180,17 @@ describe('DeployAlign deterministic compiler', () => {
     )
   })
 
+  it('labels results as browser-computed unless the API process says otherwise', () => {
+    expect(compileDemo({ now: fixedNow }).executionOrigin).toBe('browser')
+    expect(compileDemo({ now: fixedNow, executionOrigin: 'browser' }).executionOrigin).toBe('browser')
+    expect(compileDemo({ now: fixedNow, executionOrigin: 'server' }).executionOrigin).toBe('server')
+  })
+
   it('exposes validated Gemini statements as candidates without changing the canonical patch', () => {
     const baseline = compileDemo({ now: fixedNow })
     const aiEvidence = {
       provider: 'gemini-api' as const,
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.7-flash',
       statementCount: 3,
       classifiedStatements: baseline.artifacts.map((artifact) => ({
         artifactId: artifact.id,

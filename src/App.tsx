@@ -20,8 +20,10 @@ import {
   Link2,
   LoaderCircle,
   LockKeyhole,
+  Monitor,
   Network,
   Play,
+  Server,
   ShieldAlert,
   ShieldCheck,
   TerminalSquare,
@@ -74,6 +76,9 @@ const providerLabel = (result: CompileResult) => {
   if (result.provider === 'gemini-vertex') return 'Gemini via Vertex AI'
   return 'Gemini API'
 }
+
+const originLabel = (result: CompileResult) =>
+  result.executionOrigin === 'server' ? 'Compiled by the compiler API' : 'Computed in this browser'
 
 const errorMessage = (error: unknown) => {
   if (error instanceof ApiError) return `Compiler API ${error.status}: ${error.message}`
@@ -310,7 +315,7 @@ function TargetDocument({ target, decisionId, version }: {
 }
 
 function App() {
-  const [result, setResult] = useState<CompileResult>(() => compileDemo())
+  const [result, setResult] = useState<CompileResult>(() => compileDemo({ executionOrigin: 'browser' }))
   const [busy, setBusy] = useState<BusyAction>(null)
   const [review, setReview] = useState<ReviewState>('pending')
   const [selectedNodeId, setSelectedNodeId] = useState('COM-006')
@@ -360,9 +365,14 @@ function App() {
   )
 
   const impactRows = useMemo(() => {
-    const baseline = result.version === 1 ? result : compileDemo({ artifacts: result.artifacts })
+    const baseline =
+      result.version === 1
+        ? result
+        : compileDemo({ artifacts: result.artifacts, executionOrigin: 'browser' })
     const approved =
-      result.version > 1 ? result : compileDemo({ approved: true, artifacts: result.artifacts })
+      result.version > 1
+        ? result
+        : compileDemo({ approved: true, artifacts: result.artifacts, executionOrigin: 'browser' })
     const rows = approved.targets.flatMap((target) =>
       target.sections.map((section) => {
         const before = baseline.targets
@@ -413,9 +423,11 @@ function App() {
       setSelectedNodeId(next.nodes.find((node) => node.type === 'SalesCommitment')?.id ?? next.nodes[0]?.id ?? '')
       setSelectedDiagnostic(next.diagnostics[0]?.code ?? '')
       setNotice(
-        next.provider === 'deterministic-demo'
-          ? 'Compiled with the deterministic fixed-fixture path. No external data or systems changed.'
-          : `Compile complete using ${providerLabel(next)}.`,
+        next.executionOrigin === 'browser'
+          ? 'The compiler API was unreachable, so this result was computed in the browser from the exact synthetic fixture. Nothing left this page.'
+          : next.provider === 'deterministic-demo'
+            ? 'Compiled by the compiler API on the deterministic fixed-fixture path (live Gemini disabled or rejected). No external data or systems changed.'
+            : `Compile complete: the compiler API used ${providerLabel(next)}.`,
       )
     } catch (error) {
       setNotice(errorMessage(error))
@@ -433,7 +445,9 @@ function App() {
       setReview('approved')
       setSelectedNodeId(next.nodes.find((node) => node.type === 'ScopeClause')?.id ?? next.nodes[0]?.id ?? '')
       setNotice(
-        'Demo approval recorded. The baseline advanced; no document was published or external system updated.',
+        next.executionOrigin === 'browser'
+          ? 'Demo approval recorded in the browser because the compiler API was unreachable. No document was published or external system updated.'
+          : 'Demo approval recorded by the compiler API. The baseline advanced; no document was published or external system updated.',
       )
     } catch (error) {
       setNotice(errorMessage(error))
@@ -484,6 +498,10 @@ function App() {
             <span className="provider-micro" aria-hidden="true">
               {result.provider === 'deterministic-demo' ? 'DET' : 'AI'}
             </span>
+          </span>
+          <span className="origin-chip" data-origin={result.executionOrigin} title={originLabel(result)}>
+            {result.executionOrigin === 'server' ? <Server size={12} /> : <Monitor size={12} />}
+            <span className="origin-label">{result.executionOrigin === 'server' ? 'API' : 'IN-BROWSER'}</span>
           </span>
           <button className="button button-primary button-compact" type="button" onClick={runCompile} disabled={busy !== null}>
             {busy === 'compile' ? <LoaderCircle className="spin" size={15} /> : <Play size={15} fill="currentColor" />}
@@ -856,7 +874,7 @@ function App() {
               <div className="receipts-list">
                 <div className="receipt-context">
                   <Bot size={16} />
-                  <div><strong>{providerLabel(result)}</strong><span>{result.provider === 'deterministic-demo' ? 'AI extraction was not called for this run. Displayed records are the compiler’s synthetic fixture receipts.' : 'AI-assisted extraction completed; deterministic rules and the human boundary remain separate.'}</span></div>
+                  <div><strong>{providerLabel(result)} · {originLabel(result)}</strong><span>{result.provider === 'deterministic-demo' ? 'AI extraction was not called for this run. Displayed records are the compiler’s synthetic fixture receipts.' : 'AI-assisted extraction completed; deterministic rules and the human boundary remain separate.'}</span></div>
                 </div>
                 {result.receipts.map((receipt) => <ReceiptRow key={receipt.id} receipt={receipt} synthetic={result.provider === 'deterministic-demo'} />)}
               </div>
@@ -872,6 +890,7 @@ function App() {
           <span>{result.decisionId}</span>
           <span>BASELINE V{result.version}</span>
           <span>{result.provider}</span>
+          <span>{result.executionOrigin === 'server' ? 'origin: api' : 'origin: browser'}</span>
           <a href="/third-party-licenses.txt">THIRD-PARTY LICENSES</a>
         </div>
       </footer>
