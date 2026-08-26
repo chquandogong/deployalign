@@ -1,8 +1,19 @@
 # Ship Checklist
 
-> Status: **v0.3.0 repository release — GO; Cloud Run redeploy (auth pending), video upload — GATED; customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
+> Status: **v0.4.0 repository release — GO; Cloud Run redeploy — DONE (v0.3.0, D-017); video upload — GATED; customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
 
 Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable to the bounded prototype.
+
+## v0.4.0 repository release (2026-08-26)
+
+- [x] `pnpm typecheck`, `pnpm lint`, `pnpm test` (72/72 across 7 files), `pnpm build` exited 0 on Node 24.19.0 / pnpm 11.19.0.
+- [x] `node bin/deployalign.mjs demo` exits 2 (four open blockers) and `--version` prints the package version.
+- [x] Korean corpus reproduces the six diagnostics; drone corpus yields zero; hospital corpus yields the expected five.
+- [x] Public demo redeployed from tag `v0.3.0` as `deployalign-00005-9vs`; health `model gemini-3.7-flash`; live `gemini-vertex` receipt verified; `ALLOW_CUSTOM_ARTIFACTS` unset; previous revision retained.
+- [x] `CHANGELOG.md` 0.4.0, version bump, README ×3 updated together, D-017/D-020/D-021 recorded, FR-29–FR-31 added, R-19/R-20 closed, A-11 validated.
+- [-] YouTube upload — owner gate D-018, intentionally not performed.
+
+Judgment: **GO** to tag `v0.4.0`, push and publish a GitHub release.
 
 ## v0.3.0 repository release (2026-08-26)
 

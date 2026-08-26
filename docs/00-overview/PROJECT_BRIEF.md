@@ -1,6 +1,6 @@
 # DeployAlign Project Brief
 
-> Status: Active · Date: 2026-08-26 · Owner: DeployAlign team (Codex- and Claude-assisted)
+> Status: Active · Date: 2026-08-26 (0.4.0) · Owner: DeployAlign team (Codex- and Claude-assisted)
 
 ## One-line summary
 
@@ -48,6 +48,8 @@ This fallback is intentional for a stable demonstration, but it is not evidence 
 - Execution-origin labelling on every compile result (`server` vs `browser`) with matching UI disclosure (0.2.0).
 - Default extraction model `gemini-3.7-flash` with automatic thinking configuration; `GEMINI_MODEL` pins any model (0.2.0).
 - GitHub Actions CI on Node 24 (typecheck, lint, test, build, container build), `CONTRIBUTING.md`, `SECURITY.md`, README in English, Korean and Chinese (0.2.0).
+- General compiler for user-supplied documents with a local-only API mode, editor and export (0.3.0); CLI with build-style exit codes and first-pass Korean cues (0.4.0); 72 tests.
+- Public demo redeployed 2026-08-26 as revision `deployalign-00005-9vs` (`v0.3.0`, `gemini-3.7-flash`) with a live-verified receipt (D-017).
 - A one-hour HMAC-SHA256 compile-provenance token that carries validated AI evidence through the demo review transition.
 - Docker packaging for a Node 24 runtime.
 

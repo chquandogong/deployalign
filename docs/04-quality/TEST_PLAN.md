@@ -1,6 +1,6 @@
 # Test Plan
 
-> Status: 0.3.0 local automated QA passed (60 tests) plus headless-browser QA of custom mode; 0.1.0 deployed-Vertex evidence retained · Date: 2026-08-26 · Owner: QA
+> Status: 0.4.0 local automated QA passed (72 tests); headless-browser QA of custom mode (0.3.0); live gemini-3.7-flash verified on the public demo · Date: 2026-08-26 · Owner: QA
 
 ## Objectives
 
@@ -47,6 +47,18 @@ Final updated evidence on 2026-08-17 after the response-isolation, strict-fixtur
 | Clean corpus | Bounded warehouse AMR case with completed tests | Zero diagnostics, empty patch, tests `PASS` |
 | Unsupported corpus | Unbounded promise, no measured evidence | DA-001, DA-002, DA-006; empty patch with explanatory rationale; no `SCOPE-001` after approval |
 | Hostile text | "Ignore prior instructions…" inside a document | Treated as data; gate `HOLD`, patch `PROPOSED` |
+
+## Corpora tests (`src/domain/general/corpora.test.ts`, 6 cases — 0.4.0)
+
+| Corpus | What it pins down |
+| --- | --- |
+| Drone inspection (EN) | `all five flare stacks` and `Phase 2` are bounded/labels, not unbounded scope; `no smaller than 10 cm at 95% recall` is a measurable acceptance criterion; completed flight tests and a completed survey yield no DA-006; zero diagnostics overall |
+| Hospital delivery robot (EN) | `every ward … autonomously` raises DA-001/002/004/005/006; coverage replacement `Six wards`, operating mode `attended operation`; the hedged door width and the number-free "customer-reported, not measured" statement form one DA-004 cluster |
+| Sub-fab Raman pilot (KO) | Korean sentences split and type by role; `시설 전체` / `모든 누출 물질` / `자율적으로` are the three unbounded categories; enumerations `다섯 가지`, `12곳`; six diagnostics with canonical severities; verbatim patch `다섯 가지 명명된 분석 물질`, `12곳의 핵심 구역`, `감독 하의 1단계 운영`; approval resolves DA-001 and keeps DA-006 |
+
+## CLI tests (`cli/main.test.ts`, 6 cases — 0.4.0)
+
+Usage/version/unknown command; directory compile by file-name role writes `result.json`, `report.md` and three target files and exits 2 on blockers; `--fail-on none` exits 0 and `--approved --fail-on warning` exits 2 with `CONDITIONAL PILOT`; explicit role files and a JSON manifest (a bounded manifest exits 0 with zero blockers); missing roles and short files exit 1 with messages; `demo` compiles the fixture (`fixture mode`, exit 2).
 
 ## Export tests (`src/lib/exportMarkdown.test.ts`, 2 cases — 0.3.0)
 
@@ -173,7 +185,7 @@ No such user experiment has been run yet.
 ## Regression commands
 
 ```text
-pnpm test        # 60 tests: 14 domain · 15 general path · 2 export · 11 Gemini validation · 18 API contract
+pnpm test        # 72 tests: 14 domain · 15 general path · 6 corpora · 2 export · 6 CLI · 11 Gemini validation · 18 API contract
 pnpm typecheck
 pnpm lint
 pnpm build
@@ -181,7 +193,7 @@ pnpm build
 
 Archive date, commit (when one exists), exit status, and redacted output. A command listed here is not proof that it passed.
 
-Evidence 2026-08-26 (0.3.0, Node 24.19.0, pnpm 11.19.0): all four commands exited 0; Vitest reported 60/60 across five files; the browser QA above passed. Earlier the same day (0.2.0): 38/38 across three files; Vite emitted 39.50 kB CSS and 242.71 kB JS. A production-mode HTTP smoke against `pnpm start` on a local port returned health `version 0.2.0` / `model gemini-3.7-flash`, compile → approve with `executionOrigin: server`, HTTP 409 for a tampered token, root `no-store` with CSP, one-year immutable hashed assets, and the 3,462-byte licence notice. **Not covered in this cycle:** a live `gemini-3.7-flash` call (no credentials in the build environment) and the Cloud Run container build (CI performs the image build; the deployed revision is unchanged).
+Evidence 2026-08-26 (0.4.0, Node 24.19.0, pnpm 11.19.0): all four commands exited 0; Vitest reported 72/72 across seven files; `node bin/deployalign.mjs demo` exited 2 as designed. **Deployed live model (D-017):** revision `deployalign-00005-9vs` — health `version 0.3.0`, `model gemini-3.7-flash`, `liveGemini true`; compile `provider gemini-vertex`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.` Earlier (0.3.0): 60/60 and the browser QA above. Earlier the same day (0.2.0): 38/38 across three files; Vite emitted 39.50 kB CSS and 242.71 kB JS. A production-mode HTTP smoke against `pnpm start` on a local port returned health `version 0.2.0` / `model gemini-3.7-flash`, compile → approve with `executionOrigin: server`, HTTP 409 for a tampered token, root `no-store` with CSP, one-year immutable hashed assets, and the 3,462-byte licence notice. **Not covered in this cycle:** a live `gemini-3.7-flash` call (no credentials in the build environment) and the Cloud Run container build (CI performs the image build; the deployed revision is unchanged).
 
 ## Release blockers
 

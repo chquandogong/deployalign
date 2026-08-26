@@ -14,7 +14,7 @@
 | A-08 | A live Gemini call can be completed through Vertex AI or a Gemini API key | Verified `gemini-vertex` call from Cloud Run with redacted logs and receipt | Repeatability and operational monitoring | Validated for the synthetic demo |
 | A-09 | Browser fallback is useful for demos | Resilience design | Test failure comprehension with provider badge | Open risk |
 | A-10 | The current demo review action is sufficient to explain a human gate | UI/flow hypothesis | Usability test | Open; not a security control |
-| A-11 | `gemini-3.7-flash` on the Vertex `global` endpoint accepts the current structured-output request with `thinkingLevel: LOW` | GA announcement 2026-08-13; the same model runs in the owner's sibling project; SDK 1.52.0 types | First deploy with 0.2.0 must show a live receipt (D-017) | Open — unit-tested, not live-verified |
+| A-11 | `gemini-3.7-flash` on the Vertex `global` endpoint accepts the current structured-output request with `thinkingLevel: LOW` | Deployed revision `deployalign-00005-9vs` (2026-08-26): health `model=gemini-3.7-flash`, compile `provider=gemini-vertex`, receipt `gemini-3.7-flash classified 3 source statements` | Repeatability over time | **Validated on the public demo (D-017)** |
 | A-12 | Practitioners will share redacted artifacts once the tool accepts their own text (0.3) | Roadmap hypothesis | Five interviews; two redacted samples | Open |
 | A-13 | The six diagnostics can be generalised into text/graph detectors without a high false-positive rate | 0.3.0 detectors: fixture reproduces codes/severities/patch categories; bounded warehouse corpus → 0 findings; unsupported corpus → expected blockers | Precision/recall on consented redacted documents | Partially validated on three synthetic corpora only |
 
@@ -43,7 +43,7 @@
 - The cross-review in `CROSS_VALIDATION_LOG.md` is same-model/role-based and is not an actual independent Claude review.
 
 - 0.2.0 (2026-08-26): every compile result carries `executionOrigin`; the API labels its results `server`, the browser labels its own `browser`. `/api/health` reports `version` and `model`. 38 automated tests (14 domain, 11 Gemini validation, 13 API contract) pass on Node 24.19.0.
-- The public Cloud Run revision `deployalign-00004-wgb` still runs the 0.1.0 build with `gemini-2.5-flash`; Vertex AI release notes list 2026-10-16 as that model's retirement date (checked 2026-08-26).
+- 2026-08-26 (D-017): revision `deployalign-00005-9vs` runs the `v0.3.0` build with `gemini-3.7-flash`; a live compile returned `gemini-vertex` with a `SUCCESS` receipt. `deployalign-00004-wgb` (0.1.0, `gemini-2.5-flash`) is retained for rollback; Gemini 2.5 Flash retires on Vertex AI on 2026-10-16.
 
 ## Prohibited assumptions
 

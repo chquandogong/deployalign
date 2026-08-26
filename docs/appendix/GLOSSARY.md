@@ -1,11 +1,12 @@
 # Glossary
 
-> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Documentarian
+> Status: Active · Date: 2026-08-26 (0.4.0) · Owner: Documentarian
 
 | Term | Meaning in DeployAlign |
 | --- | --- |
 | AOI | Area of interest. The demo uses 12 mapped critical AOIs as a synthetic bounded scope. |
 | Artifact | One source record from the synthetic customer, sales, or engineering perspective. |
+| CLI verdict | `deployalign compile … --fail-on <level>` exits 2 when unresolved diagnostics remain at or above the level, 1 on input/usage errors, 0 otherwise — a build-style signal for docs pipelines. |
 | Commitment graph | Typed nodes and relationships representing objectives, preferences, commitments, constraints, assumptions, evidence, tests, decisions, and gates. |
 | Clause | The unit the general compiler extracts: a sentence, semicolon-separated part or line of an artifact, kept as a verbatim substring with its line number. |
 | Compile | Transform source artifacts into graph nodes, diagnostics, a proposed patch, target documents, impact sets, and receipts. |

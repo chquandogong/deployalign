@@ -73,7 +73,7 @@ Gemini 是一个**可选的、基于原文引用的抽取前端**。启用时，
 ## 三分钟看懂
 
 - 🎬 **演示视频：** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) —— 2026-08-17 的演示（0.1.0）。0.2.0 演示的脚本见 [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md)，并用其中描述的可复现流水线构建。
-- 🌐 **在线演示：** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) —— **0.1.0 构建**的公开 Cloud Run 部署，通过 Vertex AI 启用了实时 Gemini 抽取（单实例，每客户端每十分钟六次编译）。重新部署 0.2.0 由决策 D-017 跟踪。
+- 🌐 **在线演示：** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) —— **0.3.0 构建**的公开 Cloud Run 部署，通过 Vertex AI 启用了实时 **Gemini 3.7 Flash** 抽取（单实例，每客户端每十分钟六次编译，自定义模式关闭）。2026-08-26 验证：health 报告 `model gemini-3.7-flash`，一次编译返回了 `gemini-vertex` 回执。
 
 点击 **Run the synthetic case**，阅读六项诊断，打开补丁，按下 **Simulate approval & recompile**，
 然后对照影响表：六个章节被重建，三个未受影响的章节保留其变更指纹。
@@ -104,9 +104,29 @@ ALLOW_CUSTOM_ARTIFACTS=true pnpm dev
 
 诚实的预期：
 
-- 检测器是**英文词法启发式规则**。它们为评审者找出候选项并引用来源；它们不做决定，也会漏掉规则未覆盖的表述。韩文及其他语言在路线图上。
+- 检测器是**词法启发式规则**（英文，0.4 起加入首版韩文）。它们为评审者找出候选项并引用来源；它们不做决定，也会漏掉规则未覆盖的表述。
 - 即使没有任何发现，闸门在有人评审之前也保持 `HOLD`，并且永远不会变成无条件的 `PASS`。
 - 你的文本只留在你自己的 API 进程中。**只有**当该进程同时以 `ALLOW_LIVE_GEMINI=true` 运行时才会发送给 Gemini；切勿在公开部署上同时开启两者。
+
+## 作为构建步骤使用（CLI，0.4）
+
+```bash
+pnpm exec deployalign compile ./deployment-docs --out ./deployment-docs/compiled --fail-on blocker
+# 按文件名判定角色：customer*.md · sales*.md · engineering*.md（或 고객* · 영업* · 엔지니어링*）
+```
+
+该命令打印闸门、每条附带引用的诊断、建议补丁和判定结果，写出 `result.json`、`report.md`
+和三份目标文档，并在 `--fail-on` 级别及以上仍有未解决诊断时以退出码 **2** 结束——超出工程
+证据的工作说明书会像类型错误一样让文档流水线失败。`--approved` 渲染已评审的基线（并声明有人
+在命令行上批准；不做任何记录），`--json` 输出完整结果，`demo` 编译内置夹具。CLI 只运行确定性
+路径——不调用模型，不联网。
+
+```yaml
+# .github/workflows/sow-check.yml —— 让提案超出证据的 PR 失败
+- run: pnpm dlx github:chquandogong/deployalign compile ./deployment-docs --fail-on blocker
+```
+
+文档可以是**英文或韩文**（首版词法级支持；限制见 [`CHANGELOG.md`](CHANGELOG.md)）。
 
 ## 架构
 
@@ -126,10 +146,11 @@ flowchart LR
 
 | 层 | 位置 | 职责 |
 | --- | --- | --- |
-| 领域 | `src/domain/` | 类型、规范夹具编译器（14 个测试）、frozen 合成夹具，以及 `general/`——子句抽取、词法定型、检测器、基于证据的补丁、通用目标文档（15 个测试） |
+| 领域 | `src/domain/` | 类型、规范夹具编译器（14 个测试）、frozen 合成夹具，以及 `general/`——子句抽取、英文/韩文词法定型、检测器、基于证据的补丁、通用目标文档（3 个语料、21 个测试） |
 | API | `server/app.ts`、`server/index.ts` | 输入边界、夹具守卫/自定义模式、限流、绑定模式+补丁+材料哈希的 HMAC 令牌、`/api/health`、`/api/compile`、`/api/approve`、静态构建；18 个契约测试 |
 | 模型适配器 | `server/gemini.ts` | 可选 Gemini 调用、提示词、`thinkingConfigFor`、纯函数 `validateGeminiPayload`；11 个测试 |
 | UI | `src/App.tsx`、`src/components/ArtifactEditor.tsx`、`src/lib/exportMarkdown.ts` | 源材料、文档编辑器（自定义模式）、图 + 节点检视器、诊断、补丁 diff、批准边界、影响表、带 Markdown/JSON 导出的目标文档、源映射、回执 |
+| CLI | `bin/deployalign.mjs`、`cli/main.ts` | `compile`/`demo`、按文件名判定角色、输出文件、`--fail-on` 判定与退出码；6 个测试 |
 
 详见：[`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
 [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md)。
@@ -182,7 +203,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest —— 5 个套件、60 个测试
+pnpm test        # vitest —— 7 个套件、72 个测试
 pnpm build       # vite 生产构建
 ```
 
@@ -218,7 +239,7 @@ docker run --rm -p 8080:8080 -e COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)
 并依据结果行动。带有成功与停止标准的后续步骤见 [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md)：
 
 1. ~~**0.3 —— 使用自己的材料（本地模式）。**~~ 已在 0.3.0 发布：确定性通用编译器、六个检测器、逐字证据补丁、Markdown/JSON 导出、仅限本地的标志（D-016）。
-2. **0.4 —— CLI 与 CI 模式。** `deployalign compile ./artifacts --fail-on blocker`，让超出证据的 SOW 修改使文档流水线失败——驱动它的通用编译器现已存在。
+2. ~~**0.4 —— CLI 与 CI 模式。**~~ 已在 0.4.0 发布：`deployalign compile … --fail-on blocker`、面向文档流水线的输出、首版韩文支持。
 3. **0.5 —— 从业者试点。** 五次访谈、脱敏样本、实测精度与决策耗时——只有这些才能决定身份、持久化与审计是否值得构建。
 
 欢迎 issue 与 pull request；见 [`CONTRIBUTING.md`](CONTRIBUTING.md)。
@@ -230,7 +251,7 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 不是终点。项目在公开环境中继续推进；变更记录在 [`CHANGELOG.md`](CHANGELOG.md)，背后的理由记录在
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)。
 
-截至 0.3.0 的诚实范围：确定性编译器（夹具与通用）、API、UI 与 60 个测试已实现并在本地验证，自定义文档流程也经过了无头浏览器验证；实时 `gemini-2.5-flash`
+截至 0.4.0 的诚实范围：确定性编译器（夹具与通用）、API、UI、CLI 与 72 个测试已实现并在本地验证，自定义文档流程也经过了无头浏览器验证；公开演示运行 0.3.0 构建，其 `gemini-3.7-flash` 调用已**实时验证**（2026-08-26）；实时 `gemini-2.5-flash`
 调用已在已部署的 0.1.0 版本上验证；`gemini-3.7-flash` 默认值已通过单元测试，等待第一份实时回执；
 没有生产部署、没有客户、没有实测的现场结果。这里的一切都不构成参赛资格、奖项或商业可行性的证明。
 
@@ -240,11 +261,11 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | 当前状态、工作板、等待所有者决策的事项 |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | "有用"的定义及通往它的阶段 |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-28 与验收标准 |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-31 与验收标准 |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | 组件、数据流、信任边界、失效模式 |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 测试计划与带状态的风险 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 运行、验证、迁移模型、排障、回滚 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-016 与所有者决策队列 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-018 与所有者决策队列 |
 | [`docs/submission/`](docs/submission/) | 演示脚本、YouTube 元数据，以及 Devpost 证据的历史记录 |
 
 ## 许可证

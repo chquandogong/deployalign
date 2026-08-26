@@ -1,6 +1,44 @@
 # Retro
 
-> Status: Three cycles recorded — 0.1.0 submission (2026-08-17), 0.2.0 hygiene (2026-08-26), 0.3.0 custom documents (2026-08-26) · Date: 2026-08-26 · Owner: Project team
+> Status: Four cycles recorded — 0.1.0 submission (2026-08-17), 0.2.0 hygiene, 0.3.0 custom documents, 0.4.0 CLI + Korean (all 2026-08-26) · Date: 2026-08-26 · Owner: Project team
+
+## Cycle 0.4.0 — a command, a second language, and the public demo on the current model (2026-08-26)
+
+### What was done
+
+- Shipped `deployalign compile … --fail-on blocker` (tsx-backed bin, role detection, outputs, exit codes) with 6 tests.
+- Added first-pass Korean: Hangul tokenisation, particle stripping, native numerals and attached counters, predicate boundaries, noun-before-quantifier phrases, Korean cue lists; a Korean Raman corpus reproduces the six diagnostics and a verbatim Korean patch.
+- Added drone and hospital corpora, which caught five real detector bugs before any user did.
+- Redeployed the public demo from the clean `v0.3.0` tag on `gemini-3.7-flash` and verified a live receipt (D-017); closed R-19/R-20.
+
+### What went well
+
+- Writing the corpora as tests first exposed each false assumption in one run (bounded `all five`, `Phase 2` labels, `attended operation for the…`, "verified data" typed as a test, number-free unverified statements, Korean clauses dropped by an ASCII-only letter check, `12곳의` counters, quantifier-after-noun). Every fix landed with a test.
+- Deploying from a clean worktree kept uncommitted 0.4 work out of the public build; the deploy script's built-in live-receipt check made "did Gemini actually run" a hard exit code rather than a judgement.
+
+### What was learned and corrective actions
+
+- **ASCII assumptions hide everywhere** — the sentence splitter's lookahead and the "has letters" check both excluded Hangul. Corrective action: every text predicate in `text.ts`/`extract.ts` now names its script ranges explicitly, and the Korean corpus is a permanent regression.
+- **Korean word order differs in the one place that matters** — `시설 전체를` puts the quantifier after its noun. Corrective action: quantifier-with-particle rule; more forms will come from real documents, not from guessing.
+- **Deploy verification belongs in the script, not the checklist.**
+
+### Failures and incomplete work
+
+- Korean support is lexical only; preference narrowing and honorific/spacing variants are untested.
+- No practitioner has run a document; the corpora are still synthetic.
+- The public demo runs `v0.3.0`; 0.4.0 adds only local features, so it was not redeployed.
+
+### Metrics
+
+- Tests: 60 → 72 (7 files). Corpora: 3 → 5 (incl. Korean). Languages: 1 → 2 (first pass).
+- Public demo: `gemini-2.5-flash` (0.1.0) → `gemini-3.7-flash` (0.3.0), live-verified.
+
+### Deferred to the next cycle
+
+1. Practitioner interviews and redacted-document corpora (English and Korean).
+2. Wrap the CLI as a GitHub Action; consider publishing the package once stable.
+3. Korean preference narrowing and morphological edge cases from real text.
+4. D-018/D-019: video v0.2.0 upload and voice choice remain owner gates.
 
 ## Cycle 0.3.0 — the tool compiles your own documents (2026-08-26)
 

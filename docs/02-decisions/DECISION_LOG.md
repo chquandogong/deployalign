@@ -1,6 +1,6 @@
 # Decision Log
 
-> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Project lead
+> Status: Active · Date: 2026-08-26 (0.4.0) · Owner: Project lead
 
 ## D-001 — Use a hybrid evidence compiler
 
@@ -184,11 +184,46 @@
 - Approval: Owner "go" on 2026-08-26 to the proposed next cycle; local-only default keeps the privacy posture unchanged for the public demo.
 - Revisit when: two practitioners have run redacted documents through it (roadmap 0.5).
 
+## D-017 — Redeploy the public demo on the current model (completed)
+
+- Date: 2026-08-26
+- Context: The public revision `deployalign-00004-wgb` ran the 0.1.0 build pinned to `gemini-2.5-flash`, which Vertex AI lists for retirement on 2026-10-16. The owner approved the redeploy ("go") and completed `gcloud auth login --update-adc`.
+- Decision: Deploy tag `v0.3.0` from a clean git worktree with `scripts/deploy_cloud_run.sh` (Cloud Build from source), overriding the pin with `GEMINI_MODEL=gemini-3.7-flash`, keeping the runtime service account, Secret Manager binding, `global` location, max-instances 1, and leaving `ALLOW_CUSTOM_ARTIFACTS` unset.
+- Evidence: revision `deployalign-00005-9vs` serves 100% of traffic; `/api/health` → `version 0.3.0`, `liveGemini true`, `model gemini-3.7-flash`, `customArtifacts false`; a compile returned `provider gemini-vertex`, `executionOrigin server`, `mode fixture`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.`
+- Rationale: A default that expires is a defect (D-013); the verification step is part of the deploy so a silent fallback cannot pass as success.
+- Residual risk: single-instance demo, no auth/persistence (unchanged, R-13); `deployalign-00004-wgb` retained for rollback.
+- Approval: Owner "go" ×2 and completed authentication; deploy executed by the agent from the clean tag.
+- Revisit when: Google changes 3.7 Flash availability, or the demo is moved to a production-grade topology.
+
+## D-020 — Ship the decision compiler as a CLI with build-style exit codes (0.4.0)
+
+- Date: 2026-08-26
+- Context: Roadmap 0.4: make a proposal that outruns evidence fail a docs pipeline.
+- Options: (a) publish an npm package with a compiled bundle; (b) a tsx-backed `bin` in the existing private package installable from git; (c) a GitHub Action only.
+- Decision: (b). `bin/deployalign.mjs` registers tsx and runs `cli/main.ts`; roles come from file names, flags, or a JSON manifest; `--fail-on blocker|warning|none` maps to exit 2; outputs are `result.json`, `report.md` and the three target documents; `--approved` renders v2 and prints that nothing was recorded; deterministic path only.
+- Rationale: No build/publish pipeline to maintain yet; `pnpm dlx github:…` and `pnpm exec deployalign` both work; a GitHub Action can wrap it later.
+- Rejected: (a) premature while the package is private and unstable; (c) excludes local use.
+- Residual risk: tsx startup cost (~1 s); the `cli` execution origin is a new value consumers may not expect.
+- Approval: Within the approved 0.4 cycle ("go").
+- Revisit when: the package is published or a second consumer appears.
+
+## D-021 — First-pass Korean support as lexical cues, not morphology (0.4.0)
+
+- Date: 2026-08-26
+- Context: The owner writes Korean; the detectors were English-only.
+- Options: (a) a morphological analyser dependency; (b) lexical cues plus particle stripping, native numerals, attached counters and predicate-ending boundaries; (c) machine-translate to English first.
+- Decision: (b), tested on a Korean translation of the Raman fixture that must reproduce the six diagnostics and a verbatim Korean patch.
+- Rationale: Zero dependencies, deterministic, and every quote stays a substring of the source; (c) would break the grounding contract; (a) is heavy for a first pass.
+- Rejected: (a) for now; (c) permanently.
+- Residual risk: spacing/honorific variants and unusual particles will be missed (R-22); preference narrowing is English-only.
+- Approval: Within the approved 0.4 cycle.
+- Revisit when: a real Korean document set exposes systematic misses.
+
 ## Owner decision queue
 
 | ID | Decision | Default if silent | Gate type |
 | --- | --- | --- | --- |
 | D-016 | ~~Approve the 0.3 local-mode design~~ — approved and shipped in 0.3.0 (see entry above) | Done | — |
-| D-017 | Redeploy Cloud Run with 0.2.0 and verify a live `gemini-3.7-flash` receipt | Public demo stays on 0.1.0 / 2.5 Flash | Production deployment |
+| D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26 (`deployalign-00005-9vs`) | Done | — |
 | D-018 | Upload demo video v2 and swap the README/YouTube links | README keeps the 2026-08-17 video | Public publication |
 | D-019 | Synthesized narration voice vs. human recording | Synthesized, licence note kept | Brand / rights |

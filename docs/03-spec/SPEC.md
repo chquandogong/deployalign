@@ -1,6 +1,6 @@
 # DeployAlign Specification
 
-> Status: Prototype 0.3.0 implemented; local QA passed; deployed 0.1.0 revision unchanged · Date: 2026-08-26 · Owner: Product and engineering
+> Status: Prototype 0.4.0 implemented; local QA passed; public demo runs 0.3.0 on gemini-3.7-flash · Date: 2026-08-26 · Owner: Product and engineering
 
 ## Problem definition
 
@@ -78,6 +78,9 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 | FR-26 | Bind custom review to the compiled artifacts | Must | Token carries mode, patch id and SHA-256 of artifacts; mismatched or missing artifacts → 409 |
 | FR-27 | Export the compiled result as Markdown and JSON in the browser | Should | `exportMarkdown.test.ts`; headless-browser download check |
 | FR-28 | Show the document editor only when the API advertises custom mode | Should | Health `customArtifacts` drives the toggle; fixture-only deployments never show it |
+| FR-29 | Compile from the command line with build-style exit codes | Must | `deployalign compile <dir>` / role flags / `--artifacts`; exit 0 pass, 1 input/usage error, 2 when unresolved diagnostics remain at/above `--fail-on` (`cli/main.test.ts`) |
+| FR-30 | Write pipeline-friendly outputs | Should | `--out` produces `result.json`, `report.md`, `customer-decision-memo.md`, `sales-sow.md`, `engineering-test-manifest.md` |
+| FR-31 | Read Korean documents through the same detectors | Should | Korean Raman corpus reproduces DA-001–DA-006 and a verbatim Korean patch (`corpora.test.ts`); limits documented |
 
 ## Non-functional requirements
 
@@ -120,11 +123,11 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 
 ## Test acceptance
 
-- All 60 automated tests pass: 14 domain, 15 general-path, 2 export, 11 Gemini validation, 18 API contract (verified 2026-08-26 on Node 24.19.0).
+- All 72 automated tests pass: 14 domain, 15 general-path, 6 corpora (drone, hospital, Korean), 2 export, 6 CLI, 11 Gemini validation, 18 API contract (verified 2026-08-26 on Node 24.19.0).
 - Typecheck, lint, and production build pass (verified 2026-08-26).
 - API contract and failure cases receive automated coverage (`server/app.test.ts`, 0.2.0).
 - Visual QA confirms synthetic/fallback/human-gate disclosures.
-- A deployed live Gemini test is archived with the Cloud Run revision, provider/model receipt, signed-provenance review result, and redacted logs. The verified path produced exactly three `AI_DRAFT` candidates while deterministic TypeScript retained graph/gate/target ownership.
+- A deployed live Gemini test is archived with the Cloud Run revision, provider/model receipt, signed-provenance review result, and redacted logs. 2026-08-17: `gemini-2.5-flash` on `deployalign-00004-wgb`. 2026-08-26: `gemini-3.7-flash` on `deployalign-00005-9vs` (health `model gemini-3.7-flash`; receipt `classified 3 source statements`). Deterministic TypeScript retains graph/gate/target ownership.
 
 ## Human approval gates
 
@@ -140,5 +143,5 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 - How should source documents be redacted and deleted?
 - What production topology, monitoring, and regional/data controls would meet real-user constraints beyond the current Cloud Run `asia-northeast3` demo?
 - What measurable user or business outcome justifies the product?
-- When is the first live `gemini-3.7-flash` receipt verified on the deployed service (D-017), given Gemini 2.5 Flash retires on Vertex AI on 2026-10-16?
+- ~~When is the first live `gemini-3.7-flash` receipt verified on the deployed service?~~ Verified 2026-08-26 (D-017).
 - Which of the six diagnostics survive as general detectors on real, redacted text (roadmap 0.3, D-016)?

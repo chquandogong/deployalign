@@ -83,7 +83,7 @@ unreachable. A fallback can no longer pass for a server run.
 ## See it in three minutes
 
 - 🎬 **Demo video:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) — the 2026-08-17 walkthrough (0.1.0). A 0.2.0 walkthrough is scripted in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md) and built with the reproducible pipeline described there.
-- 🌐 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — public Cloud Run deployment of the **0.1.0 build** with live Gemini extraction through Vertex AI (one instance, six compiles per ten minutes per client). Redeploying 0.2.0 is tracked as decision D-017.
+- 🌐 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — public Cloud Run deployment of the **0.3.0 build** with live **Gemini 3.7 Flash** extraction through Vertex AI (one instance, six compiles per ten minutes per client; custom mode disabled). Verified 2026-08-26: health reports `model gemini-3.7-flash` and a compile returned a `gemini-vertex` receipt.
 
 Click **Run the synthetic case**, read the six diagnostics, open the patch, press
 **Simulate approval & recompile**, and compare the impact table: six sections rebuilt,
@@ -118,9 +118,32 @@ the rationale says so. Review, approve, and export the result as Markdown or JSO
 
 What to expect, honestly:
 
-- The detectors are **English lexical heuristics**. They find candidates for a reviewer and quote their source; they do not decide anything and will miss phrasing they were not written for. Korean and other languages are on the roadmap.
+- The detectors are **lexical heuristics** (English, plus first-pass Korean since 0.4). They find candidates for a reviewer and quote their source; they do not decide anything and will miss phrasing they were not written for.
 - The gate stays `HOLD` until a person reviews, even when nothing fires, and never becomes an unconditional `PASS`.
 - Your text stays with your own API process. It reaches Gemini **only** if that process also runs with `ALLOW_LIVE_GEMINI=true`; never enable both on a public deployment.
+
+## Use it as a build step (CLI, 0.4)
+
+```bash
+pnpm exec deployalign compile ./deployment-docs --out ./deployment-docs/compiled --fail-on blocker
+# roles from file names: customer*.md · sales*.md · engineering*.md (or 고객* · 영업* · 엔지니어링*)
+```
+
+The command prints the gate, every diagnostic with its quote, the proposed patch and a
+verdict, writes `result.json`, `report.md` and the three target documents, and exits
+**2** when unresolved diagnostics remain at or above `--fail-on` — so a statement of work
+that outruns engineering evidence fails the docs pipeline the way a type error fails a
+build. `--approved` renders the reviewed baseline (and says a person approved on the
+command line; nothing is recorded), `--json` emits the full result, `demo` compiles the
+bundled fixture. The CLI runs the deterministic path only — no model, no network.
+
+```yaml
+# .github/workflows/sow-check.yml — fail a PR whose proposal outruns the evidence
+- run: pnpm dlx github:chquandogong/deployalign compile ./deployment-docs --fail-on blocker
+```
+
+Documents may be **English or Korean** (first-pass lexical support; see the limits in
+[`CHANGELOG.md`](CHANGELOG.md)).
 
 ## Architecture
 
@@ -140,10 +163,11 @@ flowchart LR
 
 | Layer | Where | What it owns |
 | --- | --- | --- |
-| Domain | `src/domain/` | Types, the canonical fixture compiler (14 tests), the frozen synthetic fixture, and `general/` — clause extraction, lexical typing, detectors, evidence-derived patch, generic targets (15 tests) |
+| Domain | `src/domain/` | Types, the canonical fixture compiler (14 tests), the frozen synthetic fixture, and `general/` — clause extraction, English/Korean lexical typing, detectors, evidence-derived patch, generic targets (21 tests across three corpora) |
 | API | `server/app.ts`, `server/index.ts` | Input bounds, fixture guard / custom mode, rate limit, HMAC tokens bound to mode + patch + artifact hash, `/api/health`, `/api/compile`, `/api/approve`, static build; 18 contract tests |
 | Model adapter | `server/gemini.ts` | Opt-in Gemini call, prompt, `thinkingConfigFor`, pure `validateGeminiPayload`; 11 tests |
 | UI | `src/App.tsx`, `src/components/ArtifactEditor.tsx`, `src/lib/exportMarkdown.ts` | Sources, document editor (custom mode), graph + node inspector, diagnostics, patch diff, approval boundary, impact table, targets with Markdown/JSON export, source map, receipts |
+| CLI | `bin/deployalign.mjs`, `cli/main.ts` | `compile`/`demo`, file-name roles, outputs, `--fail-on` verdict and exit codes; 6 tests |
 
 Details: [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) ·
 [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md).
@@ -196,7 +220,7 @@ server-side credential path. Never put a key in a client-side `VITE_*` variable.
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest — 60 tests in 5 suites
+pnpm test        # vitest — 72 tests in 7 suites
 pnpm build       # vite production bundle
 ```
 
@@ -237,7 +261,7 @@ can run it on **their own** three documents and act on the result. The next step
 with success and stop criteria, are in [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md):
 
 1. ~~**0.3 — Bring your own artifacts (local mode).**~~ Shipped in 0.3.0: deterministic general compiler, six detectors, verbatim-evidence patch, Markdown/JSON export, local-only flag (D-016).
-2. **0.4 — CLI and CI mode.** `deployalign compile ./artifacts --fail-on blocker` so a SOW edit that outruns evidence fails the docs pipeline — the general compiler now exists to power it.
+2. ~~**0.4 — CLI and CI mode.**~~ Shipped in 0.4.0: `deployalign compile … --fail-on blocker`, outputs for docs pipelines, first-pass Korean.
 3. **0.5 — Practitioner pilot.** Five interviews, redacted samples, measured precision and time-to-decision — the only thing that decides whether identity, persistence and audit are worth building.
 
 Issues and pull requests are welcome; see [`CONTRIBUTING.md`](CONTRIBUTING.md).
@@ -250,12 +274,11 @@ checkpoint (`v0.1.0`), not the finish line. The project continues in the open; c
 are recorded in [`CHANGELOG.md`](CHANGELOG.md) and the reasoning behind them in
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md).
 
-Honest scope, as of 0.3.0: the deterministic compilers (fixture and general), API, UI and
-60 tests are implemented and verified locally, including a headless-browser run of the
-custom-document flow; a live `gemini-2.5-flash` call was verified on the
-deployed 0.1.0 revision; the `gemini-3.7-flash` default is unit-tested and awaits its
-first live receipt; there is no production deployment, no customer, and no measured
-field outcome. Nothing here establishes eligibility, an award or business viability.
+Honest scope, as of 0.4.0: the deterministic compilers (fixture and general), API, UI, CLI
+and 72 tests are implemented and verified locally, including a headless-browser run of
+the custom-document flow; the public demo runs the 0.3.0 build with a **live-verified**
+`gemini-3.7-flash` call (2026-08-26); there is still no production deployment, no
+customer, and no measured field outcome. Nothing here establishes eligibility, an award or business viability.
 
 ## Documentation
 
@@ -263,11 +286,11 @@ field outcome. Nothing here establishes eligibility, an award or business viabil
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | Current state, work board, decisions waiting on the owner |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | What "useful" means and the phases to get there |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | Functional requirements FR-01…FR-28 and acceptance criteria |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | Functional requirements FR-01…FR-31 and acceptance criteria |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | Components, data flow, trust boundaries, failure modes |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | Test plan and risks with state |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | Run, verify, migrate the model, troubleshoot, roll back |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-016 and the owner decision queue |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-018 and the owner decision queue |
 | [`docs/submission/`](docs/submission/) | Demo script, YouTube metadata, and the historical Devpost evidence record |
 
 ## License

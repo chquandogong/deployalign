@@ -1,6 +1,6 @@
 # Roadmap — from submitted prototype to a tool people use
 
-> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Project lead
+> Status: Active · Date: 2026-08-26 (0.4.0) · Owner: Project lead
 
 ## What "useful" has to mean here
 
@@ -16,6 +16,7 @@ that moment, not by feature count.
 | Artifacts the tool accepts | any 3 role-tagged texts in local mode (0.3.0); the public demo stays fixture-only | any 3 redacted texts a user supplies (local mode) ✓ |
 | Diagnostics that generalise beyond the fixture | 6 of 6 as lexical/evidence detectors, tested on 3 synthetic corpora (0.3.0) | 6 of 6 with measured precision on redacted real documents |
 | Practitioners who recognise the problem | 0 interviewed | ≥ 3 of 5 identify a real analogue |
+| Languages the detectors read | English + first-pass Korean (0.4.0) | Korean with morphological handling; a second real corpus |
 | Reviewers who ask to run their own documents | 0 | ≥ 2 |
 | Time from paste to reviewable patch | seconds, offline, in the browser QA run (0.3.0) | < 2 minutes on a laptop, no cloud required ✓ |
 
@@ -65,12 +66,18 @@ share even redacted text.
 **Gate:** sending non-synthetic text to a model is a privacy decision. Default off,
 local only, documented in the runbook, and approved by the repository owner first.
 
-### 0.4 — CLI and CI mode
+### 0.4 — CLI and CI mode · *shipped 2026-08-26*
 
 `deployalign compile ./artifacts --out ./targets --fail-on blocker`. The decision graph
 and targets become files that live next to the proposal in version control, so a SOW
 edit that outruns engineering evidence fails the docs pipeline the same way a type error
 fails a build. This is where "decision compiler" stops being a metaphor.
+
+**What shipped:** `bin/deployalign.mjs` (tsx-backed, no build step), roles from file
+names or flags or a JSON manifest, `result.json` + `report.md` + three target documents,
+`--fail-on` verdict with exit codes 0/1/2, `--approved`, `--json`, `demo`; plus first-pass
+Korean cues and two more English corpora. Also on 2026-08-26 the public demo was
+redeployed on `gemini-3.7-flash` with a live-verified receipt (D-017).
 
 ### 0.5 — Practitioner pilot
 
@@ -95,6 +102,6 @@ traction that is not evidenced.
 | ID | Decision | Default if silent |
 | --- | --- | --- |
 | D-016 | ~~Approve the 0.3 custom-artifact design~~ — approved and shipped 2026-08-26 | Done |
-| D-017 | Redeploy Cloud Run with 0.2.0 (`gemini-3.7-flash`) and verify a live receipt | Public demo stays on 0.1.0 |
+| D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26, revision `deployalign-00005-9vs` on `gemini-3.7-flash` | Done |
 | D-018 | Upload demo video v2 and swap the README link | README keeps the 2026-08-17 video |
 | D-019 | Keep synthesized narration (edge-tts voice) or record a human voice | Synthesized, with the licence note kept in the demo script |
