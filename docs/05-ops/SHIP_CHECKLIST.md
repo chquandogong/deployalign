@@ -1,8 +1,18 @@
 # Ship Checklist
 
-> Status: **v0.5.0 repository release — GO; Cloud Run — v0.3.0 live (D-017 done); video — v0.4.0 published (D-018 done); customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
+> Status: **v0.6.0 repository release — GO; Cloud Run — v0.3.0 live; video — v0.4.0 published; customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
 
 Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable to the bounded prototype.
+
+## v0.6.0 repository release (2026-08-26)
+
+- [x] `pnpm typecheck`, `pnpm lint`, `pnpm test` (78/78 across 8 files), `pnpm build` exited 0.
+- [x] `examples.test.ts` asserts the presets mirror `examples/` and compile to the documented verdicts.
+- [x] Browser QA: preset buttons present, Korean preset loads, compile shows `CUSTOM` and six diagnostics, zero console errors; screenshot `docs/assets/editor-presets-0.6.0.png`.
+- [x] README ×3, spec FR-35, changelog, D-023 (npm publish deferred, proposed) updated together.
+- [-] npm publish — not performed (D-023).
+
+Judgment: **GO** to tag `v0.6.0`.
 
 ## v0.5.0 repository release (2026-08-26)
 

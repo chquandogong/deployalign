@@ -95,7 +95,7 @@ Gemini 是一个**可选的、基于原文引用的抽取前端**。启用时，
 ALLOW_CUSTOM_ARTIFACTS=true pnpm dev
 ```
 
-首屏会出现 **Use your own documents** 按钮。粘贴一份客户备忘、一份销售提案和一份工程评审；
+首屏会出现 **Use your own documents** 按钮。加载内置示例集（英文失败、英文通过、韩文失败），或粘贴一份客户备忘、一份销售提案和一份工程评审；
 编译器把它们拆成逐字的子句，用角色感知的词法规则为每个子句定类型，把 `DA-001`–`DA-006` 作为
 检测器运行，并提出一个补丁——其中**每个替换值都复制自某条工程语句**；如果工程文本没有给出
 有界的数量，就不提出补丁，并在理由中说明。评审、批准，然后把结果导出为 Markdown 或 JSON。
@@ -123,14 +123,14 @@ pnpm exec deployalign compile ./deployment-docs --out ./deployment-docs/compiled
 
 ```yaml
 # .github/workflows/sow-check.yml —— 让提案超出证据的 PR 失败
-- uses: chquandogong/deployalign@v0.5.0
+- uses: chquandogong/deployalign@v0.6.0
   with:
     path: deployment-docs          # customer*/sales*/engineering*（或 고객*/영업*/엔지니어링*）
     fail-on: blocker               # blocker | warning | none
 # 输出：verdict、gate、blockers、warnings、decision-id、report；report.md 会附加到作业摘要
 ```
 
-不使用 Action 时：`pnpm dlx github:chquandogong/deployalign#v0.5.0 compile ./deployment-docs --fail-on blocker`。
+不使用 Action 时：`pnpm dlx github:chquandogong/deployalign#v0.6.0 compile ./deployment-docs --fail-on blocker`。
 先用内置示例试试：[`examples/`](examples/)（`hospital-delivery-robot` 失败，`warehouse-amr` 通过，
 `sub-fab-raman-ko` 以韩文失败）。
 
@@ -210,7 +210,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest —— 7 个套件、75 个测试
+pnpm test        # vitest —— 8 个套件、78 个测试
 pnpm build       # vite 生产构建
 ```
 
@@ -258,7 +258,7 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 不是终点。项目在公开环境中继续推进；变更记录在 [`CHANGELOG.md`](CHANGELOG.md)，背后的理由记录在
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)。
 
-截至 0.5.0 的诚实范围：确定性编译器（夹具与通用）、API、UI、CLI、GitHub Action 与 75 个测试已实现并在本地验证，自定义文档流程经过了无头浏览器验证，Action 在 CI 中用示例集自测；公开演示运行 0.3.0 构建，其 `gemini-3.7-flash` 调用已**实时验证**（2026-08-26）；实时 `gemini-2.5-flash`
+截至 0.6.0 的诚实范围：确定性编译器（夹具与通用）、API、UI、CLI、GitHub Action 与 78 个测试已实现并在本地验证，自定义文档流程经过了无头浏览器验证，Action 在 CI 中用示例集自测；公开演示运行 0.3.0 构建，其 `gemini-3.7-flash` 调用已**实时验证**（2026-08-26）；实时 `gemini-2.5-flash`
 调用已在已部署的 0.1.0 版本上验证；`gemini-3.7-flash` 默认值已通过单元测试，等待第一份实时回执；
 没有生产部署、没有客户、没有实测的现场结果。这里的一切都不构成参赛资格、奖项或商业可行性的证明。
 
@@ -268,12 +268,12 @@ DeployAlign 为 **Build with Gemini XPRIZE** 而构建，并于 2026-08-17 提�
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | 当前状态、工作板、等待所有者决策的事项 |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | "有用"的定义及通往它的阶段 |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-34 与验收标准 |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 功能需求 FR-01…FR-35 与验收标准 |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | 组件、数据流、信任边界、失效模式 |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 测试计划与带状态的风险 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 运行、验证、迁移模型、排障、回滚 |
 | [`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md) | 如何在不臆造证据的前提下开展五位从业者的试点 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-022 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-023 |
 | [`docs/submission/`](docs/submission/) | 演示脚本、YouTube 元数据，以及 Devpost 证据的历史记录 |
 
 ## 许可证

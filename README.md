@@ -107,8 +107,9 @@ your own three documents:
 ALLOW_CUSTOM_ARTIFACTS=true pnpm dev
 ```
 
-The hero gains a **Use your own documents** button. Paste a customer note, a sales
-proposal and an engineering review; the compiler splits them into verbatim clauses, types
+The hero gains a **Use your own documents** button. Load one of the bundled example sets
+(English fail, English pass, Korean fail) or paste a customer note, a sales proposal and an
+engineering review; the compiler splits them into verbatim clauses, types
 each clause with role-aware lexical rules, runs `DA-001`–`DA-006` as detectors, and
 proposes a patch whose every replacement value is **copied from an engineering
 statement** — if the engineering text names no bounded quantity, no patch is proposed and
@@ -139,14 +140,14 @@ bundled fixture. The CLI runs the deterministic path only — no model, no netwo
 
 ```yaml
 # .github/workflows/sow-check.yml — fail a PR whose proposal outruns the evidence
-- uses: chquandogong/deployalign@v0.5.0
+- uses: chquandogong/deployalign@v0.6.0
   with:
     path: deployment-docs          # customer*/sales*/engineering* (or 고객*/영업*/엔지니어링*)
     fail-on: blocker               # blocker | warning | none
 # outputs: verdict, gate, blockers, warnings, decision-id, report; report.md lands in the job summary
 ```
 
-Without the Action: `pnpm dlx github:chquandogong/deployalign#v0.5.0 compile ./deployment-docs --fail-on blocker`.
+Without the Action: `pnpm dlx github:chquandogong/deployalign#v0.6.0 compile ./deployment-docs --fail-on blocker`.
 Try it on the bundled sets first: [`examples/`](examples/) (`hospital-delivery-robot` fails,
 `warehouse-amr` passes, `sub-fab-raman-ko` fails in Korean).
 
@@ -227,7 +228,7 @@ server-side credential path. Never put a key in a client-side `VITE_*` variable.
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest — 75 tests in 7 suites
+pnpm test        # vitest — 78 tests in 8 suites
 pnpm build       # vite production bundle
 ```
 
@@ -281,8 +282,8 @@ checkpoint (`v0.1.0`), not the finish line. The project continues in the open; c
 are recorded in [`CHANGELOG.md`](CHANGELOG.md) and the reasoning behind them in
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md).
 
-Honest scope, as of 0.5.0: the deterministic compilers (fixture and general), API, UI, CLI,
-GitHub Action and 75 tests are implemented and verified locally, including a headless-browser
+Honest scope, as of 0.6.0: the deterministic compilers (fixture and general), API, UI, CLI,
+GitHub Action and 78 tests are implemented and verified locally, including a headless-browser
 run of the custom-document flow and a CI self-test of the Action on the example sets; the public demo runs the 0.3.0 build with a **live-verified**
 `gemini-3.7-flash` call (2026-08-26); there is still no production deployment, no
 customer, and no measured field outcome. Nothing here establishes eligibility, an award or business viability.
@@ -293,12 +294,12 @@ customer, and no measured field outcome. Nothing here establishes eligibility, a
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | Current state, work board, decisions waiting on the owner |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | What "useful" means and the phases to get there |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | Functional requirements FR-01…FR-34 and acceptance criteria |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | Functional requirements FR-01…FR-35 and acceptance criteria |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | Components, data flow, trust boundaries, failure modes |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | Test plan and risks with state |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | Run, verify, migrate the model, troubleshoot, roll back |
 | [`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md) | How to run the five-practitioner pilot without fabricating evidence |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-022 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-023 |
 | [`docs/submission/`](docs/submission/) | Demo script, YouTube metadata, and the historical Devpost evidence record |
 
 ## License

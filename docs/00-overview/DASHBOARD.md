@@ -1,6 +1,6 @@
 # DeployAlign Project Dashboard
 
-> Status: 0.5.0 built and verified locally (GitHub Action, examples, pilot kit); v0.4.0 demo video published; public demo on gemini-3.7-flash; release in progress · Date: 2026-08-26 · Owner: DeployAlign orchestrator
+> Status: 0.6.0 built and verified locally (example presets in the editor); Action/examples/pilot kit shipped in 0.5.0; v0.4.0 demo video published; public demo on gemini-3.7-flash · Date: 2026-08-26 · Owner: DeployAlign orchestrator
 
 ## Current state
 
@@ -54,12 +54,14 @@
 | Redeploy public demo (D-017) | Done | Owner + Orchestrator | Owner auth | `deployalign-00005-9vs`, live receipt |
 | Release `v0.4.0` / `v0.4.1` | Done | Orchestrator | — | Tags + GitHub releases (v0.4.1 carries the video assets) |
 | GitHub Action + examples + pilot kit + detector fixes | Done | Builder | — | `action.yml`, `examples/`, `PILOT_KIT.md`, issue template, 3 new corpora tests |
-| Release `v0.5.0` | In progress | Orchestrator | Gates green, CI action self-test green | Tag, push, GitHub release |
+| Release `v0.5.0` | Done | Orchestrator | — | Tag + GitHub release; CI Action self-test green |
+| Example presets in the editor | Done | Builder | — | `src/domain/examples.ts`, `examples.test.ts`, browser QA |
+| Release `v0.6.0` | In progress | Orchestrator | Gates green | Tag, push, GitHub release |
 | Practitioner validation | Not started | Owner | Recruiting | Five interviews; redacted corpora |
 
 ## Resume point
 
-- Last verified checkpoint: 0.5.0 working tree with all gates green (75 tests) on 2026-08-26; tag `v0.5.0` and release follow immediately. Public demo: `deployalign-00005-9vs` (`v0.3.0`).
+- Last verified checkpoint: 0.6.0 working tree with all gates green (78 tests) on 2026-08-26; tag `v0.6.0` and release follow immediately. Public demo: `deployalign-00005-9vs` (`v0.3.0`).
 - Next safe action for a resuming agent: read the owner decision queue below; do **not** redeploy, upload video or edit Devpost without owner approval. Code work can start on the un-automated API cases listed in `TEST_PLAN.md` or, once D-016 is approved, on the 0.3 fixture-reproduction test.
 - Local demo server for recordings runs on port `8091` (`8080` is used by another project on this machine).
 
@@ -92,7 +94,7 @@
 
 ## Quality indicators
 
-- Tests: 75/75 (14 domain · 15 general path · 9 corpora · 2 export · 6 CLI · 11 Gemini validation · 18 API contract); CI additionally self-tests the Action on three example sets.
+- Tests: 78/78 (14 domain · 15 general path · 9 corpora · 3 example presets · 2 export · 6 CLI · 11 Gemini validation · 18 API contract); CI additionally self-tests the Action on three example sets.
 - Browser QA (custom flow): passed 2026-08-26, zero console errors.
 - Typecheck, lint, production build: passed 2026-08-26.
 - Production HTTP smoke (0.2.0): passed 2026-08-26 (local).
@@ -101,7 +103,7 @@
 
 ## Next actions
 
-1. Finish the `v0.5.0` release (commit series, tag, push, GitHub release; confirm the CI Action self-test).
+1. Finish the `v0.6.0` release (commit, tag, push, GitHub release).
 2. **Owner: run the first practitioner session with `docs/05-ops/PILOT_KIT.md`** — this is the only item that produces evidence the code cannot.
 3. ~~D-018/D-019~~ — v0.4.0 video published with EN/KO/ZH subtitles; synthesized voice kept.
 4. Feed every misfire from real (redacted) documents through the Detector-misfire template into `corpora.test.ts` (R-22).

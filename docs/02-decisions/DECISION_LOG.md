@@ -1,6 +1,6 @@
 # Decision Log
 
-> Status: Active · Date: 2026-08-26 (0.5.0) · Owner: Project lead
+> Status: Active · Date: 2026-08-26 (0.6.0) · Owner: Project lead
 
 ## D-001 — Use a hybrid evidence compiler
 
@@ -240,6 +240,17 @@
 - Residual risk: composite actions inherit the consumer's runner; pnpm download depends on Corepack being present on the runner image (true for GitHub-hosted runners).
 - Approval: Within the approved 0.5 cycle ("계속").
 - Revisit when: the package is published to npm or a marketplace listing is wanted.
+
+## D-023 — Publishing to npm is deferred until the pilot confirms the CLI shape (proposed)
+
+- Date: 2026-08-26
+- Context: The CLI already runs from GitHub in seconds (`pnpm dlx github:chquandogong/deployalign#<tag>`) and as a GitHub Action. An npm package would remove the tsx runtime dependency and give consumers SemVer ranges, but `npm publish` is a public-release gate (§1.6) and the command surface may still change after the first practitioner sessions.
+- Options: publish now under `deployalign` or `@chquandogong/deployalign`; publish after the pilot; never publish (git + Action only).
+- Decision (proposed, owner to confirm): **defer** until at least two practitioners have run their own documents; then publish a bundled CLI (esbuild) under the scoped name, keeping the Action as the primary CI surface.
+- Rationale: A published package is a promise of stability that the corpus does not yet justify; the Action and `pnpm dlx` cover today's distribution needs without a second release pipeline.
+- Rejected: publishing now — no consumer has asked, and a name squat is not a goal.
+- Residual risk: name availability can change; on 2026-08-26 both `deployalign` and `@chquandogong/deployalign` returned E404 (unclaimed) — re-check `npm view` before publishing.
+- Approval: pending owner confirmation; nothing published.
 
 ## Owner decision queue
 

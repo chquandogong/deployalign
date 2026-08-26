@@ -1,6 +1,12 @@
 # Retro
 
-> Status: Six cycles recorded — 0.1.0 submission (2026-08-17); 0.2.0, 0.3.0, 0.4.0, 0.4.1, 0.5.0 (all 2026-08-26) · Date: 2026-08-26 · Owner: Project team
+> Status: Seven cycles recorded — 0.1.0 submission (2026-08-17); 0.2.0, 0.3.0, 0.4.0, 0.4.1, 0.5.0, 0.6.0 (all 2026-08-26) · Date: 2026-08-26 · Owner: Project team
+
+## Cycle 0.6.0 — example presets in the editor (2026-08-26)
+
+- Added a "Load an example" row to the local-mode editor with the three bundled sets, backed by `src/domain/examples.ts` and a test that keeps it identical to `examples/` and to the documented verdicts. Browser QA loaded the Korean preset and compiled it (six diagnostics, `CUSTOM` chip, no console errors).
+- Learned: one source of truth for example text (TS module mirrored to files by a test) beats keeping two copies in step by hand.
+- Deferred: npm publish (D-023, proposed) until the pilot confirms the CLI shape.
 
 ## Cycle 0.5.0 — an Action, examples, and the pilot kit (2026-08-26)
 

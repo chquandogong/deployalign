@@ -1,6 +1,6 @@
 # DeployAlign Specification
 
-> Status: Prototype 0.5.0 implemented; local QA passed; public demo runs 0.3.0 on gemini-3.7-flash · Date: 2026-08-26 · Owner: Product and engineering
+> Status: Prototype 0.6.0 implemented; local QA passed; public demo runs 0.3.0 on gemini-3.7-flash · Date: 2026-08-26 · Owner: Product and engineering
 
 ## Problem definition
 
@@ -84,6 +84,7 @@ Reviewers need to identify when customer objectives, sales commitments, and engi
 | FR-32 | Treat negated quantifiers as bounded | Must | "will not cover every ward", "does not serve all wards", "…커버하지 않습니다" yield no unbounded phrase; a self-bounding proposal yields zero diagnostics (`corpora.test.ts`) |
 | FR-33 | Narrow Korean customer preferences to the wanted thing | Should | "…사족 사륜 로봇이 필요합니다" → `CustomerPreference` quoting `사족 사륜 로봇` |
 | FR-34 | Run as a GitHub Action with build-style outcome | Must | `action.yml` inputs/outputs; CI self-test: hospital `FAIL`/4 blockers, warehouse `PASS`, Korean `FAIL` with `12곳의 핵심 구역` in the report |
+| FR-35 | Load the bundled example sets into the local-mode editor | Should | `src/domain/examples.ts` mirrors `examples/` byte-for-byte and compiles to the documented verdicts (`examples.test.ts`); browser QA loads the Korean preset and compiles it |
 
 ## Non-functional requirements
 
@@ -126,7 +127,7 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 
 ## Test acceptance
 
-- All 75 automated tests pass: 14 domain, 15 general-path, 9 corpora (drone, hospital, Korean, negation), 2 export, 6 CLI, 11 Gemini validation, 18 API contract (verified 2026-08-26 on Node 24.19.0).
+- All 78 automated tests pass: 14 domain, 15 general-path, 9 corpora (drone, hospital, Korean, negation), 3 example presets, 2 export, 6 CLI, 11 Gemini validation, 18 API contract (verified 2026-08-26 on Node 24.19.0).
 - Typecheck, lint, and production build pass (verified 2026-08-26).
 - API contract and failure cases receive automated coverage (`server/app.test.ts`, 0.2.0).
 - Visual QA confirms synthetic/fallback/human-gate disclosures.

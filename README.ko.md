@@ -102,8 +102,8 @@ recompile**을 누른 뒤 임팩트 테이블을 비교해 보라: 6개 섹션�
 ALLOW_CUSTOM_ARTIFACTS=true pnpm dev
 ```
 
-히어로에 **Use your own documents** 버튼이 생깁니다. 고객 메모, 영업 제안서, 엔지니어링 리뷰를
-붙여 넣으면 컴파일러가 원문 그대로의 절(clause)로 나누고, 역할을 고려한 어휘 규칙으로 각 절의
+히어로에 **Use your own documents** 버튼이 생깁니다. 번들 예제 세트(영어 실패·영어 통과·한국어 실패)를
+불러오거나 고객 메모, 영업 제안서, 엔지니어링 리뷰를 붙여 넣으면 컴파일러가 원문 그대로의 절(clause)로 나누고, 역할을 고려한 어휘 규칙으로 각 절의
 타입을 정하고, `DA-001`–`DA-006`을 감지기로 실행한 뒤, **모든 대체 값을 엔지니어링 문장에서
 복사한** 패치를 제안합니다 — 엔지니어링 텍스트에 한정된 수량이 없으면 패치를 제안하지 않고 그
 이유를 근거란에 적습니다. 검토·승인하고 결과를 Markdown 또는 JSON으로 내보낼 수 있습니다.
@@ -132,14 +132,14 @@ CLI는 결정론적 경로만 실행합니다 — 모델도, 네트워크도 없
 
 ```yaml
 # .github/workflows/sow-check.yml — 근거를 앞지르는 제안서가 있는 PR을 실패시킨다
-- uses: chquandogong/deployalign@v0.5.0
+- uses: chquandogong/deployalign@v0.6.0
   with:
     path: deployment-docs          # customer*/sales*/engineering* (또는 고객*/영업*/엔지니어링*)
     fail-on: blocker               # blocker | warning | none
 # 출력: verdict, gate, blockers, warnings, decision-id, report; report.md가 잡 요약에 붙는다
 ```
 
-Action 없이 쓰려면: `pnpm dlx github:chquandogong/deployalign#v0.5.0 compile ./deployment-docs --fail-on blocker`.
+Action 없이 쓰려면: `pnpm dlx github:chquandogong/deployalign#v0.6.0 compile ./deployment-docs --fail-on blocker`.
 번들 예제로 먼저 시험해 보세요: [`examples/`](examples/) (`hospital-delivery-robot`은 실패,
 `warehouse-amr`은 통과, `sub-fab-raman-ko`는 한국어로 실패).
 
@@ -220,7 +220,7 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 ```bash
 pnpm typecheck   # tsc -b
 pnpm lint        # oxlint
-pnpm test        # vitest — 7개 스위트, 테스트 75개
+pnpm test        # vitest — 8개 스위트, 테스트 78개
 pnpm build       # vite 프로덕션 번들
 ```
 
@@ -273,7 +273,7 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 [`CHANGELOG.md`](CHANGELOG.md)에, 그 이유는
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)에 기록한다.
 
-0.5.0 기준의 정직한 범위: 결정론적 컴파일러(픽스처·일반), API, UI, CLI, GitHub Action, 테스트 75개가
+0.6.0 기준의 정직한 범위: 결정론적 컴파일러(픽스처·일반), API, UI, CLI, GitHub Action, 테스트 78개가
 구현되어 로컬에서 검증됐고, 커스텀 문서 흐름은 헤드리스 브라우저로, Action은 CI에서 예제 세트로 확인했다. 공개 데모는 0.3.0 빌드에서
 `gemini-3.7-flash` 라이브 호출이 **실제로 검증**됐다(2026-08-26). 라이브 `gemini-2.5-flash` 호출은 배포된 0.1.0 리비전에서 검증됐다.
 `gemini-3.7-flash` 기본값은 단위 테스트를 통과했고 첫 라이브 영수증을 기다린다.
@@ -286,12 +286,12 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 | --- | --- |
 | [`docs/00-overview/DASHBOARD.md`](docs/00-overview/DASHBOARD.md) | 현재 상태, 작업 보드, 소유자 결정 대기 항목 |
 | [`docs/00-overview/ROADMAP.md`](docs/00-overview/ROADMAP.md) | "쓸모 있음"의 정의와 거기까지의 단계 |
-| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 기능 요구사항 FR-01…FR-34와 인수 기준 |
+| [`docs/03-spec/SPEC.md`](docs/03-spec/SPEC.md) | 기능 요구사항 FR-01…FR-35와 인수 기준 |
 | [`docs/03-spec/ARCHITECTURE.md`](docs/03-spec/ARCHITECTURE.md) | 컴포넌트, 데이터 흐름, 신뢰 경계, 실패 모드 |
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 테스트 계획과 상태가 표시된 리스크 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 실행, 검증, 모델 마이그레이션, 문제 해결, 롤백 |
 | [`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md) | 근거를 지어내지 않고 실무자 5명 파일럿을 진행하는 방법 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-022 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-023 |
 | [`docs/submission/`](docs/submission/) | 데모 대본, YouTube 메타데이터, Devpost 증거의 역사 기록 |
 
 ## 라이선스

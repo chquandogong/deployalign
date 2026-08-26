@@ -19,7 +19,7 @@ are better than five of one kind.
 | Minutes | Step | Record |
 | --- | --- | --- |
 | 0–10 | Their last painful drift: a promise that outran evidence and was found late | Incident, cost, who caught it, current workaround |
-| 10–20 | Show `examples/hospital-delivery-robot` (or the Korean set) in the UI — no explanation first | Did they find the six diagnostics themselves? Which quote did they check first? |
+| 10–20 | In the UI, open **Use your own documents** and load an example preset (hospital EN, or the Korean set) — no explanation first | Did they find the diagnostics themselves? Which quote did they check first? |
 | 20–35 | Their documents: three redacted texts pasted into local mode (`ALLOW_CUSTOM_ARTIFACTS=true`), or run through the CLI on their machine | Each diagnostic: agree / disagree / unsure; each patch value: correct source? |
 | 35–45 | Would they run it before the next SOW review? What would stop them? | Trust blockers, missing rules, integration wish |
 
