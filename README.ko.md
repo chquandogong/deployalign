@@ -78,7 +78,7 @@ TypeScript**이며, 범위를 바꾸는 모든 패치는 사람이 승인해야 
 
 ## 3분 안에 보기
 
-- 🎬 **데모 영상:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) — 2026-08-17 워크스루(0.1.0). 0.2.0 워크스루는 [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md)에 대본이 있고, 거기 설명된 재현 가능한 파이프라인으로 빌드된다.
+- 🎬 **데모 영상 (v0.4.0, 3:07):** [youtu.be/3sWnxibKU1Q](https://youtu.be/3sWnxibKU1Q) — 컴파일, 검토, 한국어 자기 문서, CLI. 대본은 [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md), 빌드는 `scripts/demo-video/`의 재현 가능한 파이프라인. 2026-08-17 제출 당시 워크스루(0.1.0)는 [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA)에 그대로 있다.
 - 🌐 **라이브 데모:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — Vertex AI를 통한 라이브 **Gemini 3.7 Flash** 추출이 켜진 **0.3.0 빌드**의 공개 Cloud Run 배포(인스턴스 1개, 클라이언트당 10분에 컴파일 6회, 커스텀 모드 꺼짐). 2026-08-26 검증: health가 `model gemini-3.7-flash`를 보고하고 컴파일이 `gemini-vertex` 영수증을 반환했다.
 
 **Run the synthetic case**를 누르고, 6개 진단을 읽고, 패치를 열고, **Simulate approval &

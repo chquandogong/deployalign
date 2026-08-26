@@ -103,5 +103,5 @@ traction that is not evidenced.
 | --- | --- | --- |
 | D-016 | ~~Approve the 0.3 custom-artifact design~~ — approved and shipped 2026-08-26 | Done |
 | D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26, revision `deployalign-00005-9vs` on `gemini-3.7-flash` | Done |
-| D-018 | Upload demo video v2 and swap the README link | README keeps the 2026-08-17 video |
+| D-018 | ~~Upload the demo video and swap the README link~~ — v0.4.0 published 2026-08-26 | Done |
 | D-019 | Keep synthesized narration (edge-tts voice) or record a human voice | Synthesized, with the licence note kept in the demo script |

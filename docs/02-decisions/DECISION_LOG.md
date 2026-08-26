@@ -225,5 +225,5 @@
 | --- | --- | --- | --- |
 | D-016 | ~~Approve the 0.3 local-mode design~~ — approved and shipped in 0.3.0 (see entry above) | Done | — |
 | D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26 (`deployalign-00005-9vs`) | Done | — |
-| D-018 | Upload demo video v2 and swap the README/YouTube links | README keeps the 2026-08-17 video | Public publication |
+| D-018 | ~~Upload the demo video and swap the links~~ — v0.4.0 published 2026-08-26 (https://youtu.be/3sWnxibKU1Q) after explicit owner approval | Done | — |
 | D-019 | Synthesized narration voice vs. human recording | Synthesized, licence note kept | Brand / rights |

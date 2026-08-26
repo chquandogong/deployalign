@@ -3,6 +3,20 @@
 All notable changes to DeployAlign are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow SemVer.
 
+## [0.4.1] — 2026-08-26
+
+### Added
+
+- **Demo video v0.4.0** (3:07) published on YouTube: [https://youtu.be/3sWnxibKU1Q](https://youtu.be/3sWnxibKU1Q) — compile, review,
+  the Korean custom-document flow and the CLI, built with the narration-first pipeline in
+  `scripts/demo-video/` (fifteen scenes, EN/KO/ZH subtitle tracks, terminal card with real
+  `deployalign compile` output). Metadata and chapters in `docs/submission/YOUTUBE_METADATA.md`.
+
+### Changed
+
+- README (EN/KO/ZH) now links the v0.4.0 video; the 2026-08-17 submission walkthrough stays linked as the record.
+- `.env.example` sets `GEMINI_MODEL=gemini-3.7-flash` (owner edit), closing the stale-pin note from 0.2.0.
+
 ## [0.4.0] — 2026-08-26
 
 The decision compiler becomes a command. `deployalign compile ./docs --fail-on blocker`

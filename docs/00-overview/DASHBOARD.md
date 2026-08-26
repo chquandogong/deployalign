@@ -11,7 +11,7 @@
 - Verification 2026-08-26 (0.3.0): `pnpm typecheck`, `pnpm lint`, `pnpm test` (60/60 across 5 files), `pnpm build` exited 0; headless-browser QA of paste → compile → approve → export passed with zero console errors (`TEST_PLAN.md`). Earlier (0.2.0): 38/38 plus HTTP smoke.
 - **D-017 done 2026-08-26:** revision `deployalign-00005-9vs` (tag `v0.3.0`) serves 100% of traffic with `GEMINI_MODEL=gemini-3.7-flash`; health `version 0.3.0 · liveGemini true · customArtifacts false`; a live compile returned `gemini-vertex` with the receipt "gemini-3.7-flash classified 3 source statements". R-19/R-20 closed; `deployalign-00004-wgb` kept for rollback.
 - What changed in 0.4.0 (see `CHANGELOG.md`): `deployalign` CLI with build-style exit codes and pipeline outputs; first-pass Korean cues (Korean Raman corpus reproduces the six diagnostics); drone and hospital corpora; 72 tests.
-- Demo video v0.2.0: 177 s render verified locally (`docs/submission/DEMO_SCRIPT.md`); **not uploaded** — the 0.1.0 video stays public until D-018.
+- Demo video v0.4.0 (3:07) published 2026-08-26 at https://youtu.be/3sWnxibKU1Q (D-018 done); the v0.2.0 render stays attached to its GitHub release; the 0.1.0 submission video remains public.
 - Source of truth: the public repository at [github.com/chquandogong/deployalign](https://github.com/chquandogong/deployalign); this dashboard is the coordination snapshot.
 
 ## Core goals
@@ -65,7 +65,7 @@
 | --- | --- | --- |
 | D-016 | ~~Approve the 0.3 local-mode design~~ — approved ("go") and shipped in 0.3.0 | Done |
 | D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26 | Done |
-| D-018 | Upload demo video v0.2.0 and swap the links | README keeps the 2026-08-17 video |
+| D-018 | ~~Upload the demo video and swap the links~~ — v0.4.0 published 2026-08-26 (https://youtu.be/3sWnxibKU1Q) | Done |
 | D-019 | Synthesized narration voice vs. human recording | Synthesized, licence note kept |
 
 ## Open assumptions

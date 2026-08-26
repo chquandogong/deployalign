@@ -72,7 +72,7 @@ Gemini 是一个**可选的、基于原文引用的抽取前端**。启用时，
 
 ## 三分钟看懂
 
-- 🎬 **演示视频：** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) —— 2026-08-17 的演示（0.1.0）。0.2.0 演示的脚本见 [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md)，并用其中描述的可复现流水线构建。
+- 🎬 **演示视频（v0.4.0，3:07）：** [youtu.be/3sWnxibKU1Q](https://youtu.be/3sWnxibKU1Q) —— 编译、评审、韩文自有文档与 CLI。脚本见 [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md)，由 `scripts/demo-video/` 中的可复现流水线构建。2026-08-17 的提交演示（0.1.0）仍在 [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA)。
 - 🌐 **在线演示：** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) —— **0.3.0 构建**的公开 Cloud Run 部署，通过 Vertex AI 启用了实时 **Gemini 3.7 Flash** 抽取（单实例，每客户端每十分钟六次编译，自定义模式关闭）。2026-08-26 验证：health 报告 `model gemini-3.7-flash`，一次编译返回了 `gemini-vertex` 回执。
 
 点击 **Run the synthetic case**，阅读六项诊断，打开补丁，按下 **Simulate approval & recompile**，

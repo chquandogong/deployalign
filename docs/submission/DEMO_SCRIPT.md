@@ -1,6 +1,6 @@
 # Demo Video Script — v0.4.0
 
-> Status: v0.4.0 render verified locally; YouTube publication in progress (D-018) · Date: 2026-08-26 · Owner: Presenter
+> Status: v0.4.0 published — https://youtu.be/3sWnxibKU1Q (D-018 done) · Date: 2026-08-26 · Owner: Presenter
 
 ## Recording rules
 
@@ -48,6 +48,6 @@ See [`scripts/demo-video/README.md`](../../scripts/demo-video/README.md). The re
 
 ## Publication
 
-- v0.4.0: uploaded to YouTube on 2026-08-26 after explicit owner approval; the link is recorded in `README.md` and `YOUTUBE_METADATA.md` once live.
+- v0.4.0: published on YouTube on 2026-08-26 after explicit owner approval — [https://youtu.be/3sWnxibKU1Q](https://youtu.be/3sWnxibKU1Q).
 - v0.1.0 (2026-08-17, 170 s, Microsoft Mark voice, live `gemini-2.5-flash` compile on Cloud Run): [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) — kept public as the submission record.
 - v0.2.0 (2026-08-26, 177 s): rendered and attached to the [v0.2.0 GitHub release](https://github.com/chquandogong/deployalign/releases/tag/v0.2.0); superseded by v0.4.0 before upload.

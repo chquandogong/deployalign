@@ -82,7 +82,7 @@ unreachable. A fallback can no longer pass for a server run.
 
 ## See it in three minutes
 
-- 🎬 **Demo video:** [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA) — the 2026-08-17 walkthrough (0.1.0). A 0.2.0 walkthrough is scripted in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md) and built with the reproducible pipeline described there.
+- 🎬 **Demo video (v0.4.0, 3:07):** [youtu.be/3sWnxibKU1Q](https://youtu.be/3sWnxibKU1Q) — compile, review, your own documents in Korean, and the CLI. Scripted in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md) and built with the reproducible pipeline in `scripts/demo-video/`. The 2026-08-17 submission walkthrough (0.1.0) remains at [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA).
 - 🌐 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — public Cloud Run deployment of the **0.3.0 build** with live **Gemini 3.7 Flash** extraction through Vertex AI (one instance, six compiles per ten minutes per client; custom mode disabled). Verified 2026-08-26: health reports `model gemini-3.7-flash` and a compile returned a `gemini-vertex` receipt.
 
 Click **Run the synthetic case**, read the six diagnostics, open the patch, press
