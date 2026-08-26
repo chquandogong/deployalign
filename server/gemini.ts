@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai'
+import { GoogleGenAI, ThinkingLevel } from '@google/genai'
 import type {
   AiClassifiedStatement,
   AiExtractionEvidence,
@@ -6,7 +6,14 @@ import type {
   SourceArtifact,
 } from '../src/domain/types'
 
-const MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash'
+/**
+ * Default extraction model. Gemini 3.7 Flash reached general availability on
+ * 2026-08-13; Gemini 2.5 Flash is on a retirement track on Vertex AI, so the
+ * default moved off it. Override with GEMINI_MODEL for a pinned deployment.
+ */
+export const DEFAULT_GEMINI_MODEL = 'gemini-3.7-flash'
+export const GEMINI_MODEL = process.env.GEMINI_MODEL ?? DEFAULT_GEMINI_MODEL
+
 const ALLOWED_TYPES: CommitmentNodeType[] = [
   'CustomerObjective',
   'CustomerPreference',
@@ -21,7 +28,31 @@ const ALLOWED_TYPES: CommitmentNodeType[] = [
   'ScopeClause',
 ]
 
-interface GeminiPayload {
+const THINKING_LEVELS: Record<string, ThinkingLevel> = {
+  minimal: ThinkingLevel.MINIMAL,
+  low: ThinkingLevel.LOW,
+  medium: ThinkingLevel.MEDIUM,
+  high: ThinkingLevel.HIGH,
+}
+
+export type ThinkingConfig = { thinkingLevel: ThinkingLevel } | { thinkingBudget: number }
+
+/**
+ * Gemini 3.x models take a `thinkingLevel` and cannot switch thinking off;
+ * Gemini 2.5 models take a numeric `thinkingBudget`, where 0 disables it.
+ * Extraction is a bounded classification task, so the lowest level the model
+ * accepts is used unless GEMINI_THINKING_LEVEL (low | medium | high; `minimal`
+ * only on the Flash-Lite models) says otherwise. The override is ignored for
+ * 2.5 models, which keep thinking disabled.
+ */
+export const thinkingConfigFor = (model: string, levelOverride?: string): ThinkingConfig => {
+  const isGemini3 = /^gemini-3(\.\d+)?-/.test(model)
+  if (!isGemini3) return { thinkingBudget: 0 }
+  const requested = levelOverride?.trim().toLowerCase()
+  return { thinkingLevel: (requested && THINKING_LEVELS[requested]) || ThinkingLevel.LOW }
+}
+
+export interface GeminiPayload {
   classifiedStatements?: Array<{
     artifactId?: string
     quote?: string
@@ -29,6 +60,70 @@ interface GeminiPayload {
     confidence?: number
   }>
   patchRationale?: string
+}
+
+export interface ValidatedGeminiPayload {
+  statements: AiClassifiedStatement[]
+  rationale: string
+}
+
+/**
+ * Pure validation of a model response against the artifacts that were sent.
+ * Every kept statement must quote its artifact exactly, use an allowed type and
+ * carry a confidence in [0, 1]; at least three unique statements must survive
+ * and every artifact must be covered. The rationale must be non-empty and
+ * bounded. Anything else is rejected so the deterministic compiler continues
+ * without model evidence.
+ */
+export const validateGeminiPayload = (
+  payload: GeminiPayload,
+  artifacts: SourceArtifact[],
+): ValidatedGeminiPayload => {
+  const validStatements = (payload.classifiedStatements ?? []).filter((statement) => {
+    const artifact = artifacts.find((candidate) => candidate.id === statement.artifactId)
+    return Boolean(
+      artifact &&
+        statement.quote &&
+        artifact.content.includes(statement.quote) &&
+        statement.type &&
+        ALLOWED_TYPES.includes(statement.type as CommitmentNodeType) &&
+        typeof statement.confidence === 'number' &&
+        Number.isFinite(statement.confidence) &&
+        statement.confidence >= 0 &&
+        statement.confidence <= 1,
+    )
+  })
+
+  const uniqueStatements = Array.from(
+    new Map(
+      validStatements.map((statement) => [
+        `${statement.artifactId}:${statement.type}:${statement.quote}`,
+        statement,
+      ]),
+    ).values(),
+  )
+
+  const coveredArtifacts = new Set(uniqueStatements.map((statement) => statement.artifactId))
+  if (uniqueStatements.length < 3 || artifacts.some((artifact) => !coveredArtifacts.has(artifact.id))) {
+    throw new Error('Gemini extraction failed source-map validation.')
+  }
+
+  const rationale = payload.patchRationale?.trim()
+  if (!rationale || rationale.length > 1_000) {
+    throw new Error('Gemini patch rationale failed validation.')
+  }
+
+  return {
+    statements: uniqueStatements.map(
+      (statement): AiClassifiedStatement => ({
+        artifactId: statement.artifactId as string,
+        quote: statement.quote as string,
+        type: statement.type as CommitmentNodeType,
+        confidence: statement.confidence as number,
+      }),
+    ),
+    rationale,
+  }
 }
 
 const getClient = () => {
@@ -50,6 +145,7 @@ const getClient = () => {
       client: new GoogleGenAI({
         vertexai: true,
         project,
+        // Gemini 3.x Flash models are served from the global endpoint only.
         location: process.env.GOOGLE_CLOUD_LOCATION ?? 'global',
         apiVersion: 'v1',
         httpOptions: { timeout: 20_000, retryOptions: { attempts: 1 } },
@@ -98,12 +194,12 @@ export const extractWithGemini = async (
 
   const started = Date.now()
   const response = await configured.client.models.generateContent({
-    model: MODEL,
+    model: GEMINI_MODEL,
     contents: promptFor(artifacts),
     config: {
       temperature: 0.1,
       maxOutputTokens: 1_600,
-      thinkingConfig: { thinkingBudget: 0 },
+      thinkingConfig: thinkingConfigFor(GEMINI_MODEL, process.env.GEMINI_THINKING_LEVEL),
       responseMimeType: 'application/json',
       responseJsonSchema: {
         type: 'object',
@@ -131,53 +227,14 @@ export const extractWithGemini = async (
   })
 
   const payload = JSON.parse(response.text ?? '{}') as GeminiPayload
-  const validStatements = (payload.classifiedStatements ?? []).filter((statement) => {
-    const artifact = artifacts.find((candidate) => candidate.id === statement.artifactId)
-    return Boolean(
-      artifact &&
-        statement.quote &&
-        artifact.content.includes(statement.quote) &&
-        statement.type &&
-        ALLOWED_TYPES.includes(statement.type as CommitmentNodeType) &&
-        typeof statement.confidence === 'number' &&
-        Number.isFinite(statement.confidence) &&
-        statement.confidence >= 0 &&
-        statement.confidence <= 1,
-    )
-  })
-
-  const uniqueStatements = Array.from(
-    new Map(
-      validStatements.map((statement) => [
-        `${statement.artifactId}:${statement.type}:${statement.quote}`,
-        statement,
-      ]),
-    ).values(),
-  )
-
-  const coveredArtifacts = new Set(uniqueStatements.map((statement) => statement.artifactId))
-  if (uniqueStatements.length < 3 || artifacts.some((artifact) => !coveredArtifacts.has(artifact.id))) {
-    throw new Error('Gemini extraction failed source-map validation.')
-  }
-
-  const rationale = payload.patchRationale?.trim()
-  if (!rationale || rationale.length > 1_000) {
-    throw new Error('Gemini patch rationale failed validation.')
-  }
+  const validated = validateGeminiPayload(payload, artifacts)
 
   return {
     provider: configured.provider,
-    model: MODEL,
-    statementCount: uniqueStatements.length,
-    classifiedStatements: uniqueStatements.map(
-      (statement): AiClassifiedStatement => ({
-        artifactId: statement.artifactId as string,
-        quote: statement.quote as string,
-        type: statement.type as CommitmentNodeType,
-        confidence: statement.confidence as number,
-      }),
-    ),
-    rawSummary: rationale,
+    model: GEMINI_MODEL,
+    statementCount: validated.statements.length,
+    classifiedStatements: validated.statements,
+    rawSummary: validated.rationale,
     durationMs: Date.now() - started,
   }
 }
