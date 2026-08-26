@@ -195,8 +195,6 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 | `COMPILE_TOKEN_SECRET` | 每进程随机（开发） | ≥ 32 字节，**生产环境必需**，跨实例共享 |
 | `PORT` | `8080` | API/静态文件端口 |
 
-> `.env.example` 中仍保留着 0.1.0 时期的 `GEMINI_MODEL=gemini-2.5-flash`——请删除或更新
-> 那一行，否则该固定值会覆盖新的默认值。
 
 ## 质量门
 

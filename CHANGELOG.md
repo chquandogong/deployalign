@@ -162,8 +162,8 @@ improving.
 - The public Cloud Run revision (`deployalign-00004-wgb`) still runs the 0.1.0
   build with `gemini-2.5-flash`. Redeploying is a human-gated action and was not
   performed in this cycle.
-- `.env.example` still pins `GEMINI_MODEL=gemini-2.5-flash`. Delete or update that
-  line when you copy it, or the new default will not apply.
+- `.env.example` still pinned `GEMINI_MODEL=gemini-2.5-flash` in this release (fixed by the
+  owner in 0.4.1).
 - A live `gemini-3.7-flash` call was **not** verified in this cycle (no model
   credentials in the build environment). The configuration is covered by unit tests
   only; the first deploy with the new default must confirm a live receipt.

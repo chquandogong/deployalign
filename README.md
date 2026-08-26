@@ -212,8 +212,6 @@ server-side credential path. Never put a key in a client-side `VITE_*` variable.
 | `COMPILE_TOKEN_SECRET` | random per process (dev) | ≥ 32 bytes, **required in production**, shared across instances |
 | `PORT` | `8080` | API/static port |
 
-> `.env.example` still shows `GEMINI_MODEL=gemini-2.5-flash` from 0.1.0 — delete or
-> update that line, or the pin overrides the new default.
 
 ## Quality gates
 

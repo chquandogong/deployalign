@@ -205,8 +205,6 @@ COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
 | `COMPILE_TOKEN_SECRET` | 프로세스별 랜덤(개발) | 32바이트 이상, **프로덕션 필수**, 인스턴스 간 공유 |
 | `PORT` | `8080` | API/정적 파일 포트 |
 
-> `.env.example`에는 0.1.0 시절의 `GEMINI_MODEL=gemini-2.5-flash`가 아직 남아 있다.
-> 그 줄을 삭제하거나 갱신하지 않으면 고정값이 새 기본값을 덮어쓴다.
 
 ## 품질 게이트
 
