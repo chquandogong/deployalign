@@ -2,6 +2,8 @@
 
 > Status: Devpost submitted; evidence and residual risks recorded · Date: 2026-08-17 · Owner: Human entrant
 
+> **Historical record.** This document captures the 2026-08-17 Devpost submission exactly as evidenced then. The repository has moved on since (see `CHANGELOG.md`); this record is intentionally not rewritten.
+
 Legend: `[x]` locally evidenced, `[ ]` missing/unverified, `[GATE]` requires a person immediately before the external action.
 
 ## Eligibility and project history

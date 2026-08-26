@@ -2,6 +2,8 @@
 
 > Status: **Submitted; 5/5 steps done** · Date: 2026-08-17 · Owner: Human entrant with Codex drafting support
 
+> **Historical record.** This document captures the 2026-08-17 Devpost submission exactly as evidenced then. The repository has moved on since (see `CHANGELOG.md`); this record is intentionally not rewritten.
+
 Project **DeployAlign** was submitted to Build with Gemini XPRIZE after explicit user approval, terms acceptance, and the Submit action. After refresh, the management page showed `Submitted` and `5/5 steps done` with a View link to [devpost.com/software/test-q0h69v](https://devpost.com/software/test-q0h69v). The observed banner was `Project submitted! Continue to edit your project until the hackathon deadline: August 17, 2026 at 04:00pm EDT.` Submission does not establish eligibility, compliance, an award, business viability, or measured impact.
 
 ## Submitted fields
