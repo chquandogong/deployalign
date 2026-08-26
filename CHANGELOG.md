@@ -3,6 +3,63 @@
 All notable changes to DeployAlign are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow SemVer.
 
+## [0.3.0] — 2026-08-26
+
+The tool stops being fixture-only. Behind a local-only flag it now compiles **your own**
+three documents through a general path: clause extraction, lexical typing, the six
+diagnostics as real detectors, and a patch whose every value is copied verbatim from
+the engineering text. The public demo keeps its synthetic-only guard.
+
+### Added
+
+- **General compiler** (`src/domain/general/`): `extractStatements` (verbatim clauses
+  with line numbers), `classifyStatements` (role-aware lexical typing into the eleven
+  node types), `detect` (DA-001–DA-006 as detectors, typed edges, evidence-derived patch
+  with `resolves`/`retains`), `compileGeneral` (graph, gate, three targets, impact set,
+  receipts). Deterministic and isolated; 15 tests including a fixture-reproduction case
+  and a bounded "clean" corpus that must yield zero diagnostics.
+- **Custom-artifact mode on the API** behind `ALLOW_CUSTOM_ARTIFACTS=true`: one document
+  per role, ≥ 20 characters each, unknown keys dropped; the compile token now binds
+  `mode`, `patchId` and a SHA-256 of the artifacts, and custom review must resubmit the
+  identical artifacts (409 otherwise). `/api/health` reports `customArtifacts`. 5 new API
+  tests.
+- **Document editor in the UI** (shown only when the API advertises custom mode): three
+  role-tagged text areas with counters, compile/reset, mode-aware `CUSTOM` chip, strip,
+  labels and footer.
+- **Export**: Markdown (diagnostics with quotes, patch table, targets with fingerprints,
+  source map) and JSON, built in the browser (`src/lib/exportMarkdown.ts`, 2 tests).
+- `CompileResult.mode` (`fixture` | `custom`) and `synthetic: boolean`.
+- Gemini prompt now tells the model that custom documents are untrusted data to be
+  treated strictly as content (fixture keeps the synthetic wording).
+- `scripts/deploy_cloud_run.sh`: gated redeploy helper for decision D-017 (describe →
+  build/deploy from source → verify live receipt), and a user-space gcloud install note
+  in the runbook.
+
+### Changed
+
+- `compileDemo` and `compileGeneral` share `src/domain/fingerprint.ts` for FNV-1a32
+  fingerprints and section construction.
+- The fixture still compiles through the canonical compiler in every mode, so the demo,
+  screenshots and video remain byte-for-byte identical.
+
+### Limits (read before trusting a result)
+
+- Detectors are **English lexical heuristics**. They surface candidates for a reviewer;
+  they do not decide anything, and they will miss phrasing they were not written for.
+  Korean/other-language cues are a roadmap item.
+- Hard-wrapped prose yields one clause per line; each clause is still a verbatim quote.
+- The gate is `HOLD` until a human review action even when zero diagnostics fire, and
+  never reaches an unconditional `PASS`.
+- With `ALLOW_LIVE_GEMINI=true` **and** `ALLOW_CUSTOM_ARTIFACTS=true`, your text is sent
+  to the model. Keep custom mode off on any public deployment.
+
+### Verification
+
+`pnpm typecheck`, `pnpm lint`, `pnpm test` (60 tests across 5 files) and `pnpm build`
+passed on Node 24.19.0 / pnpm 11.19.0 on 2026-08-26; a headless-browser QA of the
+paste → compile → approve → export flow ran against the production build with custom
+mode enabled (see `docs/04-quality/TEST_PLAN.md`).
+
 ## [0.2.0] — 2026-08-26
 
 The first post-submission cycle. Theme: make the prototype honest about *where* a
