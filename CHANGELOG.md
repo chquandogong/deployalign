@@ -3,6 +3,29 @@
 All notable changes to DeployAlign are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow SemVer.
 
+## [0.6.1] — 2026-09-02
+
+A documentation reconciliation and a public-demo redeploy. No code changes: the compiler,
+API, UI, CLI and Action are identical to 0.6.0.
+
+### Changed
+
+- **Documentation reconciled with the released state.** A 2026-09-02 review found the
+  dashboard, roadmap, runbook, test plan, ship checklist, risk register, decision log and
+  the Korean/Chinese READMEs contradicting each other or the repository: `v0.6.0` was still
+  "in progress" although released; the dashboard's Top-risks table kept R-19/R-20 "Open"
+  after the register closed them; test counts read 60/75 in places (78 since 0.6.0); the
+  runbook still described deploying "the 0.2.0 image" and pointed misfires at
+  `general.test.ts` instead of `corpora.test.ts`; `README.ko.md`/`README.zh.md` carried an
+  "awaiting its first live receipt" sentence that `README.md` had already dropped (R-21
+  materialised); D-018 had no entry of its own and D-023 (npm publish, *proposed*) was
+  missing from every owner-decision queue; D-023 cited a non-existent "§1.6". All of these
+  are corrected; the dashboard now tracks the hackathon status (ended, winners pending,
+  listed end date 2026-09-25) and the `gemini-2.5-flash` retirement (2026-10-16) as dated
+  items.
+- Header versions/dates bumped where the content changed; the discovery and submission
+  records keep their 2026-08-17 dates on purpose.
+
 ## [0.6.0] — 2026-08-26
 
 ### Added

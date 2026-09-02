@@ -1,7 +1,7 @@
 {
   "name": "deployalign",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Evidence-gated decision compiler for bespoke robotics presales and deployment",
   "license": "MIT",
   "repository": {
