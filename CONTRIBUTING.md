@@ -30,7 +30,7 @@ Add or update tests with behaviour changes:
 
 - `src/domain/compiler.test.ts` — canonical fixture compiler contract (grounding, gate, patch, rebuild).
 - `src/domain/general/general.test.ts` — general path: extraction, typing, detectors, fixture reproduction, clean and unsupported corpora.
-- `src/domain/general/corpora.test.ts` — additional synthetic corpora (drone inspection, hospital robot, Korean Raman fixture); add new phrasing here.
+- `src/domain/general/corpora.test.ts` — additional synthetic corpora (drone inspection, hospital robot, Korean Raman fixture, negated quantifiers); add new phrasing here.
 - `src/lib/exportMarkdown.test.ts` — Markdown export.
 - `cli/main.test.ts` — command-line contract: inputs, outputs, exit codes.
 - `server/gemini.test.ts` — model configuration and the pure payload validator.

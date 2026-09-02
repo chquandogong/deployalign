@@ -1,6 +1,6 @@
 # DeployAlign Specification
 
-> Status: Prototype 0.6.0 implemented; local QA passed; public demo runs 0.3.0 on gemini-3.7-flash · Date: 2026-08-26 · Owner: Product and engineering
+> Status: Prototype 0.6.1 (documentation patch over 0.6.0) implemented; local QA passed 2026-09-02; public demo runs 0.6.1 on gemini-3.7-flash (redeployed 2026-09-02, live receipt) · Date: 2026-09-02 · Owner: Product and engineering
 
 ## Problem definition
 
@@ -131,7 +131,7 @@ Output: a `CompileResult` containing project/version/gate/provider metadata, art
 - Typecheck, lint, and production build pass (verified 2026-08-26).
 - API contract and failure cases receive automated coverage (`server/app.test.ts`, 0.2.0).
 - Visual QA confirms synthetic/fallback/human-gate disclosures.
-- A deployed live Gemini test is archived with the Cloud Run revision, provider/model receipt, signed-provenance review result, and redacted logs. 2026-08-17: `gemini-2.5-flash` on `deployalign-00004-wgb`. 2026-08-26: `gemini-3.7-flash` on `deployalign-00005-9vs` (health `model gemini-3.7-flash`; receipt `classified 3 source statements`). Deterministic TypeScript retains graph/gate/target ownership.
+- A deployed live Gemini test is archived with the Cloud Run revision, provider/model receipt, signed-provenance review result, and redacted logs. 2026-08-17: `gemini-2.5-flash` on `deployalign-00004-wgb`. 2026-08-26: `gemini-3.7-flash` on `deployalign-00005-9vs` (health `model gemini-3.7-flash`; receipt `classified 3 source statements`). 2026-09-02: `gemini-3.7-flash` on `deployalign-00006-h5c` (health `version 0.6.1`; receipt `classified 3 source statements`). Deterministic TypeScript retains graph/gate/target ownership.
 
 ## Human approval gates
 

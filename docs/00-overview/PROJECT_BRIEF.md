@@ -1,6 +1,6 @@
 # DeployAlign Project Brief
 
-> Status: Active · Date: 2026-08-26 (0.4.0) · Owner: DeployAlign team (Codex- and Claude-assisted)
+> Status: Active · Date: 2026-09-02 (0.6.1) · Owner: DeployAlign team (Codex- and Claude-assisted)
 
 ## One-line summary
 
@@ -44,12 +44,14 @@ This fallback is intentional for a stable demonstration, but it is not evidence 
 - Express endpoints for health, compile, and demo approval.
 - Opt-in Gemini Developer API or Vertex AI path, source-quote/schema validated; the deployed demo uses Vertex AI.
 - Browser client helper with a 60-second timeout and a network-failure fallback restricted to the exact synthetic fixture.
-- 38 automated tests across three suites: `src/domain/compiler.test.ts` (14), `server/gemini.test.ts` (11), `server/app.test.ts` (13).
+- 78 automated tests across eight suites: `src/domain/compiler.test.ts` (14), `src/domain/general/general.test.ts` (15), `src/domain/general/corpora.test.ts` (9), `src/domain/examples.test.ts` (3), `src/lib/exportMarkdown.test.ts` (2), `cli/main.test.ts` (6), `server/gemini.test.ts` (11), `server/app.test.ts` (18).
 - Execution-origin labelling on every compile result (`server` vs `browser`) with matching UI disclosure (0.2.0).
 - Default extraction model `gemini-3.7-flash` with automatic thinking configuration; `GEMINI_MODEL` pins any model (0.2.0).
 - GitHub Actions CI on Node 24 (typecheck, lint, test, build, container build), `CONTRIBUTING.md`, `SECURITY.md`, README in English, Korean and Chinese (0.2.0).
-- General compiler for user-supplied documents with a local-only API mode, editor and export (0.3.0); CLI with build-style exit codes and first-pass Korean cues (0.4.0); 72 tests.
+- General compiler for user-supplied documents with a local-only API mode, editor and export (0.3.0); CLI with build-style exit codes and first-pass Korean cues (0.4.0); composite GitHub Action self-tested in CI on three example sets plus the practitioner pilot kit (0.5.0); example presets in the local-mode editor (0.6.0); 78 tests.
+- Re-verified 2026-09-02: typecheck, lint, 78/78 tests, build and `pnpm audit --prod` clean on Node 24.19.0 / pnpm 11.19.0.
 - Public demo redeployed 2026-08-26 as revision `deployalign-00005-9vs` (`v0.3.0`, `gemini-3.7-flash`) with a live-verified receipt (D-017).
+- Public demo redeployed 2026-09-02 as revision `deployalign-00006-h5c` (0.6.1 tree, `gemini-3.7-flash`) with a live-verified receipt (D-024); `deployalign-00005-9vs` retained as the rollback target.
 - A one-hour HMAC-SHA256 compile-provenance token that carries validated AI evidence through the demo review transition.
 - Docker packaging for a Node 24 runtime.
 

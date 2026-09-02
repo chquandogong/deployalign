@@ -10,6 +10,18 @@ API, UI, CLI and Action are identical to 0.6.0.
 
 ### Changed
 
+- **Public demo redeployed (D-024, owner-instructed 2026-09-02).** Cloud Run revision
+  `deployalign-00006-h5c` serves 100% of traffic, built from the 0.6.1 tree (commit
+  `a6f9050`; tag `v0.6.1`, placed on the follow-up documentation commit, differs only in
+  Markdown and issue-template files, none of which reach the runtime image) with
+  `scripts/deploy_cloud_run.sh` from a clean worktree. Health: `version 0.6.1`,
+  `liveGemini true`, `model gemini-3.7-flash`, `customArtifacts false`; a live compile
+  returned `provider gemini-vertex`, `executionOrigin server`, `mode fixture` with the
+  receipt *"gemini-3.7-flash classified 3 source statements"*. Runtime identity, secret
+  binding, 1 CPU / 512 MiB, concurrency 20, 60 s timeout and max instances 1 were
+  preserved. `deployalign-00005-9vs` (v0.3.0, also on `gemini-3.7-flash`) is the rollback
+  target, so no serving or rollback path depends on `gemini-2.5-flash` any more (R-19
+  residual closed).
 - **Documentation reconciled with the released state.** A 2026-09-02 review found the
   dashboard, roadmap, runbook, test plan, ship checklist, risk register, decision log and
   the Korean/Chinese READMEs contradicting each other or the repository: `v0.6.0` was still
@@ -22,9 +34,18 @@ API, UI, CLI and Action are identical to 0.6.0.
   missing from every owner-decision queue; D-023 cited a non-existent "§1.6". All of these
   are corrected; the dashboard now tracks the hackathon status (ended, winners pending,
   listed end date 2026-09-25) and the `gemini-2.5-flash` retirement (2026-10-16) as dated
-  items.
+  items. New records: D-018 (video publication), D-024 (this redeploy), risks R-24 (npm
+  names unclaimed) and R-25 (the Action installs dependencies on every run); `examples.test.ts`
+  documented in the test plan; `src/domain/examples.ts` in the architecture and glossary.
 - Header versions/dates bumped where the content changed; the discovery and submission
   records keep their 2026-08-17 dates on purpose.
+
+### Verification
+
+`pnpm typecheck`, `pnpm lint`, `pnpm test` (78 tests across 8 files) and `pnpm build` passed
+on Node 24.19.0 / pnpm 11.19.0 on 2026-09-02; `pnpm audit --prod` reported no known
+vulnerabilities; the public-demo health, live receipt, root headers (CSP, `no-store`) and
+the 3,462-byte licence notice were read back from the new revision after the deploy.
 
 ## [0.6.0] — 2026-08-26
 

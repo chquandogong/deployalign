@@ -1,6 +1,6 @@
 # DeployAlign Runbook
 
-> Status: Local (0.4.0) and public synthetic-demo (0.3.0 revision, gemini-3.7-flash) operations · Date: 2026-08-26 · Owner: Engineering
+> Status: Local (0.6.1) and public synthetic-demo (0.6.1 revision `deployalign-00006-h5c`, gemini-3.7-flash) operations · Date: 2026-09-02 · Owner: Engineering
 
 ## Supported operating mode
 
@@ -48,21 +48,24 @@ The browser client has a 60-second request timeout. It falls back locally only f
 
 **Why the default moved.** Vertex AI release notes list 2026-10-16 as the retirement date for `gemini-2.5-flash`, the 0.1.0 default. `gemini-3.7-flash` became generally available on 2026-08-13. Gemini 3 rejects a zero thinking budget, so `thinkingConfigFor` picks `thinkingLevel` for 3.x and a numeric budget for 2.5.
 
-**Migrating the public demo (gated — D-017).** Typical sequence; confirm flags against current gcloud documentation before running:
+**Redeploying the public demo (gated).** Every redeploy is human-gated (D-017). Run `scripts/deploy_cloud_run.sh` from a clean worktree checked out at the release tag; the script does describe → build+deploy from source → verify, and preserves the runtime identity, secret binding and scaling limits it reads from the current service. The gcloud setup is in "Redeploy the public demo" below.
 
 ```text
-# 1. Build and deploy the 0.2.0 image (Cloud Build → Cloud Run, region asia-northeast3)
-# 2. Remove the old pin so the code default applies, or set the new one explicitly
+# 1. Check out the release tag in a clean worktree (e.g. git worktree add ../deployalign-vX.Y.Z vX.Y.Z), then
+#    DRY_RUN=1 scripts/deploy_cloud_run.sh   → describes the current service (identity, env, secret binding); no changes
+#    scripts/deploy_cloud_run.sh             → describe → gcloud run deploy --source . (Cloud Build → Cloud Run, region asia-northeast3) → verify
+# 2. GEMINI_MODEL: the script sets GEMINI_MODEL=gemini-3.7-flash explicitly (override with GEMINI_MODEL=<id> in its environment).
+#    To change only the pin on the running service:
 gcloud run services update deployalign --region asia-northeast3 --update-env-vars GEMINI_MODEL=gemini-3.7-flash
-# 3. Verify
-#    GET  /api/health   → model=gemini-3.7-flash, version=0.2.0, liveGemini=true
+# 3. Verify (the script does this after the deploy and exits 2 if the provider is deterministic-demo)
+#    GET  /api/health   → model=gemini-3.7-flash, version=<package.json version of the deployed tag>, liveGemini=true
 #    POST /api/compile  → provider=gemini-vertex, receipt "gemini-3.7-flash classified 3 source statements"
 #    logs               → no gemini_extraction_rejected for the verification compile
 ```
 
-Rollback: pin `GEMINI_MODEL=gemini-2.5-flash` (works until the retirement date) and redeploy the previous revision.
+Rollback: route traffic to the previous verified revision (see "Rollback" below); pinning `GEMINI_MODEL=gemini-2.5-flash` works only until 2026-10-16.
 
-## Custom-artifact mode (local only, 0.3.0)
+## Custom-artifact mode (local only, since 0.3.0)
 
 ```text
 ALLOW_CUSTOM_ARTIFACTS=true pnpm dev        # or: ... pnpm start after pnpm build
@@ -78,11 +81,11 @@ ALLOW_CUSTOM_ARTIFACTS=true pnpm dev        # or: ... pnpm start after pnpm buil
 ### Custom mode incidents
 
 - **The editor button is missing** — health does not report `customArtifacts: true`; the flag is not set on the process the browser is talking to (check the Vite proxy target).
-- **Every sales sentence raises DA-001/DA-002** — the detectors are English lexical heuristics; check the quantifier list in `src/domain/general/lexicon.ts` and add the misfiring sentence to a corpus in `general.test.ts` before changing a rule.
+- **Every sales sentence raises DA-001/DA-002** — the detectors are lexical heuristics (English cues, and Korean cues since 0.4.0, both in `src/domain/general/lexicon.ts`); check the quantifier list there and add the misfiring sentence to a corpus in `src/domain/general/corpora.test.ts` (file it with the Detector-misfire issue template) before changing a rule.
 - **No patch proposed** — no engineering clause carries a bounded count, area count or supervision statement; the rationale says so. Add measured evidence to the engineering text or narrow the promise by hand.
-- **Non-English documents yield few nodes** — expected in 0.3.0; cue lists are English-only.
+- **Non-English documents yield few nodes** — cue lists exist for English and Korean only. Korean documents get first-pass lexical support since 0.4.0 (D-021): particles, native numerals, counters and predicate endings are handled; unusual particles, spacing or honorific forms may be missed — add misfires to `src/domain/general/corpora.test.ts`.
 
-## Redeploy the public demo (D-017 — human-gated)
+## Redeploy the public demo (human-gated — D-017, D-024)
 
 The build machine has a user-space gcloud at `~/.local/opt/google-cloud-sdk/bin/gcloud` (SDK 582). Sequence:
 
@@ -108,7 +111,7 @@ Set `ALLOW_LIVE_GEMINI=true` and `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in the r
 
 Set `ALLOW_LIVE_GEMINI=true`, `GOOGLE_CLOUD_PROJECT`, and optionally `GOOGLE_CLOUD_LOCATION`.
 
-As of 2026-08-26, the public demo is verified in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`, using Vertex AI model `gemini-3.7-flash` (location `global`) and runtime service account `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`. The 2026-08-17 verification used `gemini-2.5-flash` on revision `deployalign-00004-wgb`.
+As of 2026-09-02 (redeploy D-024; first verified 2026-08-26 on the previous revision), the public demo is verified in project `project-55fbcfd2-0ad6-4c99-a25`, region `asia-northeast3`, using Vertex AI model `gemini-3.7-flash` (location `global`) and runtime service account `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`. The 2026-08-17 verification used `gemini-2.5-flash` on revision `deployalign-00004-wgb`.
 
 For a separate local path, confirm the intended project/region, use only required APIs and least-privilege credentials, and avoid exposing tokens. If approved local testing requires ADC and it is not already valid, the typical interactive command is:
 
@@ -116,31 +119,31 @@ For a separate local path, confirm the intended project/region, use only require
 gcloud auth application-default login
 ```
 
-The deployed verification met this bar: a compile reported `gemini-vertex`; the UI showed a successful `gemini-2.5-flash` receipt for three exact-quote statements; and redacted Cloud Run logs retained `compile_completed` and `patch_approved` events. Do not generalize this bounded synthetic evidence to customer production.
+The 2026-08-17 deployed verification met this bar: a compile reported `gemini-vertex`; the UI showed a successful `gemini-2.5-flash` receipt for three exact-quote statements; and redacted Cloud Run logs retained `compile_completed` and `patch_approved` events. The 2026-08-26 and 2026-09-02 redeploys repeated the live receipt on `gemini-3.7-flash` (see "Verified Cloud Run configuration"). Do not generalize this bounded synthetic evidence to customer production.
 
 The current Cloud Run demo stores a stable ≥32-byte `COMPILE_TOKEN_SECRET` in Secret Manager and exposes it through the approved secret binding. Do not place the value in the image, source, command history, screenshots, or submission. Keep this demo at **max instances 1** because rate limiting and operational state are process-local; a shared token secret alone does not make the service production-distributed.
 
 ## Verified Cloud Run configuration
 
 - Public URL: `https://deployalign-1007800160926.asia-northeast3.run.app`
-- Revision: `deployalign-00005-9vs` (100% traffic) — deployed 2026-08-26 from tag `v0.3.0` via `scripts/deploy_cloud_run.sh`; previous `deployalign-00004-wgb` (0.1.0) retained for rollback
+- Revision: `deployalign-00006-h5c` (100% traffic) — deployed 2026-09-02 from the 0.6.1 tree (commit `a6f9050`; tag `v0.6.1` differs only in Markdown and issue-template files, none of which reach the runtime image) via `scripts/deploy_cloud_run.sh` in a clean worktree (D-024); previous `deployalign-00005-9vs` (v0.3.0, `gemini-3.7-flash`, 2026-08-26) retained as the rollback target; `deployalign-00004-wgb` (0.1.0, `gemini-2.5-flash`) still listed but unusable after 2026-10-16
 - Region: `asia-northeast3`
 - Access: unauthenticated public synthetic demo
 - Compute: 1 CPU, 512 MiB; timeout 60 seconds; concurrency 20
 - Scaling: min instances 0, max instances 1
 - Live model: `ALLOW_LIVE_GEMINI=true`, Vertex AI `gemini-3.7-flash` (`GOOGLE_CLOUD_LOCATION=global`); `ALLOW_CUSTOM_ARTIFACTS` not set
 - Runtime identity: `deployalign-runner@project-55fbcfd2-0ad6-4c99-a25.iam.gserviceaccount.com`
-- Provenance secret: stable Secret Manager binding; record the secret name/version, never the value
-- Public health (2026-08-26): `ok=true`, `service=deployalign`, `version=0.3.0`, `liveGemini=true`, `model=gemini-3.7-flash`, `customArtifacts=false`
-- Live receipt (2026-08-26): a deployed compile returned `provider=gemini-vertex`, `executionOrigin=server`, `mode=fixture`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.`
-- License notice: footer link to `/third-party-licenses.txt`; verified HTTP 200 and 3,462 bytes
+- Provenance secret: stable Secret Manager binding (`deployalign-compile-token`, key `latest`); never record the value
+- Public health (2026-09-02, `deployalign-00006-h5c`): `ok=true`, `service=deployalign`, `version=0.6.1`, `liveGemini=true`, `model=gemini-3.7-flash`, `customArtifacts=false`; the 2026-08-26 revision reported `version=0.3.0` with the same flags
+- Live receipt (2026-09-02, repeating 2026-08-26): a deployed compile returned `provider=gemini-vertex`, `executionOrigin=server`, `mode=fixture`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.`
+- License notice: footer link to `/third-party-licenses.txt`; verified HTTP 200 and 3,462 bytes (re-verified 2026-09-02)
 
-Cloud Build successfully built the container that backs this revision. Official Vertex AI Model Garden Monitoring shows the `gemini-2.5-flash` row and last-hour model-request/token-count graphs. The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but the screen explicitly warns that costs can take hours or more than 24 hours to appear. Recheck after the lag window before confirming final expense/P&L.
+Cloud Build successfully built the container that backs this revision. Official Vertex AI Model Garden Monitoring (2026-08-17 capture, `deployalign-00004-wgb`) shows the `gemini-2.5-flash` row and last-hour model-request/token-count graphs. The latest private billing capture showed an Aug 1–15 current report of ₩0 and remaining free-trial credits, but the screen explicitly warns that costs can take hours or more than 24 hours to appear. Recheck after the lag window before confirming final expense/P&L.
 
 ## Verification sequence
 
 ```text
-pnpm test        # 60 tests: domain, general path, export, Gemini validation, API contract
+pnpm test        # 78 tests across 8 files: domain, general path, corpora, example presets, export, CLI, Gemini validation, API contract
 pnpm typecheck
 pnpm lint
 pnpm build
@@ -222,9 +225,10 @@ The Dockerfile builds the Vite bundle and runs Express on port 8080. The product
 
 ## Rollback
 
-- Local code: return to the last known-good public commit; the current license-compliance deployment checkpoint is `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c`.
+- Local code: return to the last known-good public commit — the tag of the currently deployed revision (see "Verified Cloud Run configuration"); `d5f9f33180a1edbdfeb8e5d4b8775a98643fd28c` was the 0.1.0 license-compliance checkpoint.
 - Live model: set `ALLOW_LIVE_GEMINI=false` and restart; verify provider shows deterministic demo.
-- Model: pin `GEMINI_MODEL` to the previously verified model (`gemini-2.5-flash` until 2026-10-16) and redeploy, or route traffic back to `deployalign-00004-wgb`: `gcloud run services update-traffic deployalign --region asia-northeast3 --to-revisions deployalign-00004-wgb=100`.
+- Public revision: route traffic back to the previous verified revision, `deployalign-00005-9vs` (v0.3.0, `gemini-3.7-flash`): `gcloud run services update-traffic deployalign --region asia-northeast3 --to-revisions deployalign-00005-9vs=100`. `deployalign-00004-wgb` pins `gemini-2.5-flash` (retires 2026-10-16) and must not be used as a rollback target.
+- Model: pin `GEMINI_MODEL` to another verified model and redeploy; `gemini-2.5-flash` works only until 2026-10-16.
 - Token secret: rotate only through approved secret management and expect all outstanding review tokens to become invalid.
 - Public deployment: route traffic back to a known-good Cloud Run revision or redeploy a known-good image; this remains to be rehearsed before any real use.
 - External submission/video/repository: do not assume changes are reversible; use a human pre-flight review before publishing.

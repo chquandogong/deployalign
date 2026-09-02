@@ -1,6 +1,6 @@
 # Test Plan
 
-> Status: 0.5.0 local automated QA passed (75 tests) with a CI self-test of the GitHub Action; headless-browser QA of custom mode (0.3.0); live gemini-3.7-flash verified on the public demo · Date: 2026-08-26 · Owner: QA
+> Status: 0.6.1: 78 tests across 8 files re-run 2026-09-02 (gates green, audit clean) with a CI self-test of the GitHub Action; headless-browser QA of custom mode (0.3.0) and of the presets (0.6.0); live gemini-3.7-flash verified on the public demo 2026-08-26 and again on the 0.6.1 redeploy 2026-09-02 · Date: 2026-09-02 · Owner: QA
 
 ## Objectives
 
@@ -56,6 +56,14 @@ Final updated evidence on 2026-08-17 after the response-isolation, strict-fixtur
 | Hospital delivery robot (EN) | `every ward … autonomously` raises DA-001/002/004/005/006; coverage replacement `Six wards`, operating mode `attended operation`; the hedged door width and the number-free "customer-reported, not measured" statement form one DA-004 cluster |
 | Sub-fab Raman pilot (KO) | Korean sentences split and type by role; the customer opener yields an objective plus a preference narrowed to `사족 사륜 로봇`; `시설 전체` / `모든 누출 물질` / `자율적으로` are the three unbounded categories; enumerations `다섯 가지`, `12곳`; six diagnostics with canonical severities; verbatim patch `다섯 가지 명명된 분석 물질`, `12곳의 핵심 구역`, `감독 하의 1단계 운영`; approval resolves DA-001 and keeps DA-006 |
 | Negated quantifiers (EN/KO, 0.5.0) | "will not cover every ward", "does not serve all wards", "…커버하지 않습니다" produce no unbounded phrase while the affirmative forms do; a proposal that bounds its own scope yields zero diagnostics |
+
+## Example-preset tests (`src/domain/examples.test.ts`, 3 cases — 0.6.0)
+
+| Case | Input | Expected result |
+| --- | --- | --- |
+| Presets mirror `examples/` | Every file of every `EXAMPLE_PRESETS` entry | Each preset artifact's content equals the trimmed on-disk file under `examples/<folder>/`, so the editor presets and the CLI/Action example sets cannot drift apart |
+| Documented verdicts | Each preset through `compileGeneral` | `mode: custom`; diagnostic codes equal the preset's `expected.codes`; verdict is `FAIL` when any unresolved `BLOCKER` remains, else `PASS` — `hospital-delivery-robot` DA-001/002/004/005/006 → `FAIL`, `warehouse-amr` none → `PASS`, `sub-fab-raman-ko` DA-001–DA-006 → `FAIL` |
+| Fixture-safe ids | All preset artifact ids | Unique across presets and every id starts with `EX-`, so they can never collide with the synthetic fixture |
 
 ## GitHub Action self-test (`.github/workflows/ci.yml` job `action`, 0.5.0)
 
@@ -190,7 +198,7 @@ No such user experiment has been run yet.
 ## Regression commands
 
 ```text
-pnpm test        # 75 tests: 14 domain · 15 general path · 9 corpora · 2 export · 6 CLI · 11 Gemini validation · 18 API contract
+pnpm test        # 78 tests: 14 domain · 15 general path · 9 corpora · 3 example presets · 2 export · 6 CLI · 11 Gemini validation · 18 API contract
 pnpm typecheck
 pnpm lint
 pnpm build
@@ -198,7 +206,7 @@ pnpm build
 
 Archive date, commit (when one exists), exit status, and redacted output. A command listed here is not proof that it passed.
 
-Evidence 2026-08-26 (0.5.0, Node 24.19.0, pnpm 11.19.0): all four commands exited 0; Vitest reported 75/75 across seven files; the three example sets exit 2 / 0 / 2; the Action self-test job is part of CI. Earlier (0.4.0): 72/72; **Deployed live model (D-017):** revision `deployalign-00005-9vs` — health `version 0.3.0`, `model gemini-3.7-flash`, `liveGemini true`; compile `provider gemini-vertex`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.` Earlier (0.3.0): 60/60 and the browser QA above. Earlier the same day (0.2.0): 38/38 across three files; Vite emitted 39.50 kB CSS and 242.71 kB JS. A production-mode HTTP smoke against `pnpm start` on a local port returned health `version 0.2.0` / `model gemini-3.7-flash`, compile → approve with `executionOrigin: server`, HTTP 409 for a tampered token, root `no-store` with CSP, one-year immutable hashed assets, and the 3,462-byte licence notice. **Not covered in this cycle:** a live `gemini-3.7-flash` call (no credentials in the build environment) and the Cloud Run container build (CI performs the image build; the deployed revision is unchanged).
+Evidence 2026-09-02 (0.6.1 tree, Node 24.19.0, pnpm 11.19.0): `pnpm typecheck`, `pnpm lint`, `pnpm test` (78/78 across eight files) and `pnpm build` exited 0; `pnpm audit --prod` reported no known vulnerabilities; `node bin/deployalign.mjs demo` exited 2 with four open blockers. **Deployed live model (D-024, 2026-09-02):** revision `deployalign-00006-h5c` — health `version 0.6.1`, `model gemini-3.7-flash`, `liveGemini true`, `customArtifacts false`; compile HTTP 200, `provider gemini-vertex`, `executionOrigin server`, `mode fixture`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.`; root HTTP 200 with CSP and `no-store`; licence notice HTTP 200 / 3,462 bytes. Earlier (0.6.0, 2026-08-26): 78/78 with browser QA of the Korean preset. Earlier (0.5.0, 2026-08-26): all four commands exited 0; Vitest reported 75/75 across seven files; the three example sets exit 2 / 0 / 2; the Action self-test job is part of CI. Earlier (0.4.0): 72/72; **Deployed live model (D-017):** revision `deployalign-00005-9vs` — health `version 0.3.0`, `model gemini-3.7-flash`, `liveGemini true`; compile `provider gemini-vertex`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.` Earlier (0.3.0): 60/60 and the browser QA above. Earlier the same day (0.2.0): 38/38 across three files; Vite emitted 39.50 kB CSS and 242.71 kB JS. A production-mode HTTP smoke against `pnpm start` on a local port returned health `version 0.2.0` / `model gemini-3.7-flash`, compile → approve with `executionOrigin: server`, HTTP 409 for a tampered token, root `no-store` with CSP, one-year immutable hashed assets, and the 3,462-byte licence notice. **Not covered in the 0.2.0 cycle:** a live `gemini-3.7-flash` call (no credentials in the build environment; satisfied 2026-08-26 by D-017) and the Cloud Run container build (CI performed the image build; the deployed revision was unchanged until D-017).
 
 ## Release blockers
 

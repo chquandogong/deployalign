@@ -79,7 +79,7 @@ TypeScript**이며, 범위를 바꾸는 모든 패치는 사람이 승인해야 
 ## 3분 안에 보기
 
 - 🎬 **데모 영상 (v0.4.0, 3:07):** [youtu.be/3sWnxibKU1Q](https://youtu.be/3sWnxibKU1Q) — 컴파일, 검토, 한국어 자기 문서, CLI. 대본은 [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md), 빌드는 `scripts/demo-video/`의 재현 가능한 파이프라인. 2026-08-17 제출 당시 워크스루(0.1.0)는 [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA)에 그대로 있다.
-- 🌐 **라이브 데모:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — Vertex AI를 통한 라이브 **Gemini 3.7 Flash** 추출이 켜진 **0.3.0 빌드**의 공개 Cloud Run 배포(인스턴스 1개, 클라이언트당 10분에 컴파일 6회, 커스텀 모드 꺼짐). 2026-08-26 검증: health가 `model gemini-3.7-flash`를 보고하고 컴파일이 `gemini-vertex` 영수증을 반환했다.
+- 🌐 **라이브 데모:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — Vertex AI를 통한 라이브 **Gemini 3.7 Flash** 추출이 켜진 **0.6.1 빌드**의 공개 Cloud Run 배포(인스턴스 1개, 클라이언트당 10분에 컴파일 6회, 커스텀 모드 꺼짐). 2026-09-02 검증(이전 리비전은 2026-08-26): health가 `version 0.6.1`과 `model gemini-3.7-flash`를 보고하고 컴파일이 `gemini-vertex` 영수증을 반환했다.
 
 **Run the synthetic case**를 누르고, 6개 진단을 읽고, 패치를 열고, **Simulate approval &
 recompile**을 누른 뒤 임팩트 테이블을 비교해 보라: 6개 섹션이 재빌드되고 3개는 변경
@@ -132,14 +132,14 @@ CLI는 결정론적 경로만 실행합니다 — 모델도, 네트워크도 없
 
 ```yaml
 # .github/workflows/sow-check.yml — 근거를 앞지르는 제안서가 있는 PR을 실패시킨다
-- uses: chquandogong/deployalign@v0.6.0
+- uses: chquandogong/deployalign@v0.6.1
   with:
     path: deployment-docs          # customer*/sales*/engineering* (또는 고객*/영업*/엔지니어링*)
     fail-on: blocker               # blocker | warning | none
 # 출력: verdict, gate, blockers, warnings, decision-id, report; report.md가 잡 요약에 붙는다
 ```
 
-Action 없이 쓰려면: `pnpm dlx github:chquandogong/deployalign#v0.6.0 compile ./deployment-docs --fail-on blocker`.
+Action 없이 쓰려면: `pnpm dlx github:chquandogong/deployalign#v0.6.1 compile ./deployment-docs --fail-on blocker`.
 번들 예제로 먼저 시험해 보세요: [`examples/`](examples/) (`hospital-delivery-robot`은 실패,
 `warehouse-amr`은 통과, `sub-fab-raman-ko`는 한국어로 실패).
 
@@ -164,7 +164,7 @@ flowchart LR
 
 | 계층 | 위치 | 담당 |
 | --- | --- | --- |
-| 도메인 | `src/domain/` | 타입, 정본 픽스처 컴파일러(테스트 14개), frozen 합성 픽스처, 그리고 `general/` — 절 추출, 영어/한국어 어휘 타이핑, 부정어를 인식하는 감지기, 근거 기반 패치, 일반 타깃(코퍼스 5종, 테스트 24개) |
+| 도메인 | `src/domain/` | 타입, 정본 픽스처 컴파일러(테스트 14개), frozen 합성 픽스처, 그리고 `general/` — 절 추출, 영어/한국어 어휘 타이핑, 부정어를 인식하는 감지기, 근거 기반 패치, 일반 타깃(합성 코퍼스 6종, 테스트 24개) |
 | API | `server/app.ts`, `server/index.ts` | 입력 경계, 픽스처 가드/커스텀 모드, 레이트 리밋, 모드+패치+아티팩트 해시에 묶인 HMAC 토큰, `/api/health`, `/api/compile`, `/api/approve`, 정적 빌드 서빙; 계약 테스트 18개 |
 | 모델 어댑터 | `server/gemini.ts` | 선택적 Gemini 호출, 프롬프트, `thinkingConfigFor`, 순수 함수 `validateGeminiPayload`; 테스트 11개 |
 | UI | `src/App.tsx`, `src/components/ArtifactEditor.tsx`, `src/lib/exportMarkdown.ts` | 소스, 문서 편집기(커스텀 모드), 그래프 + 노드 인스펙터, 진단, 패치 diff, 승인 경계, 임팩트 테이블, Markdown/JSON 내보내기가 있는 타깃, 소스 맵, 영수증 |
@@ -195,7 +195,7 @@ pnpm dev
 ```bash
 pnpm build
 COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
-# → http://localhost:8080  ·  GET /api/health → {"ok":true,"version":"0.2.0","model":"gemini-3.7-flash",…}
+# → http://localhost:8080  ·  GET /api/health → {"ok":true,"version":"0.6.1","model":"gemini-3.7-flash",…}
 ```
 
 ### 라이브 Gemini 호출 켜기
@@ -273,11 +273,10 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 [`CHANGELOG.md`](CHANGELOG.md)에, 그 이유는
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md)에 기록한다.
 
-0.6.0 기준의 정직한 범위: 결정론적 컴파일러(픽스처·일반), API, UI, CLI, GitHub Action, 테스트 78개가
-구현되어 로컬에서 검증됐고, 커스텀 문서 흐름은 헤드리스 브라우저로, Action은 CI에서 예제 세트로 확인했다. 공개 데모는 0.3.0 빌드에서
-`gemini-3.7-flash` 라이브 호출이 **실제로 검증**됐다(2026-08-26). 라이브 `gemini-2.5-flash` 호출은 배포된 0.1.0 리비전에서 검증됐다.
-`gemini-3.7-flash` 기본값은 단위 테스트를 통과했고 첫 라이브 영수증을 기다린다.
-프로덕션 배포, 고객, 측정된 현장 결과는 없다. 여기 있는 어떤 것도 참가 자격, 수상,
+0.6.1 기준의 정직한 범위: 결정론적 컴파일러(픽스처·일반), API, UI, CLI, GitHub Action, 테스트 78개가
+구현되어 로컬에서 검증됐고, 커스텀 문서 흐름은 헤드리스 브라우저로, Action은 CI에서 예제 세트로 확인했다. 공개 데모는 0.6.1 빌드를 실행하며,
+`gemini-3.7-flash` 라이브 호출은 **실제로 검증**됐다(2026-09-02 0.6.1 재배포에서; 최초 검증은 2026-08-26 0.3.0 리비전).
+프로덕션 배포, 고객, 측정된 현장 결과는 여전히 없다. 여기 있는 어떤 것도 참가 자격, 수상,
 사업성을 입증하지 않는다.
 
 ## 문서
@@ -291,7 +290,7 @@ DeployAlign은 **Build with Gemini XPRIZE**를 위해 만들어져 2026-08-17에
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | 테스트 계획과 상태가 표시된 리스크 |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | 실행, 검증, 모델 마이그레이션, 문제 해결, 롤백 |
 | [`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md) | 근거를 지어내지 않고 실무자 5명 파일럿을 진행하는 방법 |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-023 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-024 |
 | [`docs/submission/`](docs/submission/) | 데모 대본, YouTube 메타데이터, Devpost 증거의 역사 기록 |
 
 ## 라이선스

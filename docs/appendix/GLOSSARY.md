@@ -1,6 +1,6 @@
 # Glossary
 
-> Status: Active · Date: 2026-08-26 (0.5.0) · Owner: Documentarian
+> Status: Active · Date: 2026-09-02 (0.6.1) · Owner: Documentarian
 
 | Term | Meaning in DeployAlign |
 | --- | --- |
@@ -20,6 +20,7 @@
 | Diagnostic | A coded blocker or warning linked to source references and graph nodes. |
 | Execution origin | `executionOrigin` on a compile result: `server` when the compiler API process built it (token-bearing, rate-limited, logged) or `browser` when this page built it (initial preview or network-failure fallback). Disclosure, not an integrity guarantee. |
 | Evidence envelope | The bounded claims supported by source evidence. In the synthetic demo: five named analytes under controlled conditions. |
+| Example preset | One of three bundled document sets (hospital-delivery-robot, warehouse-amr, sub-fab-raman-ko) loadable in the local-mode editor and shipped under `examples/`; single source of truth `src/domain/examples.ts` (0.6.0). |
 | Execution receipt | A record describing a pipeline stage, actor, status, time, duration, and summary. Demo receipts are not a durable audit log. |
 | Grounding | Linking an extracted or diagnostic claim to an exact quote in a named source artifact. Exact text does not guarantee correct interpretation. |
 | Human approval gate | A point where an external, risky, or consequential action must stop for a person. The local demo review illustrates the concept but is not secure approval. |

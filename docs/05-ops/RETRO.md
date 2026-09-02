@@ -1,6 +1,39 @@
 # Retro
 
-> Status: Seven cycles recorded — 0.1.0 submission (2026-08-17); 0.2.0, 0.3.0, 0.4.0, 0.4.1, 0.5.0, 0.6.0 (all 2026-08-26) · Date: 2026-08-26 · Owner: Project team
+> Status: Eight cycles recorded — 0.1.0 submission (2026-08-17); 0.2.0, 0.3.0, 0.4.0, 0.4.1, 0.5.0, 0.6.0 (all 2026-08-26); 0.6.1 (2026-09-02) · Date: 2026-09-02 · Owner: Project team
+
+## Cycle 0.6.1 — documentation reconciliation and redeploy (2026-09-02)
+
+### What was done
+
+- A week after the 0.6.0 release, a review of the repository, live demo, videos and Devpost page found the code, tags, releases, videos and Devpost entry consistent, the public demo one release line behind (`v0.3.0` while the repository was at 0.6.0), and plenty of drift in the documents: the dashboard's own tables contradicted its text (R-19/R-20 "Open", `v0.6.0` "In progress"), test counts read 60/75 where 78 was current, the runbook described deploying "the 0.2.0 image" and pointed misfires at the wrong test file, the Korean and Chinese READMEs kept a sentence the English one had dropped (R-21 materialised), D-018 had no entry, and D-023 — the only pending owner decision — was missing from every owner queue. All were corrected in one docs-only patch release; D-018 got its entry, D-024 records the redeploy, R-24/R-25 record the npm-name and per-run-install residuals.
+- On the owner's instruction the public demo was redeployed from the 0.6.1 tree (`deployalign-00006-h5c`): health `version 0.6.1`, live `gemini-3.7-flash` receipt, identity and limits preserved. The rollback target is now a 3.7-flash revision, which closes the R-19 residual.
+
+### What went well
+
+- Verifying before summarising: re-running the gates and reading the live health, releases and CI runs first meant every corrected sentence had a dated observation behind it.
+- The deploy script's describe → deploy → verify shape made the redeploy a single exit-code-checked step from a clean worktree.
+
+### What was learned and corrective actions
+
+- **A dashboard with two voices drifts in a week.** The Top-risks and Progress tables were edited less often than the Current-state bullets. Corrective action: the dashboard now carries a dated review table per release, and the 0.6.1 ship checklist re-reads all three READMEs.
+- **Pending decisions must live in the queue, not only in their entry.** D-023 was invisible to a resuming agent. Corrective action: every `proposed` decision gets a live row in all three owner-queue tables the day it is written.
+
+### Failures and incomplete work
+
+- Still zero practitioner sessions; the pilot kit has been ready since 0.5.0.
+- D-023 (npm publish) still awaits the owner's confirmation; the names remain unclaimed.
+- Ops items unchanged: no rehearsed rollback, no secret scan, no monitoring or incident path for the demo.
+
+### Metrics
+
+- Tests: 78 → 78 (no code change). Public demo: `v0.3.0` → 0.6.1 (`deployalign-00005-9vs` → `deployalign-00006-h5c`), live-verified.
+
+### Deferred to the next cycle
+
+1. Run the pilot (owner) and file misfires.
+2. Owner confirmation of D-023.
+3. Check the hackathon result after 2026-09-25.
 
 ## Cycle 0.6.0 — example presets in the editor (2026-08-26)
 

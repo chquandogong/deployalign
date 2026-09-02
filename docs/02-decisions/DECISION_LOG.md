@@ -1,6 +1,6 @@
 # Decision Log
 
-> Status: Active · Date: 2026-08-26 (0.6.0) · Owner: Project lead
+> Status: Active · Date: 2026-09-02 (0.6.1) · Owner: Project lead
 
 ## D-001 — Use a hybrid evidence compiler
 
@@ -90,6 +90,7 @@
 - Residual risk: The public unauthenticated endpoint has no durable audit, tenant isolation, or production access control.
 - Approval: Completed for the synthetic demo only; material deployment changes still require review.
 - Revisit when: Real users or non-synthetic data are considered.
+- Note (2026-09-02): revision `deployalign-00004-wgb` was superseded by `deployalign-00005-9vs` on 2026-08-26 (D-017) and, after D-024 (2026-09-02), is no longer a rollback target; it remains listed until deleted and is unusable after `gemini-2.5-flash` retires on 2026-10-16.
 
 ## D-009 — Use exact entrant-confirmed submission facts
 
@@ -143,7 +144,7 @@
 - Decision: Default `GEMINI_MODEL` to `gemini-3.7-flash`; select `thinkingLevel: LOW` for Gemini 3 models and `thinkingBudget: 0` for 2.5 models (`thinkingConfigFor`); add `GEMINI_THINKING_LEVEL` for overrides; keep `GEMINI_MODEL` as the pin.
 - Rationale: A default that stops working in seven weeks is a defect. 3.7 Flash is GA, current, and the thinking-level switch is required because Gemini 3 rejects a zero budget.
 - Rejected: No default — it makes the local quick-start fail; 3.5 Flash — no advantage over the newer GA model.
-- Residual risk: **Not live-verified in this cycle** (no credentials in the build environment); the public Cloud Run revision still runs 2.5 Flash until D-017. The first deploy with the new default must confirm a live receipt.
+- Residual risk: **Not live-verified in this cycle** (no credentials in the build environment); the public Cloud Run revision still runs 2.5 Flash until D-017. The first deploy with the new default must confirm a live receipt. Resolved 2026-08-26 by D-017 (live `gemini-3.7-flash` receipt on `deployalign-00005-9vs`).
 - Approval: Reversible code change within the owner's update instruction.
 - Revisit when: A live receipt exists, or Google changes 3.7 Flash availability on the `global` endpoint.
 
@@ -195,6 +196,29 @@
 - Approval: Owner "go" ×2 and completed authentication; deploy executed by the agent from the clean tag.
 - Revisit when: Google changes 3.7 Flash availability, or the demo is moved to a production-grade topology.
 
+## D-018 — Publish the demo video and swap the links (completed)
+
+- Date: 2026-08-26
+- Context: Opened in 0.2.0 as an owner gate: D-015 rebuilt the video with the reproducible narration-first pipeline, but uploading the v0.2.0 render to YouTube and swapping the README link is a publication gate and was not performed autonomously. On 2026-08-26 the owner approved publishing; the v0.2.0 render had been superseded by v0.4.0 before upload.
+- Options: upload the v0.2.0 render as-is; re-render at v0.4.0 and upload that; keep only the 0.1.0 submission video.
+- Decision: Re-render at `v0.4.0` (3:07, fifteen scenes, EN/KO/ZH subtitle tracks, CLI scene) and publish it at https://youtu.be/3sWnxibKU1Q; swap the video link in `README.md`, `README.ko.md`, `README.zh.md`, `docs/00-overview/DASHBOARD.md` and `docs/submission/DEMO_SCRIPT.md`. The v0.2.0 render stays attached to the v0.2.0 GitHub release and was not uploaded. The 0.1.0 video (https://youtu.be/QOPgHHAWOBA) remains public as the submission record, and the Devpost entry still references it by design.
+- Evidence: `CHANGELOG.md` 0.4.1; `docs/submission/YOUTUBE_METADATA.md` (v0.4.0 published, owner-approved 2026-08-26); `docs/submission/DEMO_SCRIPT.md` verified-render table. During the 2026-08-26 review the YouTube category was changed from "People & Blogs" to "Science & Technology" via Studio (`docs/00-overview/DASHBOARD.md`).
+- Rationale: A published walkthrough should show the release a viewer can run; the pipeline re-renders the whole video in minutes (D-019).
+- Rejected: uploading the v0.2.0 render — superseded by v0.4.0 before upload; keeping only the 0.1.0 video — it shows the pre-0.2 UI and the old model (D-015).
+- Residual risk: R-12 (synthesized-voice redistribution terms) carried and accepted under D-019; the video freezes the 0.4.0 UI, so a material UI change makes it stale.
+- Approval: Owner approved publishing on 2026-08-26; upload, subtitle tracks and link swap completed the same day (0.4.1).
+- Revisit when: the UI changes materially. 0.6.0 added only the local-mode preset row, which the public fixture-only UI does not show, so no re-render was needed.
+
+## D-019 — Keep synthesized narration for the demo videos (resolved)
+
+- Date: 2026-08-26
+- Context: The v0.1.0 video used the Microsoft Mark voice; v0.2.0 and v0.4.0 use `en-US-AndrewMultilingualNeural` through edge-tts. Redistribution terms of Microsoft neural voices are not a settled legal question (R-12). The alternative was a human recording.
+- Decision: **Keep the synthesized voice** ("유지"). The licence note stays in `docs/submission/DEMO_SCRIPT.md`; the reproducible pipeline is the reason — a script change re-renders the whole video in minutes, which a human recording cannot match at this stage.
+- Rationale: Iteration speed matters more than voice provenance while the product changes weekly; the risk is documented, accepted by the owner, and reversible (re-record when the product stabilises).
+- Rejected: Human recording now — slows every release; a paid TTS with clear commercial terms — deferred until the video cadence settles.
+- Residual risk: R-12 unchanged; takedown risk is low but non-zero. Revisit at the practitioner pilot (0.5) or if Microsoft publishes explicit terms.
+- Approval: Owner, 2026-08-26.
+
 ## D-020 — Ship the decision compiler as a CLI with build-style exit codes (0.4.0)
 
 - Date: 2026-08-26
@@ -219,16 +243,6 @@
 - Approval: Within the approved 0.4 cycle.
 - Revisit when: a real Korean document set exposes systematic misses.
 
-## D-019 — Keep synthesized narration for the demo videos (resolved)
-
-- Date: 2026-08-26
-- Context: The v0.1.0 video used the Microsoft Mark voice; v0.2.0 and v0.4.0 use `en-US-AndrewMultilingualNeural` through edge-tts. Redistribution terms of Microsoft neural voices are not a settled legal question (R-12). The alternative was a human recording.
-- Decision: **Keep the synthesized voice** ("유지"). The licence note stays in `docs/submission/DEMO_SCRIPT.md`; the reproducible pipeline is the reason — a script change re-renders the whole video in minutes, which a human recording cannot match at this stage.
-- Rationale: Iteration speed matters more than voice provenance while the product changes weekly; the risk is documented, accepted by the owner, and reversible (re-record when the product stabilises).
-- Rejected: Human recording now — slows every release; a paid TTS with clear commercial terms — deferred until the video cadence settles.
-- Residual risk: R-12 unchanged; takedown risk is low but non-zero. Revisit at the practitioner pilot (0.5) or if Microsoft publishes explicit terms.
-- Approval: Owner, 2026-08-26.
-
 ## D-022 — Ship the CLI as a composite GitHub Action, self-tested on example sets (0.5.0)
 
 - Date: 2026-08-26
@@ -244,13 +258,25 @@
 ## D-023 — Publishing to npm is deferred until the pilot confirms the CLI shape (proposed)
 
 - Date: 2026-08-26
-- Context: The CLI already runs from GitHub in seconds (`pnpm dlx github:chquandogong/deployalign#<tag>`) and as a GitHub Action. An npm package would remove the tsx runtime dependency and give consumers SemVer ranges, but `npm publish` is a public-release gate (§1.6) and the command surface may still change after the first practitioner sessions.
+- Context: The CLI already runs from GitHub in seconds (`pnpm dlx github:chquandogong/deployalign#<tag>`) and as a GitHub Action. An npm package would remove the tsx runtime dependency and give consumers SemVer ranges, but `npm publish` is a public-release gate (see 'Gate convention' in `docs/appendix/CONVENTIONS.md`) and the command surface may still change after the first practitioner sessions.
 - Options: publish now under `deployalign` or `@chquandogong/deployalign`; publish after the pilot; never publish (git + Action only).
 - Decision (proposed, owner to confirm): **defer** until at least two practitioners have run their own documents; then publish a bundled CLI (esbuild) under the scoped name, keeping the Action as the primary CI surface.
 - Rationale: A published package is a promise of stability that the corpus does not yet justify; the Action and `pnpm dlx` cover today's distribution needs without a second release pipeline.
 - Rejected: publishing now — no consumer has asked, and a name squat is not a goal.
 - Residual risk: name availability can change; on 2026-08-26 both `deployalign` and `@chquandogong/deployalign` returned E404 (unclaimed) — re-check `npm view` before publishing.
 - Approval: pending owner confirmation; nothing published.
+
+## D-024 — Redeploy the public demo from the 0.6.1 tree (completed)
+
+- Date: 2026-09-02
+- Context: The public demo had served `v0.3.0` (`deployalign-00005-9vs`) since 2026-08-26 while the repository moved to 0.6.0; 0.4.0–0.6.0 changed nothing in the public fixture-only UI except the `/api/health` version. On 2026-09-02 the owner instructed a documentation update, push, tag and redeploy; Cloud Run deployment is a human gate ("Gate convention" in `docs/appendix/CONVENTIONS.md`).
+- Options: (a) leave `v0.3.0` live and only publish 0.6.1; (b) redeploy from the 0.6.1 tree so the public demo reports the released version; (c) redeploy and also enable custom mode publicly.
+- Decision: (b). `scripts/deploy_cloud_run.sh` ran from a clean worktree at commit `a6f9050` (the 0.6.1 version bump; tag `v0.6.1`, placed on the follow-up documentation commit, differs only in Markdown and issue-template files, none of which reach the runtime image). The script preserved the runtime identity, secret binding and limits it read from the service and only rebuilt the image; `GEMINI_MODEL=gemini-3.7-flash` unchanged; `ALLOW_CUSTOM_ARTIFACTS` stays unset. (c) rejected — R-23.
+- Evidence: revision `deployalign-00006-h5c` created 2026-09-02T05:23Z serves 100% of traffic; `/api/health` → `version 0.6.1`, `liveGemini true`, `model gemini-3.7-flash`, `customArtifacts false`; a compile returned HTTP 200, `provider gemini-vertex`, `executionOrigin server`, `mode fixture`, receipt `SUCCESS — gemini-3.7-flash classified 3 source statements.`; root HTTP 200 with CSP and `no-store`; `/third-party-licenses.txt` HTTP 200 / 3,462 bytes; `gcloud run services describe` shows the same env, service account, 1 CPU / 512 MiB, concurrency 20, 60 s timeout, max instances 1. `deployalign-00005-9vs` (v0.3.0, `gemini-3.7-flash`) and `deployalign-00004-wgb` (0.1.0, `gemini-2.5-flash`) remain listed.
+- Rationale: The health version should match the released tag so the Devpost "Try it out" link and the README describe the same build; deploying from a clean worktree keeps uncommitted work out of the image; the script's live-receipt check turns "did Gemini run" into an exit code.
+- Residual risk: The service still has no auth, persistence or rehearsed rollback (R-13). The rollback target is now `deployalign-00005-9vs`, which also runs `gemini-3.7-flash`, so the R-19 residual (rollback pinned to a retiring model) is closed. Judges following the Devpost link see the 0.6.1 build rather than the submitted 0.1.0 one (already true since D-017).
+- Approval: Owner instruction 2026-09-02 ("문서 업데이트하고 깃 푸쉬, 태그, 배포도 해줘" — update the docs, push, tag and deploy); executed by the agent.
+- Revisit when: a tagged release changes the public UI or API, or Google changes 3.7 Flash availability on the `global` endpoint.
 
 ## Owner decision queue
 
@@ -260,3 +286,5 @@
 | D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26 (`deployalign-00005-9vs`) | Done | — |
 | D-018 | ~~Upload the demo video and swap the links~~ — v0.4.0 published 2026-08-26 (https://youtu.be/3sWnxibKU1Q) after explicit owner approval | Done | — |
 | D-019 | ~~Synthesized narration voice vs. human recording~~ — owner chose to keep the synthesized voice (2026-08-26) | Done | — |
+| D-023 | Confirm deferring npm publish until two practitioners have run their own documents (names `deployalign` / `@chquandogong/deployalign` unclaimed as of 2026-09-02) | Stay deferred; nothing published | Publication |
+| D-024 | ~~Redeploy the public demo from the 0.6.1 tree~~ — owner-instructed and done 2026-09-02 (`deployalign-00006-h5c`, live receipt) | Done | — |

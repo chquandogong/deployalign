@@ -83,7 +83,7 @@ unreachable. A fallback can no longer pass for a server run.
 ## See it in three minutes
 
 - 🎬 **Demo video (v0.4.0, 3:07):** [youtu.be/3sWnxibKU1Q](https://youtu.be/3sWnxibKU1Q) — compile, review, your own documents in Korean, and the CLI. Scripted in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md) and built with the reproducible pipeline in `scripts/demo-video/`. The 2026-08-17 submission walkthrough (0.1.0) remains at [youtu.be/QOPgHHAWOBA](https://youtu.be/QOPgHHAWOBA).
-- 🌐 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — public Cloud Run deployment of the **0.3.0 build** with live **Gemini 3.7 Flash** extraction through Vertex AI (one instance, six compiles per ten minutes per client; custom mode disabled). Verified 2026-08-26: health reports `model gemini-3.7-flash` and a compile returned a `gemini-vertex` receipt.
+- 🌐 **Live demo:** [deployalign-1007800160926.asia-northeast3.run.app](https://deployalign-1007800160926.asia-northeast3.run.app) — public Cloud Run deployment of the **0.6.1 build** with live **Gemini 3.7 Flash** extraction through Vertex AI (one instance, six compiles per ten minutes per client; custom mode disabled). Verified 2026-09-02 (and 2026-08-26 on the previous revision): health reports `version 0.6.1` and `model gemini-3.7-flash`, and a compile returned a `gemini-vertex` receipt.
 
 Click **Run the synthetic case**, read the six diagnostics, open the patch, press
 **Simulate approval & recompile**, and compare the impact table: six sections rebuilt,
@@ -140,14 +140,14 @@ bundled fixture. The CLI runs the deterministic path only — no model, no netwo
 
 ```yaml
 # .github/workflows/sow-check.yml — fail a PR whose proposal outruns the evidence
-- uses: chquandogong/deployalign@v0.6.0
+- uses: chquandogong/deployalign@v0.6.1
   with:
     path: deployment-docs          # customer*/sales*/engineering* (or 고객*/영업*/엔지니어링*)
     fail-on: blocker               # blocker | warning | none
 # outputs: verdict, gate, blockers, warnings, decision-id, report; report.md lands in the job summary
 ```
 
-Without the Action: `pnpm dlx github:chquandogong/deployalign#v0.6.0 compile ./deployment-docs --fail-on blocker`.
+Without the Action: `pnpm dlx github:chquandogong/deployalign#v0.6.1 compile ./deployment-docs --fail-on blocker`.
 Try it on the bundled sets first: [`examples/`](examples/) (`hospital-delivery-robot` fails,
 `warehouse-amr` passes, `sub-fab-raman-ko` fails in Korean).
 
@@ -172,7 +172,7 @@ flowchart LR
 
 | Layer | Where | What it owns |
 | --- | --- | --- |
-| Domain | `src/domain/` | Types, the canonical fixture compiler (14 tests), the frozen synthetic fixture, and `general/` — clause extraction, English/Korean lexical typing, negation-aware detectors, evidence-derived patch, generic targets (24 tests across five corpora) |
+| Domain | `src/domain/` | Types, the canonical fixture compiler (14 tests), the frozen synthetic fixture, and `general/` — clause extraction, English/Korean lexical typing, negation-aware detectors, evidence-derived patch, generic targets (24 tests across six synthetic corpora) |
 | API | `server/app.ts`, `server/index.ts` | Input bounds, fixture guard / custom mode, rate limit, HMAC tokens bound to mode + patch + artifact hash, `/api/health`, `/api/compile`, `/api/approve`, static build; 18 contract tests |
 | Model adapter | `server/gemini.ts` | Opt-in Gemini call, prompt, `thinkingConfigFor`, pure `validateGeminiPayload`; 11 tests |
 | UI | `src/App.tsx`, `src/components/ArtifactEditor.tsx`, `src/lib/exportMarkdown.ts` | Sources, document editor (custom mode), graph + node inspector, diagnostics, patch diff, approval boundary, impact table, targets with Markdown/JSON export, source map, receipts |
@@ -203,7 +203,7 @@ Production-style run of the built bundle:
 ```bash
 pnpm build
 COMPILE_TOKEN_SECRET="$(openssl rand -base64 48)" NODE_ENV=production pnpm start
-# → http://localhost:8080  ·  GET /api/health → {"ok":true,"version":"0.2.0","model":"gemini-3.7-flash",…}
+# → http://localhost:8080  ·  GET /api/health → {"ok":true,"version":"0.6.1","model":"gemini-3.7-flash",…}
 ```
 
 ### Enable a live Gemini call
@@ -282,10 +282,10 @@ checkpoint (`v0.1.0`), not the finish line. The project continues in the open; c
 are recorded in [`CHANGELOG.md`](CHANGELOG.md) and the reasoning behind them in
 [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md).
 
-Honest scope, as of 0.6.0: the deterministic compilers (fixture and general), API, UI, CLI,
+Honest scope, as of 0.6.1: the deterministic compilers (fixture and general), API, UI, CLI,
 GitHub Action and 78 tests are implemented and verified locally, including a headless-browser
-run of the custom-document flow and a CI self-test of the Action on the example sets; the public demo runs the 0.3.0 build with a **live-verified**
-`gemini-3.7-flash` call (2026-08-26); there is still no production deployment, no
+run of the custom-document flow and a CI self-test of the Action on the example sets; the public demo runs the 0.6.1 build with a **live-verified**
+`gemini-3.7-flash` call (2026-09-02 on the 0.6.1 redeploy; first verified 2026-08-26 on the 0.3.0 revision); there is still no production deployment, no
 customer, and no measured field outcome. Nothing here establishes eligibility, an award or business viability.
 
 ## Documentation
@@ -299,7 +299,7 @@ customer, and no measured field outcome. Nothing here establishes eligibility, a
 | [`docs/04-quality/TEST_PLAN.md`](docs/04-quality/TEST_PLAN.md) · [`RISK_REGISTER.md`](docs/04-quality/RISK_REGISTER.md) | Test plan and risks with state |
 | [`docs/05-ops/RUNBOOK.md`](docs/05-ops/RUNBOOK.md) | Run, verify, migrate the model, troubleshoot, roll back |
 | [`docs/05-ops/PILOT_KIT.md`](docs/05-ops/PILOT_KIT.md) | How to run the five-practitioner pilot without fabricating evidence |
-| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-023 |
+| [`docs/02-decisions/DECISION_LOG.md`](docs/02-decisions/DECISION_LOG.md) | D-001…D-024 |
 | [`docs/submission/`](docs/submission/) | Demo script, YouTube metadata, and the historical Devpost evidence record |
 
 ## License

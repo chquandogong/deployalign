@@ -1,6 +1,6 @@
 # Risk Register
 
-> Status: Active · Date: 2026-08-26 (0.3.0) · Owner: Red team and project lead
+> Status: Active · Date: 2026-09-02 (0.6.1) · Owner: Red team and project lead
 
 Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means reduced, not eliminated.
 
@@ -24,11 +24,13 @@ Likelihood and impact use Low / Medium / High / Critical. “Mitigated” means 
 | R-16 | Generated scope is used as safety guidance | Low in labeled demo | Critical | A user uploads a real deployment case | Disable/avoid real ingestion; prominent non-authorization disclaimer; domain governance | Product/security | Open |
 | R-17 | Demo receipt IDs repeat by version and deterministic durations are zero, so they are not a durable audit trail | High | Medium | Multiple runs share `DEMO-V1`/`DEMO-V2` IDs | Label receipts as illustrative; use unique persisted events before production claims | Backend/QA | Accepted for demo; blocks audit claim |
 | R-18 | Signed compile token is readable base64url data, replayable within one hour, and not tied to a user | Medium | High for real data | Token is copied/reused or mistaken for authorization | Synthetic data only; short expiry; add identity, nonce, encryption/minimization, and durable audit before real use | Security | Accepted for demo only |
-| R-19 | Default model retirement breaks the live path: Vertex AI lists 2026-10-16 for `gemini-2.5-flash` | Low | Medium | Live compiles start failing validation or return provider errors | Public demo redeployed 2026-08-26 as `deployalign-00005-9vs` on `gemini-3.7-flash` with a verified live receipt (D-017); rollback revision retained | Engineering + owner | **Closed 2026-08-26** |
+| R-19 | Default model retirement breaks the live path: Vertex AI lists 2026-10-16 for `gemini-2.5-flash` | Low | Medium | Live compiles start failing validation or return provider errors | Public demo redeployed 2026-08-26 as `deployalign-00005-9vs` on `gemini-3.7-flash` with a verified live receipt (D-017); rollback revision retained. Residual closed 2026-09-02: after the 0.6.1 redeploy (D-024) the rollback target is `deployalign-00005-9vs`, which runs `gemini-3.7-flash`; `deployalign-00004-wgb` (pins `gemini-2.5-flash`, unusable after 2026-10-16) is no longer needed. | Engineering + owner | **Closed 2026-08-26** |
 | R-20 | New default model is not live-verified | Low | Medium | `gemini_extraction_rejected` in logs | Live compile on Vertex `global` returned a `SUCCESS` receipt from `gemini-3.7-flash` on 2026-08-26 | Engineering | **Closed 2026-08-26** |
-| R-21 | Translated READMEs drift from the English source of truth | Medium | Low | A change lands in `README.md` only | CONTRIBUTING requires all three or an `i18n` issue; CI does not enforce it | Documentarian | Accepted |
+| R-21 | Translated READMEs drift from the English source of truth | Medium | Low | A change lands in `README.md` only | CONTRIBUTING requires all three or an `i18n` issue; CI does not enforce it. Materialised 2026-09-02: `README.ko.md`/`README.zh.md` kept an 'awaiting first live receipt' sentence that `README.md` had dropped; fixed the same day; the ship checklist now re-reads all three READMEs at every release. | Documentarian | Accepted |
 | R-22 | Lexical detectors over- or under-fire on real phrasing (English-only cue lists, clause-per-line splitting, keyword-overlap linking) | High | Medium | Reviewers see a wrong type, a missed quantifier, or a spurious DA-002 | Every finding quotes its source and is labelled heuristic; the gate never passes without a person; collect misfires from practitioners into the test corpora | Product/QA | Open — inherent to 0.3 |
 | R-23 | Custom mode plus live Gemini sends user-supplied text to the model | Medium | High | `ALLOW_CUSTOM_ARTIFACTS=true` on a deployment with `ALLOW_LIVE_GEMINI=true` | Both flags default off; the runbook forbids custom mode on the public demo; the UI states where text goes; prompt tells the model the text is untrusted data | Owner/Ops | Open — documented control |
+| R-24 | npm package names `deployalign` / `@chquandogong/deployalign` are unclaimed while D-023 is pending; a third party could take them | Low | Low | `npm view` on either name stops returning E404 | Check the registry before any publish; D-023 owner decision | Owner | Open — names unclaimed 2026-09-02 |
+| R-25 | The composite Action runs `pnpm install --prod` on every consumer run (slower jobs; depends on the npm registry) | Medium | Low | Consumer jobs slower, or fail when the registry is unreachable | `action.yml` enables Corepack and installs with a frozen lockfile; a bundled CLI (D-023) would remove the install | Engineering | Accepted for 0.5+ |
 
 ## Highest-priority controls before any public action
 

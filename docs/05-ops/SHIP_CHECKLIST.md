@@ -1,8 +1,21 @@
 # Ship Checklist
 
-> Status: **v0.6.0 repository release — GO; Cloud Run — v0.3.0 live; video — v0.4.0 published; customer production — NO-GO** · Date: 2026-08-26 · Owner: Release owner
+> Status: **v0.6.0 released 2026-08-26; v0.6.1 (docs reconciliation + redeploy) — GO to tag; Cloud Run — 0.6.1 live (`deployalign-00006-h5c`, 2026-09-02); video — v0.4.0 published; customer production — NO-GO** · Date: 2026-09-02 · Owner: Release owner
 
 Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable to the bounded prototype.
+
+## v0.6.1 repository release (2026-09-02)
+
+- [x] Gates re-run 2026-09-02: `pnpm typecheck`, `pnpm lint`, `pnpm test` (78/78 across 8 files), `pnpm build` exited 0 on Node 24.19.0 / pnpm 11.19.0.
+- [x] `pnpm audit --prod`: "No known vulnerabilities found".
+- [x] README ×3 re-read for parity (KO/ZH "awaiting its first live receipt" sentence removed — R-21 materialised).
+- [x] Dashboard, roadmap, runbook, test plan, risk register, decision log, glossary, architecture and brief reconciled with the released state (see `CHANGELOG.md` 0.6.1).
+- [x] Cloud Run redeploy from the 0.6.1 tree (D-024): revision `deployalign-00006-h5c` at 100% traffic; health `version 0.6.1 · liveGemini true · model gemini-3.7-flash · customArtifacts false`; live `gemini-vertex` receipt; identity, secret binding and limits unchanged; rollback target `deployalign-00005-9vs` (runbook updated).
+- [ ] Tag `v0.6.1` on this commit, push, GitHub release — next step; recorded in the follow-up commit.
+- [-] npm publish — not performed (D-023 proposed, pending owner confirmation).
+- [-] In-app CLI/Action hint (`ArtifactEditor.tsx`) still prints `@v0.6.0` — code unchanged in this docs-only release; both tags resolve to the same Action; update with the next code release.
+
+Judgment: **GO** to tag `v0.6.1`, push and publish a GitHub release.
 
 ## v0.6.0 repository release (2026-08-26)
 
@@ -10,9 +23,10 @@ Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable
 - [x] `examples.test.ts` asserts the presets mirror `examples/` and compile to the documented verdicts.
 - [x] Browser QA: preset buttons present, Korean preset loads, compile shows `CUSTOM` and six diagnostics, zero console errors; screenshot `docs/assets/editor-presets-0.6.0.png`.
 - [x] README ×3, spec FR-35, changelog, D-023 (npm publish deferred, proposed) updated together.
+- [x] Tag `v0.6.0` pushed; GitHub release published 2026-08-26T09:15Z; CI green on the release push (run 32951993001) and on the follow-up review commit 3aee012 (run 32952371781), 3 jobs each.
 - [-] npm publish — not performed (D-023).
 
-Judgment: **GO** to tag `v0.6.0`.
+Judgment: **GO — tagged and released 2026-08-26.**
 
 ## v0.5.0 repository release (2026-08-26)
 
@@ -44,7 +58,7 @@ Judgment: **GO** to tag `v0.4.0`, push and publish a GitHub release.
 - [x] Fixture behaviour unchanged: canonical compiler still used for the synthetic case; 14 domain tests untouched and passing.
 - [x] Custom mode off by default; token binds artifact hash; runbook forbids the flag on the public demo (R-23).
 - [x] `CHANGELOG.md` 0.3.0, version bump, README ×3 updated together, D-016 recorded with the amended criterion, R-22/R-23 added, FR-23–FR-28 added.
-- [ ] Live `gemini-3.7-flash` receipt — not part of this release; D-017 blocked on owner authentication.
+- [ ] Live `gemini-3.7-flash` receipt — not part of this release at GO; satisfied later the same day by D-017 (`deployalign-00005-9vs`, 2026-08-26).
 - [-] Cloud Run redeploy, YouTube upload — owner gates, intentionally not performed.
 
 Judgment: **GO** to tag `v0.3.0`, push and publish a GitHub release.
@@ -58,7 +72,7 @@ Judgment: **GO** to tag `v0.3.0`, push and publish a GitHub release.
 - [x] CI workflow with SHA-pinned actions is green (run `32931382972`): typecheck, lint, test, build and the container-image build all succeeded.
 - [x] Demo video v0.2.0 rendered (2:57) and frame-checked; subtitles EN/KO/ZH generated; pipeline committed under `scripts/demo-video/`.
 - [x] No secrets, account identifiers or personal data added to the repository (grep for `AIza`, `gho_`, `secret`, e-mail addresses in new files).
-- [ ] Live `gemini-3.7-flash` receipt — **not part of this release**; tracked as D-017 / R-20.
+- [ ] Live `gemini-3.7-flash` receipt — **not part of this release** at GO; tracked as D-017 / R-20, satisfied later the same day by D-017 (`deployalign-00005-9vs`, 2026-08-26); R-20 closed 2026-08-26.
 - [x] Container image built in CI (`docker/build-push-action`, push disabled) — the local build environment has no Docker socket.
 - [-] Cloud Run redeploy, YouTube upload, Devpost edit — owner gates D-017 / D-018, intentionally not performed.
 
@@ -82,6 +96,7 @@ Judgment: **GO** to tag `v0.2.0`, push to the existing public remote and publish
 - [x] `pnpm build` passed after frontend completion.
 - [x] Direct production-server smoke passed for root/assets/cache/CSP and compile-token valid/tamper/extra-segment/expiry cases.
 - [ ] Failure, rate-limit, and review-mismatch cases tested.
+  - Note (2026-09-02): covered since 0.2.0 by `server/app.test.ts` (malformed JSON, review without token, token tamper, rate limit); see the v0.2.0 section.
 - [x] Deployed receipt actor/status/provider matches the verified `gemini-vertex` execution; fallback is not attributed to Gemini.
 - [x] Responsive live-browser visual QA completed at desktop and 320/360 px without page-level overflow or console errors.
 - [x] Synthetic and provider labels remain visible in captured screenshots.

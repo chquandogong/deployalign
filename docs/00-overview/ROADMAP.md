@@ -1,6 +1,6 @@
 # Roadmap — from submitted prototype to a tool people use
 
-> Status: Active · Date: 2026-08-26 (0.5.0) · Owner: Project lead
+> Status: Active · Date: 2026-09-02 (0.6.1) · Owner: Project lead
 
 ## What "useful" has to mean here
 
@@ -11,11 +11,11 @@ and the downstream sections that move. Today the prototype proves the mechanism 
 synthetic case. Every item below is judged by how much closer it gets a practitioner to
 that moment, not by feature count.
 
-| Signal we will measure | Today (0.2.0) | Target before calling it useful |
+| Signal we will measure | Today (0.6.1) | Target before calling it useful |
 | --- | --- | --- |
-| Artifacts the tool accepts | any 3 role-tagged texts in local mode (0.3.0); the public demo stays fixture-only | any 3 redacted texts a user supplies (local mode) ✓ |
-| Diagnostics that generalise beyond the fixture | 6 of 6 as lexical/evidence detectors, tested on 3 synthetic corpora (0.3.0) | 6 of 6 with measured precision on redacted real documents |
-| Practitioners who recognise the problem | 0 interviewed | ≥ 3 of 5 identify a real analogue |
+| Artifacts the tool accepts | any 3 role-tagged texts in local mode (0.3.0), via the CLI (0.4.0) and the GitHub Action (0.5.0); the public demo stays fixture-only | any 3 redacted texts a user supplies (local mode) ✓ |
+| Diagnostics that generalise beyond the fixture | 6 of 6 as lexical/evidence detectors, tested on six synthetic corpora (0.5.0) | 6 of 6 with measured precision on redacted real documents |
+| Practitioners who recognise the problem | 0 interviewed (pilot kit ready since 0.5.0) | ≥ 3 of 5 identify a real analogue |
 | Languages the detectors read | English + first-pass Korean (0.4.0) | Korean with morphological handling; a second real corpus |
 | Reviewers who ask to run their own documents | 0 | ≥ 2 |
 | Time from paste to reviewable patch | seconds, offline, in the browser QA run (0.3.0) | < 2 minutes on a laptop, no cloud required ✓ |
@@ -92,6 +92,16 @@ template, negation-aware detectors and Korean preference narrowing. **What has n
 happened:** any interview. That is now the owner's next human step; the kit tells them
 exactly what to record.
 
+### 0.6 — Example presets in the editor · *shipped 2026-08-26*
+
+The local-mode editor gained a "Load an example" row backed by `src/domain/examples.ts`, the
+single source of truth for the three bundled document sets; `src/domain/examples.test.ts`
+asserts the presets mirror `examples/` byte-for-byte and compile to the documented verdicts.
+A hint under the editor points to the same compiler as a build step — the CLI
+(`deployalign compile … --fail-on blocker`) and the GitHub Action.
+
+**0.6.1 (2026-09-02):** documentation reconciliation; public demo redeployed from the 0.6.1 tree as `deployalign-00006-h5c` on `gemini-3.7-flash` with a live receipt (D-024; evidence in `CHANGELOG.md` and the dashboard).
+
 ### Later, only if the pilot says so
 
 Identity and signed approvals · tenant-scoped persistence · durable audit events ·
@@ -111,3 +121,4 @@ traction that is not evidenced.
 | D-017 | ~~Redeploy Cloud Run and verify a live receipt~~ — done 2026-08-26, revision `deployalign-00005-9vs` on `gemini-3.7-flash` | Done |
 | D-018 | ~~Upload the demo video and swap the README link~~ — v0.4.0 published 2026-08-26 | Done |
 | D-019 | ~~Keep synthesized narration or record a human voice~~ — synthesized kept (owner, 2026-08-26) | Done |
+| D-023 | Confirm deferring npm publish until two practitioners have run their own documents | Stay deferred; nothing published (names unclaimed 2026-09-02) |
