@@ -1,6 +1,6 @@
 # DeployAlign Project Dashboard
 
-> Status: v0.6.0 released 2026-08-26 (tags v0.1.0–v0.6.0 on GitHub); 0.6.1 = documentation reconciliation + public demo redeployed 2026-09-02 as `deployalign-00006-h5c` (version 0.6.1, gemini-3.7-flash, live receipt) · Date: 2026-09-02 · Owner: DeployAlign orchestrator
+> Status: v0.6.0 released 2026-08-26 (tags v0.1.0–v0.6.0 on GitHub); v0.6.1 released 2026-09-02 (documentation reconciliation; public demo redeployed as `deployalign-00006-h5c`, version 0.6.1, gemini-3.7-flash, live receipt) · Date: 2026-09-02 · Owner: DeployAlign orchestrator
 
 ## Current state
 
@@ -37,7 +37,7 @@
 | 0.4 CLI / CI mode + Korean | Done (0.4.0) | `cli/main.test.ts` (6), `corpora.test.ts` (9), `bin/deployalign.mjs demo` exit 2 | — |
 | 0.5 GitHub Action + examples + pilot kit | Done locally (0.5.0) | `action.yml`, CI job `action`, `examples/`, `PILOT_KIT.md` | Run the first practitioner session |
 | Demo video v0.4.0 | Published (0.4.1) | https://youtu.be/3sWnxibKU1Q, EN/KO/ZH subtitles, release assets | Re-render when the UI changes materially |
-| 0.6.1 docs reconciliation + redeploy | Done (2026-09-02) | this commit; `CHANGELOG.md` 0.6.1 | Tag `v0.6.1`, push, GitHub release |
+| 0.6.1 docs reconciliation + redeploy | Done (2026-09-02) | `CHANGELOG.md` 0.6.1; tag `v0.6.1` on `e13b84c`; [GitHub release](https://github.com/chquandogong/deployalign/releases/tag/v0.6.1); CI run `33596204513` green (3 jobs) | None — released 2026-09-02 |
 | Practitioner validation | Not started | — | Recruit five interviews (Office Hours plan) |
 
 ## Work board
@@ -62,7 +62,7 @@
 | Example presets in the editor | Done | Builder | — | `src/domain/examples.ts`, `examples.test.ts`, browser QA |
 | Release `v0.6.0` | Done | Orchestrator | — | Tag + [GitHub release](https://github.com/chquandogong/deployalign/releases/tag/v0.6.0), CI green (3 jobs) |
 | Redeploy public demo from 0.6.1 (D-024) | Done | Owner + Orchestrator | Owner instruction | `deployalign-00006-h5c`, live receipt |
-| Release `v0.6.1` (docs + redeploy) | In progress | Orchestrator | — | Tag on this commit, push, GitHub release |
+| Release `v0.6.1` (docs + redeploy) | Done | Orchestrator | — | Tag `v0.6.1` + [GitHub release](https://github.com/chquandogong/deployalign/releases/tag/v0.6.1) published 2026-09-02T05:48Z; CI run `33596204513` green (3 jobs); `pnpm dlx github:chquandogong/deployalign#v0.6.1 --version` → `0.6.1` |
 | Practitioner validation | Not started | Owner | Recruiting | Five interviews; redacted corpora |
 
 ## Resume point
@@ -114,7 +114,7 @@
 
 ## Next actions
 
-1. Finish 0.6.1 — tag `v0.6.1` on this commit, push, publish the GitHub release, confirm CI green.
+1. ~~Finish 0.6.1~~ — tagged, pushed and released 2026-09-02; CI run `33596204513` green.
 2. **Owner: run the first practitioner session with `docs/05-ops/PILOT_KIT.md`** — this is the only item that produces evidence the code cannot.
 3. Owner: confirm D-023 (npm publish deferral).
 4. Feed every misfire from real (redacted) documents through the Detector-misfire template into `corpora.test.ts` (R-22).
@@ -145,6 +145,7 @@
 | Redeploy (D-024) | `scripts/deploy_cloud_run.sh` from a clean worktree at commit `a6f9050`; `/api/health`, `/api/compile`, root, licence notice, `gcloud run services describe` | Revision `deployalign-00006-h5c` at 100% traffic (created 2026-09-02T05:23Z); health `version 0.6.1 · liveGemini true · model gemini-3.7-flash · customArtifacts false`; compile HTTP 200 `provider gemini-vertex` · `executionOrigin server` · `mode fixture`, receipt "SUCCESS — gemini-3.7-flash classified 3 source statements."; root HTTP 200 with CSP and `no-store`; `/third-party-licenses.txt` HTTP 200 / 3,462 bytes; env, service account, secret binding, 1 CPU / 512 MiB, concurrency 20, 60 s timeout, max instances 1 unchanged; `deployalign-00005-9vs` and `deployalign-00004-wgb` retained |
 | Videos | oEmbed | Both public: `3sWnxibKU1Q` (v0.4.0 walkthrough) and `QOPgHHAWOBA` (0.1.0 submission record) |
 | Submission | Devpost project page + hackathon page | Project page live and "Submitted"; hackathon page reads "This hackathon has ended" and "Winners announced soon" (listed end date 2026-09-25); no result recorded anywhere |
+| Release `v0.6.1` | Tag, GitHub release, CI, `pnpm dlx` | Annotated tag `v0.6.1` on `e13b84c` pushed to origin; [release](https://github.com/chquandogong/deployalign/releases/tag/v0.6.1) published 2026-09-02T05:48Z and marked latest; CI run `33596204513` on `e13b84c` succeeded with 3 jobs; `pnpm dlx github:chquandogong/deployalign#v0.6.1 --version` printed `0.6.1` in about six seconds |
 | npm | Registry lookup | `deployalign` and `@chquandogong/deployalign` both unclaimed (E404) on 2026-09-02; D-023 (defer publish) still pending owner confirmation |
 | Docs | Cross-file consistency | Contradictions found, fixed in 0.6.1: R-19/R-20 shown Open here after the register closed them; release `v0.6.0` shown "In progress" after it was published; stale 60/75 test counts where 78 is current; `RUNBOOK.md` citing the 0.2.0 image and `general.test.ts` for misfires (the target is `corpora.test.ts`); README KO/ZH kept an "awaiting first live receipt" sentence that README.md had dropped; D-018 referenced without its own entry; D-023 absent from every owner-decision queue; a dangling §1.6 cross-reference |
 

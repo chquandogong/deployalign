@@ -1,6 +1,6 @@
 # Ship Checklist
 
-> Status: **v0.6.0 released 2026-08-26; v0.6.1 (docs reconciliation + redeploy) — GO to tag; Cloud Run — 0.6.1 live (`deployalign-00006-h5c`, 2026-09-02); video — v0.4.0 published; customer production — NO-GO** · Date: 2026-09-02 · Owner: Release owner
+> Status: **v0.6.0 released 2026-08-26; v0.6.1 released 2026-09-02 (docs reconciliation + redeploy); Cloud Run — 0.6.1 live (`deployalign-00006-h5c`, 2026-09-02); video — v0.4.0 published; customer production — NO-GO** · Date: 2026-09-02 · Owner: Release owner
 
 Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable to the bounded prototype.
 
@@ -11,11 +11,11 @@ Legend: `[x]` evidenced, `[ ]` not evidenced, `[-]` intentionally not applicable
 - [x] README ×3 re-read for parity (KO/ZH "awaiting its first live receipt" sentence removed — R-21 materialised).
 - [x] Dashboard, roadmap, runbook, test plan, risk register, decision log, glossary, architecture and brief reconciled with the released state (see `CHANGELOG.md` 0.6.1).
 - [x] Cloud Run redeploy from the 0.6.1 tree (D-024): revision `deployalign-00006-h5c` at 100% traffic; health `version 0.6.1 · liveGemini true · model gemini-3.7-flash · customArtifacts false`; live `gemini-vertex` receipt; identity, secret binding and limits unchanged; rollback target `deployalign-00005-9vs` (runbook updated).
-- [ ] Tag `v0.6.1` on this commit, push, GitHub release — next step; recorded in the follow-up commit.
+- [x] Tag `v0.6.1` (annotated, on `e13b84c`) pushed; GitHub release published 2026-09-02T05:48Z (https://github.com/chquandogong/deployalign/releases/tag/v0.6.1); CI run `33596204513` green, 3 jobs; `pnpm dlx github:chquandogong/deployalign#v0.6.1 --version` → `0.6.1`.
 - [-] npm publish — not performed (D-023 proposed, pending owner confirmation).
 - [-] In-app CLI/Action hint (`ArtifactEditor.tsx`) still prints `@v0.6.0` — code unchanged in this docs-only release; both tags resolve to the same Action; update with the next code release.
 
-Judgment: **GO** to tag `v0.6.1`, push and publish a GitHub release.
+Judgment: **GO — tagged and released 2026-09-02.**
 
 ## v0.6.0 repository release (2026-08-26)
 
